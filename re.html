@@ -168,7 +168,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 24px;
+            margin-top: 30px;
             background: var(--primary-color);
             color: white;
             padding: 18px;
@@ -181,7 +181,7 @@
         
         .cta-button:hover { opacity: 0.9; }
 
-        /* 결과 카드 & 썸네일 영역 스타일 고도화 */
+        /* 결과 카드 디자인 */
         .result-card {
             background: #ffffff;
             border-radius: 12px;
@@ -198,28 +198,11 @@
             background: linear-gradient(135deg, var(--primary-light) 0%, #e8e6ff 100%);
         }
 
-        /* 썸네일에 들어갈 img.object-cover 클래스 제어 */
         .result-card-thumb img.object-cover {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-        }
-
-        /* 하단 안내 박스 스타일 */
-        .notice-box {
-            margin-top: 16px;
-            padding: 14px 16px;
-            background-color: var(--bg-gray);
-            border-radius: 8px;
-            font-size: 13.5px;
-            color: var(--text-sub);
-            text-align: left;
-            display: flex;
-            gap: 8px;
-            align-items: flex-start;
-            word-break: keep-all;
-            line-height: 1.5;
         }
 
         footer {
@@ -250,7 +233,7 @@
     <main>
         <section class="hero-section">
             <div class="badge">K-디지털 기초역량훈련</div>
-            <h1>내일배움카드로 0원,<br>나를 위한 AI 커리어 가이드</h1>
+            <h1>내일배움카드로 0원, 나를 위한 AI 커리어 가이드</h1>
             <p>어떤 강의부터 시작할지 고민이라면? 1분 만에 진단받으세요.</p>
         </section>
 
@@ -262,7 +245,7 @@
 
                 <div class="step-container active" data-step="1">
                     <span class="tag">STEP 01</span>
-                    <h2>AI를 배우려는<br>목적이 무엇인가요?</h2>
+                    <h2>AI를 배우려는 목적이 무엇인가요?</h2>
                     <div class="options-list">
                         <div class="option-item" onclick="nextStep(1, 'purpose', 'work')">💼 업무 효율화 / 자동화</div>
                         <div class="option-item" onclick="nextStep(1, 'purpose', 'content')">🎨 콘텐츠 제작</div>
@@ -273,7 +256,7 @@
 
                 <div class="step-container" data-step="2">
                     <span class="tag">STEP 02</span>
-                    <h2>현재 수준은<br>어디에 가깝나요?</h2>
+                    <h2>현재 수준은 어디에 가깝나요?</h2>
                     <div class="options-list">
                         <div class="option-item" onclick="nextStep(2, 'level', 'beginner')">🐣 입문 (완전 처음)</div>
                         <div class="option-item" onclick="nextStep(2, 'level', 'intermediate')">🙂 기초 (사용 경험 있음)</div>
@@ -301,15 +284,8 @@
 
                 <div id="result-page" style="display:none;">
                     <span class="tag">MATCHED</span>
-                    <h2>연구원님께 딱 맞는<br>강의를 찾았습니다!</h2>
-                    
+                    <h2>연구원님께 딱 맞는 강의를 찾았습니다!</h2>
                     <div id="recommendation-result" style="margin-top:20px;"></div>
-                    
-                    <div class="notice-box">
-                        <span>ℹ️</span>
-                        <span>추천해 드린 강의는 연구원님의 응답을 바탕으로 구성되었습니다. 최종 수강 결정 전, <b>상세 페이지에서 전체 커리큘럼을 꼭 한 번 더 확인</b>해 보시는 것을 권장해 드려요!</span>
-                    </div>
-
                     <a id="result-link" href="#" target="_blank" class="cta-button">해당 강의 바로가기</a>
                     <p onclick="location.reload()" style="text-align:center; margin-top:20px; font-size:13px; color:#adb5bd; cursor:pointer;">다시 하기</p>
                 </div>
