@@ -63,6 +63,17 @@
             text-decoration: none;
         }
 
+        /* GNB 링크 텍스트 스타일 */
+        .header-links a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .header-links a:hover {
+            color: var(--primary-color);
+        }
+
         /* 히어로 섹션 */
         .hero-section {
             padding: 80px 20px;
@@ -101,9 +112,13 @@
             background-color: var(--bg-gray);
         }
 
-        #survey-container {
+        .survey-wrapper {
             width: 100%;
             max-width: 540px;
+        }
+
+        #survey-container {
+            width: 100%;
             background: #ffffff;
             padding: 45px 35px;
             border-radius: 16px;
@@ -220,7 +235,37 @@
             opacity: 0.9;
         }
 
-        /* 결과 카드 & 썸네일 영역 (가변 높이 적용 완료) */
+        /* 하단 부가 버튼 (결과 페이지 내부에 위치) */
+        .extra-buttons-wrapper {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .extra-btn {
+            flex: 1 1 calc(33.333% - 10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 14px 12px;
+            background: #ffffff;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            text-align: center;
+            word-break: keep-all;
+        }
+
+        .extra-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* 결과 카드 & 썸네일 영역 */
         .result-card {
             background: #ffffff;
             border-radius: 12px;
@@ -234,12 +279,26 @@
             width: 100%;
             background: linear-gradient(135deg, var(--primary-light) 0%, #e8e6ff 100%);
             display: flex;
+            transition: opacity 0.2s;
+        }
+        
+        .result-card-thumb:hover {
+            opacity: 0.9;
         }
 
         .result-card-thumb img {
             width: 100%;
             height: auto;
             display: block;
+        }
+        
+        /* 링크 호버 이펙트 */
+        .result-title-link {
+            text-decoration: none;
+        }
+        
+        .result-title-link h4:hover {
+            text-decoration: underline;
         }
 
         /* 하단 안내 박스 스타일 */
@@ -274,6 +333,10 @@
             #survey-container {
                 padding: 30px 20px;
             }
+
+            .extra-btn {
+                flex: 1 1 100%;
+            }
         }
     </style>
 </head>
@@ -282,8 +345,10 @@
 
     <header>
         <div class="nav-container">
-            <a href="#" class="logo">MODULABS</a>
-            <div style="font-size: 14px; font-weight: 600; color: var(--text-sub);">로그인 | 회원가입</div>
+            <a href="https://class.modulabs.co.kr/nbclass" class="logo" target="_blank">MODULABS</a>
+            <div class="header-links" style="font-size: 14px; font-weight: 600; color: var(--text-sub);">
+                <a href="https://member.modulabs.co.kr/signin?redirectUrl=https%3A%2F%2Fclass.modulabs.co.kr%2Fapi%2Fcallback%2Fmodulabs-auth%3FredirectUrl%3Dhttps%253A%252F%252Fclass.modulabs.co.kr%252Fnbclass&_gl=1*949jna*_gcl_au*NDE0NzU2MzYwLjE3NzI1MzQyMzguMTU5NzczNzk0NS4xNzc1MzAxNTYyLjE3NzUzMDE1NjE.*_ga*MTM2ODY2MjYwNS4xNzcyNTM0MjM4*_ga_5YVT7K6RHZ*czE3NzUzMDAwNTYkbzIwJGcxJHQxNzc1MzAxNjM5JGo0OCRsMCRoMA.." target="_blank">로그인 / 회원가입</a>
+            </div>
         </div>
     </header>
 
@@ -294,69 +359,77 @@
             <p>어떤 강의부터 시작할지 고민이라면?<br>1분 만에 진단받으세요.<br> </p>
 
             <section class="recommend-section">
-                <div id="survey-container">
-                    <div class="progress-container" id="progress-container">
-                        <div id="progress-bar"></div>
-                    </div>
-
-                    <div class="step-container active" data-step="1">
-                        <span class="tag">STEP 01</span>
-                        <h2>AI를 배우려는 목적이 무엇인가요?</h2>
-                        <div class="options-list">
-                            <div class="option-item" onclick="nextStep(1, 'purpose', 'work')">💼 업무 효율화 / 자동화</div>
-                            <div class="option-item" onclick="nextStep(1, 'purpose', 'content')">🎨 콘텐츠 제작</div>
-                            <div class="option-item" onclick="nextStep(1, 'purpose', 'data')">📊 데이터 분석</div>
-                            <div class="option-item" onclick="nextStep(1, 'purpose', 'basic')">🌱 AI 기초 이해</div>
+                <div class="survey-wrapper">
+                    <div id="survey-container">
+                        <div class="progress-container" id="progress-container">
+                            <div id="progress-bar"></div>
                         </div>
-                    </div>
 
-                    <div class="step-container" data-step="2">
-                        <span class="tag">STEP 02</span>
-                        <h2>현재 수준은 어디에 가깝나요?</h2>
-                        <div class="options-list">
-                            <div class="option-item" onclick="nextStep(2, 'level', 'beginner')">🐣 입문 (완전 처음)</div>
-                            <div class="option-item" onclick="nextStep(2, 'level', 'intermediate')">🙂 기초 (사용 경험 있음)
+                        <div class="step-container active" data-step="1">
+                            <span class="tag">STEP 01</span>
+                            <h2>AI를 배우려는 목적이 무엇인가요?</h2>
+                            <div class="options-list">
+                                <div class="option-item" onclick="nextStep(1, 'purpose', 'work')">💼 업무 효율화 / 자동화</div>
+                                <div class="option-item" onclick="nextStep(1, 'purpose', 'content')">🎨 콘텐츠 제작</div>
+                                <div class="option-item" onclick="nextStep(1, 'purpose', 'data')">📊 데이터 분석</div>
+                                <div class="option-item" onclick="nextStep(1, 'purpose', 'basic')">🌱 AI 기초 이해</div>
                             </div>
-                            <div class="option-item" onclick="nextStep(2, 'level', 'advanced')">💻 실무 (이미 활용 중)</div>
-                        </div>
-                        <button class="back-btn" onclick="prevStep(2)">이전 질문으로</button>
-                    </div>
-
-                    <div class="step-container" data-step="3">
-                        <span class="tag">STEP 03</span>
-                        <h2>마지막으로 가장 관심 있는<br>최종 목표는 무엇인가요?</h2>
-                        <div class="options-list">
-                            <div class="option-item" onclick="processResult('productivity')">🚀 생산성 향상</div>
-                            <div class="option-item" onclick="processResult('contents')">🎬 콘텐츠 제작</div>
-                            <div class="option-item" onclick="processResult('data_skill')">📈 데이터 역량</div>
-                            <div class="option-item" onclick="processResult('maker')">🛠 AI 서비스 만들기</div>
-                        </div>
-                        <button class="back-btn" onclick="prevStep(3)">이전 질문으로</button>
-                    </div>
-
-                    <div id="loading-page" style="display:none; text-align:center; padding: 30px 0;">
-                        <div
-                            style="width:40px; height:40px; border:4px solid var(--primary-light); border-top:4px solid var(--primary-color); border-radius:50%; animation:spin 1s linear infinite; margin:auto;">
-                        </div>
-                        <h2 style="margin-top:20px;">맞춤 커리큘럼 분석 중...</h2>
-                    </div>
-
-                    <div id="result-page" style="display:none;">
-                        <span class="tag">MATCHED</span>
-                        <h2>연구원님께 딱 맞는 강의를 찾았습니다!</h2>
-
-                        <div id="recommendation-result" style="margin-top:20px;"></div>
-
-                        <div class="notice-box">
-                            <span>❗</span>
-                            <span>추천해 드린 강의는 연구원님의 응답을 바탕으로 AI 추천 후 구성되었습니다.<br>최종 수강 결정 전, 상세페이지를 꼭 한 번 더 확인해 보시는 것을
-                                권장해드려요!</span>
                         </div>
 
-                        <a id="result-link" href="#" target="_blank" class="cta-button">해당 강의 바로가기</a>
-                        <p onclick="location.reload()"
-                            style="text-align:center; margin-top:20px; font-size:13px; color:#adb5bd; cursor:pointer;">
-                            다시 하기</p>
+                        <div class="step-container" data-step="2">
+                            <span class="tag">STEP 02</span>
+                            <h2>현재 수준은 어디에 가깝나요?</h2>
+                            <div class="options-list">
+                                <div class="option-item" onclick="nextStep(2, 'level', 'beginner')">🐣 입문 (완전 처음)</div>
+                                <div class="option-item" onclick="nextStep(2, 'level', 'intermediate')">🙂 기초 (사용 경험 있음)
+                                </div>
+                                <div class="option-item" onclick="nextStep(2, 'level', 'advanced')">💻 실무 (이미 활용 중)</div>
+                            </div>
+                            <button class="back-btn" onclick="prevStep(2)">이전 질문으로</button>
+                        </div>
+
+                        <div class="step-container" data-step="3">
+                            <span class="tag">STEP 03</span>
+                            <h2>마지막으로 가장 관심 있는<br>최종 목표는 무엇인가요?</h2>
+                            <div class="options-list">
+                                <div class="option-item" onclick="processResult('productivity')">🚀 생산성 향상</div>
+                                <div class="option-item" onclick="processResult('contents')">🎬 콘텐츠 제작</div>
+                                <div class="option-item" onclick="processResult('data_skill')">📈 데이터 역량</div>
+                                <div class="option-item" onclick="processResult('maker')">🛠 AI 서비스 만들기</div>
+                            </div>
+                            <button class="back-btn" onclick="prevStep(3)">이전 질문으로</button>
+                        </div>
+
+                        <div id="loading-page" style="display:none; text-align:center; padding: 30px 0;">
+                            <div
+                                style="width:40px; height:40px; border:4px solid var(--primary-light); border-top:4px solid var(--primary-color); border-radius:50%; animation:spin 1s linear infinite; margin:auto;">
+                            </div>
+                            <h2 style="margin-top:20px;">맞춤 커리큘럼 분석 중...</h2>
+                        </div>
+
+                        <div id="result-page" style="display:none;">
+                            <span class="tag">MATCHED</span>
+                            <h2>연구원님께 딱 맞는 강의를 찾았습니다!</h2>
+
+                            <div id="recommendation-result" style="margin-top:20px;"></div>
+
+                            <div class="notice-box">
+                                <span>❗</span>
+                                <span>추천해 드린 강의는 연구원님의 응답을 바탕으로 AI 추천 후 구성되었습니다.<br>최종 수강 결정 전, 상세페이지를 꼭 한 번 더 확인해 보시는 것을 권장해드려요!</span>
+                            </div>
+
+                            <a id="result-link" href="#" target="_blank" class="cta-button">해당 강의 바로가기</a>
+                            
+                            <div class="extra-buttons-wrapper">
+                                <a href="https://class.modulabs.co.kr/nbclass" target="_blank" class="extra-btn">전체 강의 보러가기</a>
+                                <a href="https://class.modulabs.co.kr/classes/84" target="_blank" class="extra-btn">K-디지털 수강신청</a>
+                                <a href="https://class.modulabs.co.kr/classes/143" target="_blank" class="extra-btn">0원 수강 가이드</a>
+                            </div>
+
+                            <p onclick="location.reload()"
+                                style="text-align:center; margin-top:24px; font-size:13px; color:#adb5bd; cursor:pointer;">
+                                다시 하기</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -369,7 +442,6 @@
     <script>
         let answers = { purpose: '', level: '', goal: '' };
 
-        // 원본 이미지 주소로 교체 완료
         const courseData = {
             L1: { title: "[첫걸음] 일상부터 업무까지: ChatGPT와 친해지기", url: "https://class.modulabs.co.kr/classes/31", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/937f3831-3374-4851-8341-8baf8d515ac3.jpg" },
             L2: { title: "생성형 AI를 활용한 15초 광고(숏폼) 만들기", url: "https://class.modulabs.co.kr/classes/16", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/a1a24780-a952-4d1e-9091-0c9c3d6989b0.png" },
@@ -418,10 +490,9 @@
             let recommendCode = "";
             let nextCode = "";
 
-            // 로직 매핑
             if (answers.goal === 'maker') {
                 if (answers.level === 'beginner') { recommendCode = "L8"; nextCode = "L7"; }
-                else { recommendCode = "L7"; nextCode = ""; } // L7 다음 추천 없음
+                else { recommendCode = "L7"; nextCode = ""; }
             }
             else if (answers.goal === 'data_skill') {
                 if (answers.level === 'beginner') { recommendCode = "L4"; nextCode = "L5"; }
@@ -454,7 +525,6 @@
                 }
             }
 
-            // CASE 7 보정
             if (answers.purpose === 'basic' && answers.level === 'beginner' && answers.goal === 'productivity') {
                 recommendCode = "L1"; nextCode = "L9";
             }
@@ -464,26 +534,31 @@
 
             const resultDiv = document.getElementById('recommendation-result');
 
-            // 로드맵 HTML 생성 (L7은 로드맵 제외)
             let roadmapHTML = "";
             if (nextCourse) {
                 roadmapHTML = `
                     <div style="background-color: var(--bg-gray); padding: 12px 16px; border-radius: 8px; font-size: 13.5px;">
                         <b style="color:var(--primary-color); display:block; margin-bottom:4px;">💡 다음 추천 로드맵</b>
-                        ${nextCourse.title}
+                        <a href="${nextCourse.url}" target="_blank" style="color:var(--text-main); text-decoration:underline; cursor:pointer;">
+                            ${nextCourse.title}
+                        </a>
                     </div>
                 `;
             }
 
             resultDiv.innerHTML = `
                 <div class="result-card">
-                    <div class="result-card-thumb">
-                        <img src="${resultCourse.thumb}" alt="강의 썸네일">
-                    </div>
+                    <a href="${resultCourse.url}" target="_blank" style="text-decoration: none; display: block;">
+                        <div class="result-card-thumb">
+                            <img src="${resultCourse.thumb}" alt="강의 썸네일">
+                        </div>
+                    </a>
                     <div style="padding: 24px;">
-                        <h4 style="color:var(--primary-color); word-break: keep-all; line-height: 1.4; font-size: 1.15rem; margin-bottom: 12px;">
-                            ${resultCourse.title}
-                        </h4>
+                        <a href="${resultCourse.url}" target="_blank" class="result-title-link">
+                            <h4 style="color:var(--primary-color); word-break: keep-all; line-height: 1.4; font-size: 1.15rem; margin-bottom: 12px;">
+                                ${resultCourse.title}
+                            </h4>
+                        </a>
                         <p style="font-size:14px; color:var(--text-sub); margin-bottom: 16px;">
                             연구원님의 현재 수준과 목적에 가장 최적화된 맞춤 강의입니다.
                         </p>
