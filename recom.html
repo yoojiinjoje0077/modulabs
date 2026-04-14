@@ -165,8 +165,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .tag {
@@ -488,7 +493,7 @@
         /* 모바일 반응형 미디어 쿼리 */
         @media (max-width: 992px) {
             .review-grid-container {
-                display: flex; 
+                display: flex;
                 overflow-x: auto;
                 padding-bottom: 16px;
                 scrollbar-width: thin;
@@ -506,7 +511,7 @@
             }
 
             .review-card {
-                flex: 0 0 280px; 
+                flex: 0 0 280px;
                 scroll-snap-align: start;
             }
         }
@@ -572,16 +577,19 @@
                             <span class="tag">STEP 02</span>
                             <h2>현재 수준은 어디에 가깝나요?</h2>
                             <div class="options-list">
-                                <div class="option-item" onclick="nextStep(2, 'level', 'beginner')">🐣 입문<br>(AI를 거의 처음 접하거나, 사용해본 경험이 거의 없는 단계)</div>
-                                <div class="option-item" onclick="nextStep(2, 'level', 'intermediate')">🙂 기초<br>(AI를 사용해본 적은 있지만, 업무나 프로젝트에 활용해본 경험은 적은 단계)</div>
-                                <div class="option-item" onclick="nextStep(2, 'level', 'advanced')">💻 실무<br>(AI를 활용하고 있으며 더 고급 활용 방법이 필요한 단계)</div>
+                                <div class="option-item" onclick="nextStep(2, 'level', 'beginner')">🐣 입문<br>(AI를 거의 처음
+                                    접하거나, 사용 경험이 거의 없는 단계)</div>
+                                <div class="option-item" onclick="nextStep(2, 'level', 'intermediate')">🙂 기초<br>(AI 사용
+                                    경험은 있지만, 실무에 활용해본 경험은 적은 단계)</div>
+                                <div class="option-item" onclick="nextStep(2, 'level', 'advanced')">💻 실무<br>(AI를 활용하고
+                                    있으며 고급 활용 방법이 필요한 단계)</div>
                             </div>
                             <button class="back-btn" onclick="prevStep(2)">이전 질문으로</button>
                         </div>
 
                         <div class="step-container" data-step="3">
                             <span class="tag">STEP 03</span>
-                            <h2>최종 도달하고 싶은 목표는 무엇인가요?</h2>
+                            <h2>최종 도달 목표는 무엇인가요?</h2>
                             <div class="options-list">
                                 <div class="option-item" onclick="processResult('productivity')">🚀 생산성 향상</div>
                                 <div class="option-item" onclick="processResult('contents')">🎬 콘텐츠 제작</div>
@@ -613,23 +621,28 @@
                             <a id="result-link" href="#" target="_blank" class="cta-button">해당 강의 바로가기</a>
 
                             <div class="extra-buttons-wrapper">
-                                <a href="https://class.modulabs.co.kr/nbclass" target="_blank" class="extra-btn">전체 강의 보러가기</a>
-                                <a href="https://service.modulabs.co.kr/r/6QRi5aWg" target="_blank" class="extra-btn">국비지원 신청 가이드</a>
-                                <a href="https://service.modulabs.co.kr/r/t6pvYshC" target="_blank" class="extra-btn">학습실 가이드</a>
+                                <a href="https://class.modulabs.co.kr/nbclass" target="_blank" class="extra-btn">전체 강의
+                                    보러가기</a>
+                                <a href="https://service.modulabs.co.kr/r/6QRi5aWg" target="_blank"
+                                    class="extra-btn">국비지원 신청 가이드</a>
+                                <a href="https://service.modulabs.co.kr/r/t6pvYshC" target="_blank"
+                                    class="extra-btn">학습실 가이드</a>
                             </div>
 
-                            <button class="back-btn" style="margin: 24px auto 0;" onclick="location.reload()">다시 하기</button>
+                            <button class="back-btn" style="margin: 24px auto 0;" onclick="location.reload()">다시
+                                하기</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="extended-result" style="display:none;">
-                    
+
                     <div class="review-section">
                         <h3>이런 점이 좋았어요.</h3>
                         <div class="review-grid-container">
                             <div class="review-card">
-                                <div class="review-text">"오프라인 학원에서 듣지 못한 실질적인 내용들이었습니다. 유튜브 운영 방법과 다양한 AI 툴을 알려주셔서 실제 운영에 바로 적용할 수 있을 것 같아요."</div>
+                                <div class="review-text">"오프라인 학원에서 듣지 못한 실질적인 내용들이었습니다. 유튜브 운영 방법과 다양한 AI 툴을 알려주셔서 실제
+                                    운영에 바로 적용할 수 있을 것 같아요."</div>
                                 <div class="review-author">
                                     <div class="author-icon">👩🏻</div>
                                     <div class="author-info">
@@ -638,9 +651,10 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="review-card">
-                                <div class="review-text">"AI 툴을 하나도 모르는 초보자를 위한 상세한 강의가 만족스러웠습니다. 여러 예시를 통해 어렵지 않게 설명해 주셔서 쉽게 따라할 수 있었어요~!"</div>
+                                <div class="review-text">"AI 툴을 하나도 모르는 초보자를 위한 상세한 강의가 만족스러웠습니다. 여러 예시를 통해 어렵지 않게 설명해
+                                    주셔서 쉽게 따라할 수 있었어요~!"</div>
                                 <div class="review-author">
                                     <div class="author-icon">👩🏻‍💻</div>
                                     <div class="author-info">
@@ -651,7 +665,8 @@
                             </div>
 
                             <div class="review-card">
-                                <div class="review-text">"사족 없이 핵심만 알려주는 강의였습니다. 알아듣기 쉬운 설명과 적당한 강의 속도 덕분에 SQL 개념을 확실하게 잡을 수 있었고, 온라인에서 직접 실습하며 문제를 풀어볼 수 있어서 좋았습니다."</div>
+                                <div class="review-text">"사족 없이 핵심만 알려주는 강의였습니다. 알아듣기 쉬운 설명과 적당한 강의 속도 덕분에 SQL 개념을 확실하게
+                                    잡을 수 있었고, 온라인에서 직접 실습하며 문제를 풀어볼 수 있어서 좋았습니다."</div>
                                 <div class="review-author">
                                     <div class="author-icon">👩🏻‍🏫</div>
                                     <div class="author-info">
@@ -662,7 +677,8 @@
                             </div>
 
                             <div class="review-card">
-                                <div class="review-text">"AI 관련 지식이 전혀 없던 제게 SQL이 무엇이고 어떤 목적으로 사용하는지 이해할 수 있게 해줬습니다. 시험으로 수업 내용을 다시 한번 복습할 수 있어서 좋았습니다."</div>
+                                <div class="review-text">"AI 관련 지식이 전혀 없던 제게 SQL이 무엇이고 어떤 목적으로 사용하는지 이해할 수 있게 해줬습니다.
+                                    시험으로 수업 내용을 다시 한번 복습할 수 있어서 좋았습니다."</div>
                                 <div class="review-author">
                                     <div class="author-icon">🧑🏻</div>
                                     <div class="author-info">
@@ -673,7 +689,8 @@
                             </div>
 
                             <div class="review-card">
-                                <div class="review-text">"이미지 생성뿐만 아니라 음악 및 영상 편집 등 쇼츠 제작을 위한 전반적인 과정을 자세히 배울 수 있어 좋았습니다. 다양한 AI 플랫폼과 활용법을 알게 되었어요."</div>
+                                <div class="review-text">"이미지 생성뿐만 아니라 음악 및 영상 편집 등 쇼츠 제작을 위한 전반적인 과정을 자세히 배울 수 있어
+                                    좋았습니다. 다양한 AI 플랫폼과 활용법을 알게 되었어요."</div>
                                 <div class="review-author">
                                     <div class="author-icon">🙋🏻‍♀️</div>
                                     <div class="author-info">
@@ -684,7 +701,8 @@
                             </div>
 
                             <div class="review-card">
-                                <div class="review-text">"챗GPT를 효과적으로 활용하는 방법을 배웠습니다. 막연하게 알고 있던 프롬프트를 엔지니어링할 수 있다는 것을 배우게 된 것이 가장 큰 성과입니다."</div>
+                                <div class="review-text">"챗GPT를 효과적으로 활용하는 방법을 배웠습니다. 막연하게 알고 있던 프롬프트를 엔지니어링할 수 있다는 것을
+                                    배우게 된 것이 가장 큰 성과입니다."</div>
                                 <div class="review-author">
                                     <div class="author-icon">👨🏻‍🏫</div>
                                     <div class="author-info">
@@ -695,7 +713,8 @@
                             </div>
 
                             <div class="review-card">
-                                <div class="review-text">"프롬프트의 중요성 인식부터 결과물을 도출하기 위한 템플릿까지 너무 도움이 되었습니다. 특히 전자책 제작 및 퍼스널 브랜딩, 쇼츠, 릴스 제작 부분이 좋았어요!"</div>
+                                <div class="review-text">"프롬프트의 중요성 인식부터 결과물을 도출하기 위한 템플릿까지 너무 도움이 되었습니다. 특히 전자책 제작 및
+                                    퍼스널 브랜딩, 쇼츠, 릴스 제작 부분이 좋았어요!"</div>
                                 <div class="review-author">
                                     <div class="author-icon">🧑🏻‍💻</div>
                                     <div class="author-info">
@@ -706,7 +725,8 @@
                             </div>
 
                             <div class="review-card">
-                                <div class="review-text">"클라우드 환경을 통한 편리한 실습 환경이 만족스러웠습니다. 다양한 예시 코드로 쉽고 직관적으로 이해할 수 있었고, 마지막 class 부분은 내용의 깊이도 꽤 있어서 좋았어요."</div>
+                                <div class="review-text">"클라우드 환경을 통한 편리한 실습 환경이 만족스러웠습니다. 다양한 예시 코드로 쉽고 직관적으로 이해할 수
+                                    있었고, 마지막 class 부분은 내용의 깊이도 꽤 있어서 좋았어요."</div>
                                 <div class="review-author">
                                     <div class="author-icon">👨🏻</div>
                                     <div class="author-info">
@@ -764,7 +784,7 @@
                                 따라서 관련 경험이 없으시더라도 너무 걱정하지 않으셔도 됩니다.
                             </div>
                         </details>
-                        
+
                         <details class="faq-item">
                             <summary>
                                 <span>[수강] 수강은 어디서 하나요? 또 수강 방식은 어떻게 되나요?</span>
@@ -805,7 +825,7 @@
                                 내용은 임의 수정이 불가하오니 양해 부탁드립니다.
                             </div>
                         </details>
-                        </div>
+                    </div>
 
                 </div>
             </section>
@@ -860,12 +880,12 @@
 
             setTimeout(() => {
                 document.getElementById('loading-page').style.display = 'none';
-                
+
                 // 설문 박스 안의 결과 노출
                 document.getElementById('result-page').style.display = 'block';
                 // 박스 밖의 넓은 확장 영역(후기, FAQ) 노출
                 document.getElementById('extended-result').style.display = 'block';
-                
+
                 showResultCard();
             }, 1200);
         }
