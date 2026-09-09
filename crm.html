@@ -349,7 +349,7 @@
         </button>
 
         <div class="notice">
-          현재 테스트 단계로 상담 정보는 아직 DB에 저장되지 않습니다.
+         입력하신 정보는 학습 상담을 위해서만 이용됩니다.
         </div>
 
       </form>
@@ -492,26 +492,151 @@
   loadRecommendation();
 
 
-  // ==========================================
-  // 4. 상담 신청 폼
-  // 아직 DB 저장은 하지 않음
-  // ==========================================
+// ==========================================
+// 4. 상담 신청 폼 → Supabase 저장
+// ==========================================
 
-  document
-    .getElementById("consultForm")
-    .addEventListener(
-      "submit",
-      function(event) {
+document
+  .getElementById("consultForm")
+  .addEventListener("submit", async function(event) {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        alert(
-          "추천 과정 연결 테스트가 완료되었습니다.\n" +
-          "다음 단계에서 상담 정보를 DB에 저장하겠습니다."
+    // 고객 링크 토큰 확인
+    if (!token) {
+      alert("유효한 추천 링크를 통해 접속해주세요.");
+      return;
+    }
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const inquiry = document.getElementById("inquiry").value.trim();
+
+    const preferredDate =
+      document.getElementById("preferredDate").value || null;
+
+    const preferredTime =
+      document.getElementById("preferredTime").value || null;
+
+    const privacyConsent =
+      document.getElementById("privacy").checked;
+
+    // 기본 확인
+    if (!name) {
+      alert("이름을 입력해주세요.");
+      return;
+    }
+
+    if (!phone) {
+      alert("연락처를 입력해주세요.");
+      return;
+    }
+
+    if (!privacyConsent) {
+      alert("개인정보 수집 및 이용에 동의해주세요.");
+      return;
+    }
+
+
+    const submitButton =
+      document.querySelector(".submit-btn");
+
+    const originalButtonText =
+      submitButton.textContent;
+
+    submitButton.disabled = true;
+    submitButton.textContent = "신청 중...";
+
+
+    try {
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/submit_consultation`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY
+          },
+
+          body: JSON.stringify({
+            p_token: token,
+            p_name: name,
+            p_phone: phone,
+            p_inquiry: inquiry || null,
+            p_preferred_date: preferredDate,
+            p_preferred_time: preferredTime,
+            p_privacy_consent: privacyConsent
+          })
+        }
+      );
+
+
+      if (!response.ok) {
+
+        const errorText = await response.text();
+
+        console.error(
+          "상담 신청 오류:",
+          response.status,
+          errorText
         );
 
+        throw new Error(
+          `상담 신청 실패: ${response.status}`
+        );
       }
-    );
+
+
+      const data = await response.json();
+
+      console.log("상담 신청 결과:", data);
+
+
+      if (
+        !data ||
+        data.length === 0 ||
+        data[0].success !== true
+      ) {
+
+        const message =
+          data?.[0]?.message ||
+          "상담 신청을 처리하지 못했습니다.";
+
+        alert(message);
+        return;
+      }
+
+
+      alert(
+        "상담 신청이 완료되었습니다.\n" +
+        "확인 후 연락드리겠습니다."
+      );
+
+      document
+        .getElementById("consultForm")
+        .reset();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "상담 신청 중 문제가 발생했습니다.\n" +
+        "잠시 후 다시 시도해주세요."
+      );
+
+    } finally {
+
+      submitButton.disabled = false;
+      submitButton.textContent =
+        originalButtonText;
+
+    }
+
+  });
 
 </script>
 
