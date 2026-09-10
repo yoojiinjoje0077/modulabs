@@ -917,12 +917,12 @@
         </div>
 
         <div class="summary-card">
-          <div class="summary-label">고용24 신청</div>
+          <div class="summary-label">과정 신청 중</div>
           <div id="summaryEmployment" class="summary-value">0</div>
         </div>
 
         <div class="summary-card">
-          <div class="summary-label">결제 완료</div>
+          <div class="summary-label">훈련생 등록</div>
           <div id="summaryPayment" class="summary-value">0</div>
         </div>
 
@@ -1002,13 +1002,13 @@
           </div>
 
           <div class="funnel-step">
-            <div class="funnel-step-label">고용24 신청</div>
+            <div class="funnel-step-label">과정 신청 중</div>
             <div id="funnelEmployment" class="funnel-step-value">0</div>
             <div id="funnelEmploymentRate" class="funnel-step-rate">-</div>
           </div>
 
           <div class="funnel-step">
-            <div class="funnel-step-label">결제 완료</div>
+            <div class="funnel-step-label">훈련생 등록</div>
             <div id="funnelPayment" class="funnel-step-value">0</div>
             <div id="funnelPaymentRate" class="funnel-step-rate">-</div>
           </div>
@@ -1633,7 +1633,7 @@
           finalRate - 10;
 
         goalBox.innerHTML =
-          `최종 신청 전환율 <strong>${finalRate.toFixed(1)}%</strong> ` +
+          `훈련생 등록 전환율 <strong>${finalRate.toFixed(1)}%</strong> ` +
           `(${payment} / ${sent}) · 목표 10% 대비 ` +
           `<strong>${gap >= 0 ? "+" : ""}${gap.toFixed(1)}%p</strong>`;
 
@@ -2005,8 +2005,8 @@
                   }">
                     ${
                       item.employment24_applied
-                        ? "✓ 고용24 신청"
-                        : "고용24 미신청"
+                        ? "✓ 과정 신청 중"
+                        : "과정 신청 전"
                     }
                   </span>
 
@@ -2017,8 +2017,8 @@
                   }">
                     ${
                       item.payment_completed
-                        ? "✓ 결제 완료"
-                        : "결제 미완료"
+                        ? "✓ 훈련생 등록"
+                        : "훈련생 등록 전"
                     }
                   </span>
 
@@ -2061,7 +2061,7 @@
                       <textarea
                         class="counsel-note-text"
                         maxlength="5000"
-                        placeholder="예: 데이터 분석 직무 전환 희망. 통계 과정에 관심이 높고, 이번 주 안에 고용24 신청 예정. 금요일 오후 재연락하기."
+                        placeholder="예: 데이터 분석 직무 전환 희망. 통계 과정에 관심이 높고, 이번 주 안에 과정 신청 중 예정. 금요일 오후 재연락하기."
                       ></textarea>
                     </div>
 
@@ -2149,6 +2149,10 @@
 
                     <div class="admin-checks">
 
+                      <div style="width:100%; color:#6b7280; font-size:12px; line-height:1.5; margin-bottom:2px;">
+                        과정 신청 중 = 고용24 신청 진행 · 훈련생 등록 = 모든 결제 완료 후 등록
+                      </div>
+
                       <label class="admin-check">
                         <input
                           type="checkbox"
@@ -2159,7 +2163,7 @@
                               : ""
                           }
                         >
-                        고용24 신청
+                        과정 신청 중
                       </label>
 
                       <label class="admin-check">
@@ -2172,7 +2176,7 @@
                               : ""
                           }
                         >
-                        결제 완료
+                        훈련생 등록
                       </label>
 
                     </div>
@@ -2672,7 +2676,7 @@
       "change",
       function(event) {
 
-        // 결제 완료 체크 시 고용24도 자동 체크
+        // 훈련생 등록 체크 시 고용24도 자동 체크
         if (
           event.target.classList.contains(
             "payment-check"
