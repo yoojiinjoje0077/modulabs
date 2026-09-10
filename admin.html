@@ -230,6 +230,31 @@
       font-weight: 700;
     }
 
+    .identity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .identity-badge {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: #f3f4f6;
+      color: #4b5563;
+      font-size: 11px;
+      font-weight: 800;
+      word-break: break-all;
+    }
+
+    .identity-badge strong {
+      margin-right: 4px;
+      color: #111827;
+    }
+
     .status {
       display: inline-flex;
       align-items: center;
@@ -1041,7 +1066,7 @@
         <input
           type="search"
           id="searchInput"
-          placeholder="이름, 전화번호, 과정명 검색"
+          placeholder="이름, 전화번호, 고객ID, 캠페인, 과정명 검색"
         >
 
         <select id="statusFilter">
@@ -1275,7 +1300,7 @@
 
 
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultations`,
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultations_v2`,
         {
           method: "POST",
 
@@ -1779,6 +1804,8 @@
           const targetText = [
             item.name,
             item.phone,
+            item.external_customer_id,
+            item.campaign_code,
             item.selected_course,
             item.kdt_course,
             item.customer_status,
@@ -1836,6 +1863,24 @@
                     >
                       ${escapeHtml(item.phone)}
                     </a>
+
+                    <div class="identity-row">
+
+                      <span class="identity-badge">
+                        <strong>고객ID</strong>
+                        ${escapeHtml(
+                          item.external_customer_id || "-"
+                        )}
+                      </span>
+
+                      <span class="identity-badge">
+                        <strong>캠페인</strong>
+                        ${escapeHtml(
+                          item.campaign_code || "-"
+                        )}
+                      </span>
+
+                    </div>
                   </div>
 
                   <span
