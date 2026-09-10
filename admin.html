@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KDC-KDT CRM 관리자</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard",
+        "Noto Sans KR", Arial, sans-serif;
+      background: #f5f6f8;
+      color: #1f2937;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      display: block;
+      width: 128px;
+      height: auto;
+    }
+
+    .top-title {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .logout-btn {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .login-wrap {
+      max-width: 440px;
+      margin: 80px auto 0;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .subtext {
+      margin: 0 0 24px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 7px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      color: #111827;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid #111827;
+      outline-offset: 1px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .error {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #fef2f2;
+      color: #991b1b;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .summary-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .summary-label {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 26px;
+      font-weight: 850;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 190px 150px;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .toolbar input,
+    .toolbar select,
+    .refresh-btn {
+      height: 44px;
+    }
+
+    .refresh-btn {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .empty {
+      background: #fff;
+      border: 1px dashed #d1d5db;
+      border-radius: 14px;
+      padding: 36px;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    .consult-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .name {
+      font-size: 19px;
+      font-weight: 850;
+      margin-bottom: 6px;
+    }
+
+    .phone {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 76px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #f3f4f6;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    .status.waiting {
+      background: #fff7ed;
+      color: #9a3412;
+    }
+
+    .status.scheduled {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .status.done {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 22px;
+    }
+
+    .info-item {
+      min-width: 0;
+    }
+
+    .info-label {
+      color: #6b7280;
+      font-size: 12px;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .info-value {
+      font-size: 14px;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .pill {
+      background: #f3f4f6;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .conversion {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .conversion-tag {
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .conversion-tag.on {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .loading {
+      padding: 36px;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    @media (max-width: 780px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wide {
+        grid-column: auto;
+      }
+
+      .card-head {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <section id="loginView" class="login-wrap">
+      <div class="panel">
+
+        <div class="brand-wrap" style="margin-bottom:24px;">
+          <img
+            src="./모두연 로고.png"
+            alt="모두의연구소"
+            class="brand-logo"
+          >
+        </div>
+
+        <h1>CRM 관리자 로그인</h1>
+
+        <p class="subtext">
+          등록된 관리자 계정으로 로그인해주세요.
+          상담자 개인정보는 로그인 후에만 표시됩니다.
+        </p>
+
+        <form id="loginForm">
+
+          <label for="email">이메일</label>
+          <input
+            type="email"
+            id="email"
+            autocomplete="username"
+            required
+            placeholder="admin@modulabs.co.kr"
+          >
+
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            autocomplete="current-password"
+            required
+            placeholder="비밀번호"
+          >
+
+          <button
+            type="submit"
+            id="loginButton"
+            class="primary-btn"
+          >
+            관리자 로그인
+          </button>
+
+          <div id="loginError" class="error"></div>
+
+        </form>
+      </div>
+    </section>
+
+
+    <section id="dashboardView" class="dashboard">
+
+      <div class="topbar">
+
+        <div class="brand-wrap">
+          <img
+            src="./모두연 로고.png"
+            alt="모두의연구소"
+            class="brand-logo"
+          >
+          <div class="top-title">
+            KDC-KDT CRM 관리자
+          </div>
+        </div>
+
+        <button
+          type="button"
+          id="logoutButton"
+          class="logout-btn"
+        >
+          로그아웃
+        </button>
+
+      </div>
+
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+          <div class="summary-label">전체 상담</div>
+          <div id="summaryTotal" class="summary-value">0</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-label">상담대기</div>
+          <div id="summaryWaiting" class="summary-value">0</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-label">고용24 신청</div>
+          <div id="summaryEmployment" class="summary-value">0</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-label">결제 완료</div>
+          <div id="summaryPayment" class="summary-value">0</div>
+        </div>
+
+      </div>
+
+
+      <div class="toolbar">
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="이름, 전화번호, 과정명 검색"
+        >
+
+        <select id="statusFilter">
+          <option value="">전체 상담 상태</option>
+          <option value="상담대기">상담대기</option>
+          <option value="상담예정">상담예정</option>
+          <option value="상담완료">상담완료</option>
+          <option value="연락불가">연락불가</option>
+          <option value="상담취소">상담취소</option>
+        </select>
+
+        <button
+          type="button"
+          id="refreshButton"
+          class="refresh-btn"
+        >
+          새로고침
+        </button>
+
+      </div>
+
+
+      <div id="consultationList" class="list">
+        <div class="loading">상담 목록을 불러오는 중입니다.</div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <script>
+
+    // ==========================================
+    // 1. Supabase 공개 연결 정보
+    // ==========================================
+
+    const SUPABASE_URL =
+      "https://qxilvmeppmmsuaepwahf.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_kRCNvac8W9OKtm-snZA2fQ_ASDPTHVm";
+
+
+    // ==========================================
+    // 2. 상태
+    // ==========================================
+
+    const SESSION_KEY =
+      "kdc_kdt_crm_admin_access_token";
+
+    let accessToken =
+      sessionStorage.getItem(SESSION_KEY);
+
+    let consultations = [];
+
+
+    // ==========================================
+    // 3. DOM
+    // ==========================================
+
+    const loginView =
+      document.getElementById("loginView");
+
+    const dashboardView =
+      document.getElementById("dashboardView");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const loginError =
+      document.getElementById("loginError");
+
+    const consultationList =
+      document.getElementById("consultationList");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const statusFilter =
+      document.getElementById("statusFilter");
+
+
+    // ==========================================
+    // 4. 화면 전환
+    // ==========================================
+
+    function showLogin() {
+
+      loginView.style.display = "block";
+      dashboardView.style.display = "none";
+
+    }
+
+
+    function showDashboard() {
+
+      loginView.style.display = "none";
+      dashboardView.style.display = "block";
+
+    }
+
+
+    function showLoginError(message) {
+
+      loginError.textContent = message;
+      loginError.style.display = "block";
+
+    }
+
+
+    function clearLoginError() {
+
+      loginError.textContent = "";
+      loginError.style.display = "none";
+
+    }
+
+
+    // ==========================================
+    // 5. 관리자 로그인
+    // ==========================================
+
+    loginForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+        clearLoginError();
+
+        const email =
+          document.getElementById("email").value.trim();
+
+        const password =
+          document.getElementById("password").value;
+
+        loginButton.disabled = true;
+        loginButton.textContent = "로그인 중...";
+
+
+        try {
+
+          const response = await fetch(
+            `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_PUBLISHABLE_KEY
+              },
+
+              body: JSON.stringify({
+                email,
+                password
+              })
+            }
+          );
+
+
+          const data = await response.json();
+
+
+          if (!response.ok || !data.access_token) {
+
+            throw new Error(
+              data?.error_description ||
+              data?.msg ||
+              "이메일 또는 비밀번호를 확인해주세요."
+            );
+          }
+
+
+          accessToken = data.access_token;
+
+          sessionStorage.setItem(
+            SESSION_KEY,
+            accessToken
+          );
+
+
+          // 실제 CRM 관리자 계정인지 검증하면서 목록 로드
+          await loadConsultations();
+
+          showDashboard();
+
+
+        } catch (error) {
+
+          sessionStorage.removeItem(SESSION_KEY);
+          accessToken = null;
+
+          showLoginError(
+            error.message ||
+            "로그인에 실패했습니다."
+          );
+
+        } finally {
+
+          loginButton.disabled = false;
+          loginButton.textContent =
+            "관리자 로그인";
+
+        }
+
+      }
+    );
+
+
+    // ==========================================
+    // 6. 상담 목록 API
+    // ==========================================
+
+    async function loadConsultations() {
+
+      if (!accessToken) {
+        showLogin();
+        return;
+      }
+
+
+      consultationList.innerHTML =
+        '<div class="loading">상담 목록을 불러오는 중입니다.</div>';
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultations`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: "{}"
+        }
+      );
+
+
+      if (!response.ok) {
+
+        let message =
+          "상담 목록을 불러오지 못했습니다.";
+
+        try {
+          const errorData =
+            await response.json();
+
+          message =
+            errorData?.message ||
+            errorData?.hint ||
+            message;
+        } catch (_) {}
+
+
+        if (
+          response.status === 401 ||
+          response.status === 403 ||
+          message.includes("관리자")
+        ) {
+
+          sessionStorage.removeItem(SESSION_KEY);
+          accessToken = null;
+          showLogin();
+
+        }
+
+        throw new Error(message);
+      }
+
+
+      consultations =
+        await response.json();
+
+      updateSummary();
+      renderConsultations();
+
+    }
+
+
+    // ==========================================
+    // 7. 관리자 요약
+    // ==========================================
+
+    function updateSummary() {
+
+      const total =
+        consultations.length;
+
+      const waiting =
+        consultations.filter(
+          item =>
+            item.consultation_status ===
+            "상담대기"
+        ).length;
+
+      const employment =
+        consultations.filter(
+          item =>
+            item.employment24_applied === true
+        ).length;
+
+      const payment =
+        consultations.filter(
+          item =>
+            item.payment_completed === true
+        ).length;
+
+
+      document.getElementById(
+        "summaryTotal"
+      ).textContent = total;
+
+      document.getElementById(
+        "summaryWaiting"
+      ).textContent = waiting;
+
+      document.getElementById(
+        "summaryEmployment"
+      ).textContent = employment;
+
+      document.getElementById(
+        "summaryPayment"
+      ).textContent = payment;
+
+    }
+
+
+    // ==========================================
+    // 8. HTML 안전 출력
+    // ==========================================
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) return "-";
+
+      const date =
+        new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return escapeHtml(value);
+      }
+
+      return new Intl.DateTimeFormat(
+        "ko-KR",
+        {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: value.includes?.("T")
+            ? "2-digit"
+            : undefined,
+          minute: value.includes?.("T")
+            ? "2-digit"
+            : undefined
+        }
+      ).format(date);
+
+    }
+
+
+    function statusClass(status) {
+
+      if (status === "상담대기") {
+        return "waiting";
+      }
+
+      if (status === "상담예정") {
+        return "scheduled";
+      }
+
+      if (status === "상담완료") {
+        return "done";
+      }
+
+      return "";
+
+    }
+
+
+    // ==========================================
+    // 9. 상담 목록 렌더링
+    // ==========================================
+
+    function renderConsultations() {
+
+      const keyword =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      const selectedStatus =
+        statusFilter.value;
+
+
+      const filtered =
+        consultations.filter(function(item) {
+
+          if (
+            selectedStatus &&
+            item.consultation_status !==
+              selectedStatus
+          ) {
+            return false;
+          }
+
+
+          if (!keyword) {
+            return true;
+          }
+
+
+          const targetText = [
+            item.name,
+            item.phone,
+            item.selected_course,
+            item.kdt_course,
+            item.customer_status,
+            item.recommended_kdc_1,
+            item.recommended_kdc_2,
+            item.inquiry
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+          return targetText.includes(keyword);
+
+        });
+
+
+      if (filtered.length === 0) {
+
+        consultationList.innerHTML =
+          '<div class="empty">조건에 맞는 상담 신청이 없습니다.</div>';
+
+        return;
+      }
+
+
+      consultationList.innerHTML =
+        filtered
+          .map(function(item) {
+
+            const status =
+              item.consultation_status ||
+              "상담대기";
+
+            const phoneHref =
+              String(item.phone || "")
+                .replace(/[^\d+]/g, "");
+
+            return `
+              <article class="consult-card">
+
+                <div class="card-head">
+
+                  <div>
+                    <div class="name">
+                      ${escapeHtml(item.name)}
+                    </div>
+
+                    <a
+                      class="phone"
+                      href="tel:${escapeHtml(phoneHref)}"
+                    >
+                      ${escapeHtml(item.phone)}
+                    </a>
+                  </div>
+
+                  <span
+                    class="status ${statusClass(status)}"
+                  >
+                    ${escapeHtml(status)}
+                  </span>
+
+                </div>
+
+
+                <div class="info-grid">
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      상담 희망 과정
+                    </div>
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.selected_course || "-"
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      상담 희망 시간
+                    </div>
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.preferred_date || "-"
+                      )}
+                      ·
+                      ${escapeHtml(
+                        item.preferred_time || "-"
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      KDT 이력
+                    </div>
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.kdt_course || "-"
+                      )}
+                      ·
+                      ${escapeHtml(
+                        item.customer_status || "-"
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      상담 신청일
+                    </div>
+                    <div class="info-value">
+                      ${formatDate(
+                        item.consultation_created_at
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item wide">
+                    <div class="info-label">
+                      추천 과정
+                    </div>
+
+                    <div class="pill-row">
+
+                      ${
+                        item.recommended_kdc_1
+                          ? `<span class="pill">
+                              ${escapeHtml(
+                                item.recommended_kdc_1
+                              )}
+                            </span>`
+                          : ""
+                      }
+
+                      ${
+                        item.recommended_kdc_2
+                          ? `<span class="pill">
+                              ${escapeHtml(
+                                item.recommended_kdc_2
+                              )}
+                            </span>`
+                          : ""
+                      }
+
+                    </div>
+                  </div>
+
+
+                  <div class="info-item wide">
+                    <div class="info-label">
+                      상담 문의 내용
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.inquiry || "-"
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <div class="conversion">
+
+                  <span class="conversion-tag ${
+                    item.employment24_applied
+                      ? "on"
+                      : ""
+                  }">
+                    ${
+                      item.employment24_applied
+                        ? "✓ 고용24 신청"
+                        : "고용24 미신청"
+                    }
+                  </span>
+
+                  <span class="conversion-tag ${
+                    item.payment_completed
+                      ? "on"
+                      : ""
+                  }">
+                    ${
+                      item.payment_completed
+                        ? "✓ 결제 완료"
+                        : "결제 미완료"
+                    }
+                  </span>
+
+                </div>
+
+              </article>
+            `;
+
+          })
+          .join("");
+
+    }
+
+
+    // ==========================================
+    // 10. 검색 / 필터
+    // ==========================================
+
+    searchInput.addEventListener(
+      "input",
+      renderConsultations
+    );
+
+    statusFilter.addEventListener(
+      "change",
+      renderConsultations
+    );
+
+
+    document
+      .getElementById("refreshButton")
+      .addEventListener(
+        "click",
+        async function() {
+
+          try {
+            await loadConsultations();
+          } catch (error) {
+            alert(error.message);
+          }
+
+        }
+      );
+
+
+    // ==========================================
+    // 11. 로그아웃
+    // ==========================================
+
+    document
+      .getElementById("logoutButton")
+      .addEventListener(
+        "click",
+        function() {
+
+          sessionStorage.removeItem(
+            SESSION_KEY
+          );
+
+          accessToken = null;
+          consultations = [];
+
+          document.getElementById(
+            "password"
+          ).value = "";
+
+          showLogin();
+
+        }
+      );
+
+
+    // ==========================================
+    // 12. 기존 세션 복구
+    // ==========================================
+
+    async function initialize() {
+
+      if (!accessToken) {
+        showLogin();
+        return;
+      }
+
+
+      try {
+
+        await loadConsultations();
+        showDashboard();
+
+      } catch (error) {
+
+        console.error(error);
+
+        sessionStorage.removeItem(
+          SESSION_KEY
+        );
+
+        accessToken = null;
+        showLogin();
+
+      }
+    }
+
+
+    initialize();
+
+  </script>
+
+</body>
+</html>
