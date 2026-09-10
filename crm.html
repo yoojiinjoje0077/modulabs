@@ -453,41 +453,11 @@
 
 
   // ==========================================
-  // 2. 문자 링크에서 CRM 토큰 / UTM 가져오기
+  // 2. 문자 링크에서 CRM 토큰 가져오기
   // ==========================================
 
   const params = new URLSearchParams(window.location.search);
   const token = params.get("t");
-
-  const UTM_KEYS = [
-    "utm_source",
-    "utm_medium",
-    "utm_campaign",
-    "utm_content",
-    "utm_term"
-  ];
-
-  function appendCurrentUtm(rawUrl) {
-    if (!rawUrl) return rawUrl;
-
-    try {
-      const url = new URL(rawUrl, window.location.href);
-
-      UTM_KEYS.forEach(function(key) {
-        const value = params.get(key);
-
-        if (value) {
-          url.searchParams.set(key, value);
-        }
-      });
-
-      return url.toString();
-
-    } catch (error) {
-      console.error("UTM 적용 실패:", error);
-      return rawUrl;
-    }
-  }
 
   if (token) {
     const tokenInput = document.getElementById("crmToken");
@@ -576,8 +546,7 @@
 
       if (courseUrl) {
 
-        detailButton.href =
-          appendCurrentUtm(courseUrl);
+        detailButton.href = courseUrl;
 
         detailButton.target = "_blank";
         detailButton.rel = "noopener noreferrer";
@@ -672,32 +641,7 @@
 
 
   // ==========================================
-  // 6. 고정 링크에 현재 UTM 이어붙이기
-  // ==========================================
-
-  function applyUtmToStaticLinks() {
-
-    const allCoursesButton =
-      document.querySelector(".all-course-btn");
-
-    if (allCoursesButton) {
-      allCoursesButton.href =
-        appendCurrentUtm(allCoursesButton.href);
-    }
-
-
-    const logoLink =
-      document.querySelector(".brand a");
-
-    if (logoLink) {
-      logoLink.href =
-        appendCurrentUtm(logoLink.href);
-    }
-  }
-
-
-  // ==========================================
-  // 7. 상담 신청 폼 → Supabase 저장
+  // 6. 상담 신청 폼 → Supabase 저장
   // ==========================================
 
   document
@@ -858,7 +802,7 @@
 
 
   // ==========================================
-  // 8. 페이지 방문 추적
+  // 7. 페이지 방문 추적
   // 실제 화면을 약 3초 이상 본 경우만 기록
   // ==========================================
 
@@ -888,7 +832,7 @@
 
 
   // ==========================================
-  // 9. 추천 과정 상세보기 클릭
+  // 8. 추천 과정 상세보기 클릭
   // ==========================================
 
   document
@@ -925,7 +869,7 @@
 
 
   // ==========================================
-  // 10. 상담 CTA 클릭
+  // 9. 상담 CTA 클릭
   // 선택한 과정을 상담폼에 자동 표시
   // ==========================================
 
@@ -975,7 +919,7 @@
 
 
   // ==========================================
-  // 11. 전체 과정 보기 클릭
+  // 10. 전체 과정 보기 클릭
   // ==========================================
 
   const allCoursesButton =
@@ -998,7 +942,7 @@
 
 
   // ==========================================
-  // 12. 모두의연구소 로고 클릭
+  // 11. 모두의연구소 로고 클릭
   // ==========================================
 
   const logoLink =
@@ -1021,10 +965,9 @@
 
 
   // ==========================================
-  // 13. 초기 실행
+  // 12. 초기 실행
   // ==========================================
 
-  applyUtmToStaticLinks();
   loadRecommendation();
 
 </script>
