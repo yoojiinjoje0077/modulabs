@@ -863,24 +863,52 @@ document
 
 // ==========================================
 // 7. 상담 CTA 클릭
+// 선택한 과정을 상담폼에 자동 표시
 // ==========================================
 
 document
-  .querySelectorAll(
-    '.btn-secondary[href="#consult"]'
-  )
-  .forEach(function(button) {
+  .querySelectorAll(".course-card")
+  .forEach(function(card) {
 
-    button.addEventListener(
-      "click",
-      function() {
+    const consultButton =
+      card.querySelector(
+        '.btn-secondary[href="#consult"]'
+      );
 
-        trackEvent(
-          "consult_cta_click"
-        );
+    const titleElement =
+      card.querySelector(".course-title");
 
-      }
-    );
+    if (consultButton) {
+
+      consultButton.addEventListener(
+        "click",
+        function() {
+
+          const courseName =
+            titleElement
+              ? titleElement.textContent.trim()
+              : "";
+
+          // 상담폼에 선택 과정 표시
+          const selectedCourseInput =
+            document.getElementById(
+              "selectedCourse"
+            );
+
+          if (selectedCourseInput) {
+            selectedCourseInput.value =
+              courseName;
+          }
+
+          // 기존 행동 추적
+          trackEvent(
+            "consult_cta_click"
+          );
+
+        }
+      );
+
+    }
 
   });
 
