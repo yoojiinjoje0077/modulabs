@@ -408,6 +408,197 @@
       color: #991b1b;
     }
 
+    .counsel-note-panel {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f2;
+    }
+
+    .counsel-note-title {
+      font-size: 14px;
+      font-weight: 850;
+      margin-bottom: 4px;
+    }
+
+    .counsel-note-help {
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .counsel-note-grid {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .counsel-note-panel textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      color: #111827;
+      font: inherit;
+      line-height: 1.6;
+    }
+
+    .counsel-note-panel textarea:focus {
+      outline: 2px solid #111827;
+      outline-offset: 1px;
+    }
+
+    .note-save-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .note-save-btn {
+      min-height: 42px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .note-save-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .note-save-message {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .note-save-message.success {
+      color: #047857;
+    }
+
+    .note-save-message.error {
+      color: #991b1b;
+    }
+
+    .note-history-actions {
+      margin-top: 12px;
+    }
+
+    .note-history-toggle {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .note-history-container {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .note-history-container.open {
+      display: block;
+    }
+
+    .note-history-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .note-history-item {
+      padding: 13px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 11px;
+      background: #f9fafb;
+    }
+
+    .note-history-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 12px;
+      margin-bottom: 8px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .interest-score-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .note-history-text {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .consult-stats-panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .consult-stats-head {
+      margin-bottom: 14px;
+    }
+
+    .consult-stats-title {
+      font-size: 18px;
+      font-weight: 850;
+      margin-bottom: 5px;
+    }
+
+    .consult-stats-note {
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .consult-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .consult-stat {
+      padding: 14px;
+      border: 1px solid #eef0f2;
+      border-radius: 12px;
+      background: #f9fafb;
+    }
+
+    .consult-stat-label {
+      color: #6b7280;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .consult-stat-value {
+      font-size: 22px;
+      font-weight: 850;
+    }
+
     .admin-controls {
       margin-top: 16px;
       padding-top: 16px;
@@ -580,6 +771,14 @@
 
       .admin-controls {
         grid-template-columns: 1fr;
+      }
+
+      .counsel-note-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .consult-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .save-case-btn {
@@ -793,6 +992,45 @@
 
         <div id="goalBox" class="goal-box">
           최종 전환율을 계산하려면 문자 발송 기록이 필요합니다.
+        </div>
+
+      </section>
+
+
+      <section class="consult-stats-panel">
+
+        <div class="consult-stats-head">
+          <div class="consult-stats-title">
+            상담 기록 통계
+          </div>
+
+          <div class="consult-stats-note">
+            위에서 선택한 캠페인 기준입니다. 평균 관심도는 고객별 가장 최근 점수만 반영합니다.
+          </div>
+        </div>
+
+        <div class="consult-stats-grid">
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">상담 기록 고객</div>
+            <div id="statRecordedCustomers" class="consult-stat-value">0</div>
+          </div>
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">상담 기록 건수</div>
+            <div id="statNoteCount" class="consult-stat-value">0</div>
+          </div>
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">평균 관심도</div>
+            <div id="statAvgInterest" class="consult-stat-value">0.0 / 5</div>
+          </div>
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">고관심 고객 (4~5점)</div>
+            <div id="statHighInterest" class="consult-stat-value">0</div>
+          </div>
+
         </div>
 
       </section>
@@ -1088,11 +1326,13 @@
         await response.json();
 
       consultationHistoryCache?.clear?.();
+      adminNoteCache?.clear?.();
 
       updateSummary();
       renderConsultations();
 
       await loadFunnelSummary();
+      await loadConsultationNoteStats();
 
     }
 
@@ -1379,7 +1619,16 @@
 
     campaignFilter.addEventListener(
       "change",
-      renderFunnel
+      async function() {
+
+        renderFunnel();
+
+        try {
+          await loadConsultationNoteStats();
+        } catch (error) {
+          console.error(error);
+        }
+      }
     );
 
 
@@ -1731,6 +1980,73 @@
                 </div>
 
 
+                <div class="counsel-note-panel">
+
+                  <div class="counsel-note-title">
+                    관리자 상담 기록
+                  </div>
+
+                  <div class="counsel-note-help">
+                    실제 상담 후 내부 메모와 고객 관심도를 저장합니다.
+                    기록은 덮어쓰지 않고 상담할 때마다 누적됩니다.
+                  </div>
+
+                  <div class="counsel-note-grid">
+
+                    <div>
+                      <span class="admin-control-label">
+                        관심도
+                      </span>
+
+                      <select class="interest-score-select">
+                        <option value="">점수 선택</option>
+                        <option value="1">1점 · 매우 낮음</option>
+                        <option value="2">2점 · 낮음</option>
+                        <option value="3">3점 · 보통</option>
+                        <option value="4">4점 · 높음</option>
+                        <option value="5">5점 · 매우 높음</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <span class="admin-control-label">
+                        상담 내용
+                      </span>
+
+                      <textarea
+                        class="counsel-note-text"
+                        maxlength="5000"
+                        placeholder="예: 데이터 분석 직무 전환 희망. 통계 과정에 관심이 높고, 이번 주 안에 고용24 신청 예정. 금요일 오후 재연락하기."
+                      ></textarea>
+                    </div>
+
+                  </div>
+
+                  <div class="note-save-row">
+                    <button
+                      type="button"
+                      class="note-save-btn"
+                    >
+                      상담 기록 저장
+                    </button>
+                  </div>
+
+                  <div class="note-save-message"></div>
+
+                  <div class="note-history-actions">
+                    <button
+                      type="button"
+                      class="note-history-toggle"
+                    >
+                      관리자 상담 기록 보기
+                    </button>
+
+                    <div class="note-history-container"></div>
+                  </div>
+
+                </div>
+
+
                 <div class="history-actions">
 
                   <button
@@ -1841,6 +2157,9 @@
     // ==========================================
 
     const consultationHistoryCache =
+      new Map();
+
+    const adminNoteCache =
       new Map();
 
 
@@ -1987,6 +2306,258 @@
     }
 
 
+    async function addAdminConsultationNote(
+      consultationId,
+      note,
+      interestScore
+    ) {
+
+      if (!accessToken) {
+        throw new Error("관리자 로그인이 필요합니다.");
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/add_admin_consultation_note`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_consultation_id: consultationId,
+            p_note: note,
+            p_interest_score: Number(interestScore)
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "상담 기록을 저장하지 못했습니다."
+        );
+      }
+
+
+      if (
+        !Array.isArray(data) ||
+        data.length === 0 ||
+        data[0].success !== true
+      ) {
+        throw new Error(
+          data?.[0]?.message ||
+          "상담 기록을 저장하지 못했습니다."
+        );
+      }
+
+
+      return data[0];
+
+    }
+
+
+    async function getAdminConsultationNotes(
+      consultationId,
+      forceRefresh = false
+    ) {
+
+      if (!accessToken) {
+        throw new Error("관리자 로그인이 필요합니다.");
+      }
+
+
+      if (
+        !forceRefresh &&
+        adminNoteCache.has(consultationId)
+      ) {
+        return adminNoteCache.get(
+          consultationId
+        );
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultation_notes`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_consultation_id:
+              consultationId
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "관리자 상담 기록을 불러오지 못했습니다."
+        );
+      }
+
+
+      const notes =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      adminNoteCache.set(
+        consultationId,
+        notes
+      );
+
+
+      return notes;
+
+    }
+
+
+    function renderAdminConsultationNotes(
+      container,
+      notes
+    ) {
+
+      if (!notes.length) {
+
+        container.innerHTML =
+          '<div class="history-empty">저장된 관리자 상담 기록이 없습니다.</div>';
+
+        return;
+      }
+
+
+      container.innerHTML =
+        `<div class="note-history-list">${
+          notes
+            .map(function(item) {
+
+              return `
+                <div class="note-history-item">
+
+                  <div class="note-history-meta">
+                    <span class="interest-score-badge">
+                      관심도 ${escapeHtml(item.interest_score)} / 5
+                    </span>
+
+                    <span>
+                      ${formatDate(item.created_at)}
+                    </span>
+
+                    ${
+                      item.admin_email
+                        ? `<span>${escapeHtml(item.admin_email)}</span>`
+                        : ""
+                    }
+                  </div>
+
+                  <div class="note-history-text">${
+                    escapeHtml(item.note || "")
+                  }</div>
+
+                </div>
+              `;
+
+            })
+            .join("")
+        }</div>`;
+
+    }
+
+
+    async function loadConsultationNoteStats() {
+
+      if (!accessToken) return;
+
+
+      const selectedCampaign =
+        campaignFilter.value || null;
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultation_note_stats`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_campaign_code:
+              selectedCampaign
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "상담 기록 통계를 불러오지 못했습니다."
+        );
+      }
+
+
+      const stats =
+        Array.isArray(data) && data.length
+          ? data[0]
+          : {};
+
+
+      document.getElementById(
+        "statRecordedCustomers"
+      ).textContent =
+        Number(stats.recorded_customer_count || 0);
+
+
+      document.getElementById(
+        "statNoteCount"
+      ).textContent =
+        Number(stats.note_count || 0);
+
+
+      document.getElementById(
+        "statAvgInterest"
+      ).textContent =
+        `${Number(stats.avg_latest_interest_score || 0).toFixed(1)} / 5`;
+
+
+      document.getElementById(
+        "statHighInterest"
+      ).textContent =
+        Number(stats.high_interest_customer_count || 0);
+
+    }
+
+
     async function updateAdminCase(
       consultationId,
       consultationStatus,
@@ -2084,6 +2655,258 @@
     consultationList.addEventListener(
       "click",
       async function(event) {
+
+        const noteSaveButton =
+          event.target.closest(
+            ".note-save-btn"
+          );
+
+
+        if (noteSaveButton) {
+
+          const card =
+            noteSaveButton.closest(
+              ".consult-card"
+            );
+
+          if (!card) return;
+
+
+          const consultationId =
+            card.dataset.consultationId;
+
+          const scoreSelect =
+            card.querySelector(
+              ".interest-score-select"
+            );
+
+          const noteText =
+            card.querySelector(
+              ".counsel-note-text"
+            );
+
+          const message =
+            card.querySelector(
+              ".note-save-message"
+            );
+
+
+          const score =
+            scoreSelect.value;
+
+          const note =
+            noteText.value.trim();
+
+
+          message.className =
+            "note-save-message";
+
+          message.textContent = "";
+
+
+          if (!score) {
+
+            message.classList.add("error");
+            message.textContent =
+              "관심도 1~5점을 선택해주세요.";
+
+            return;
+          }
+
+
+          if (!note) {
+
+            message.classList.add("error");
+            message.textContent =
+              "상담 내용을 입력해주세요.";
+
+            return;
+          }
+
+
+          const originalText =
+            noteSaveButton.textContent;
+
+          noteSaveButton.disabled = true;
+          noteSaveButton.textContent =
+            "저장 중...";
+
+
+          try {
+
+            await addAdminConsultationNote(
+              consultationId,
+              note,
+              score
+            );
+
+
+            adminNoteCache.delete(
+              consultationId
+            );
+
+
+            noteText.value = "";
+
+
+            message.classList.add(
+              "success"
+            );
+
+            message.textContent =
+              "상담 기록이 저장되었습니다.";
+
+
+            const noteContainer =
+              card.querySelector(
+                ".note-history-container"
+              );
+
+            const noteToggle =
+              card.querySelector(
+                ".note-history-toggle"
+              );
+
+
+            if (
+              noteContainer.classList.contains(
+                "open"
+              )
+            ) {
+
+              const notes =
+                await getAdminConsultationNotes(
+                  consultationId,
+                  true
+                );
+
+              renderAdminConsultationNotes(
+                noteContainer,
+                notes
+              );
+
+              noteToggle.textContent =
+                `관리자 상담 기록 접기 (${notes.length}건)`;
+            }
+
+
+            await loadConsultationNoteStats();
+
+
+          } catch (error) {
+
+            message.classList.add("error");
+
+            message.textContent =
+              error.message ||
+              "상담 기록 저장 중 문제가 발생했습니다.";
+
+          } finally {
+
+            noteSaveButton.disabled =
+              false;
+
+            noteSaveButton.textContent =
+              originalText;
+          }
+
+
+          return;
+        }
+
+
+        const noteHistoryButton =
+          event.target.closest(
+            ".note-history-toggle"
+          );
+
+
+        if (noteHistoryButton) {
+
+          const card =
+            noteHistoryButton.closest(
+              ".consult-card"
+            );
+
+          if (!card) return;
+
+
+          const consultationId =
+            card.dataset.consultationId;
+
+          const container =
+            card.querySelector(
+              ".note-history-container"
+            );
+
+
+          if (
+            container.classList.contains(
+              "open"
+            )
+          ) {
+
+            container.classList.remove(
+              "open"
+            );
+
+            noteHistoryButton.textContent =
+              "관리자 상담 기록 보기";
+
+            return;
+          }
+
+
+          container.classList.add("open");
+
+          container.innerHTML =
+            '<div class="history-loading">관리자 상담 기록을 불러오는 중입니다.</div>';
+
+          noteHistoryButton.disabled =
+            true;
+
+
+          try {
+
+            const notes =
+              await getAdminConsultationNotes(
+                consultationId
+              );
+
+
+            renderAdminConsultationNotes(
+              container,
+              notes
+            );
+
+
+            noteHistoryButton.textContent =
+              `관리자 상담 기록 접기 (${notes.length}건)`;
+
+
+          } catch (error) {
+
+            container.innerHTML =
+              `<div class="history-error">${
+                escapeHtml(
+                  error.message ||
+                  "관리자 상담 기록을 불러오지 못했습니다."
+                )
+              }</div>`;
+
+            noteHistoryButton.textContent =
+              "관리자 상담 기록 다시 시도";
+
+          } finally {
+
+            noteHistoryButton.disabled =
+              false;
+          }
+
+
+          return;
+        }
+
 
         const historyButton =
           event.target.closest(
