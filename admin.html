@@ -380,6 +380,87 @@
       cursor: default;
     }
 
+    .funnel-panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .funnel-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .funnel-title {
+      font-size: 18px;
+      font-weight: 850;
+      margin-bottom: 5px;
+    }
+
+    .funnel-note {
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .campaign-select-wrap {
+      min-width: 240px;
+    }
+
+    .campaign-select-wrap select {
+      width: 100%;
+    }
+
+    .funnel-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .funnel-step {
+      background: #f9fafb;
+      border: 1px solid #eef0f2;
+      border-radius: 12px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .funnel-step-label {
+      color: #6b7280;
+      font-size: 11px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .funnel-step-value {
+      font-size: 22px;
+      font-weight: 850;
+    }
+
+    .funnel-step-rate {
+      margin-top: 4px;
+      color: #6b7280;
+      font-size: 11px;
+    }
+
+    .goal-box {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f9fafb;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .goal-box strong {
+      font-size: 16px;
+    }
+
     .loading {
       padding: 36px;
       text-align: center;
@@ -388,6 +469,19 @@
 
     @media (max-width: 780px) {
       .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .funnel-head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .campaign-select-wrap {
+        min-width: 0;
+      }
+
+      .funnel-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
@@ -526,6 +620,99 @@
       </div>
 
 
+      <section class="funnel-panel">
+
+        <div class="funnel-head">
+
+          <div>
+            <div class="funnel-title">
+              개인별 CRM 퍼널
+            </div>
+
+            <div class="funnel-note">
+              같은 고객이 여러 번 행동해도 단계별 고객 수는 1명으로 집계됩니다.
+              최종 전환율은 실제 문자 발송 기록(sent_at)을 분모로 계산합니다.
+            </div>
+          </div>
+
+          <div class="campaign-select-wrap">
+            <label for="campaignFilter" style="margin:0 0 6px;">
+              캠페인
+            </label>
+
+            <select id="campaignFilter">
+              <option value="">전체 캠페인 합계</option>
+            </select>
+          </div>
+
+        </div>
+
+
+        <div class="funnel-grid">
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">CRM 대상</div>
+            <div id="funnelTarget" class="funnel-step-value">0</div>
+            <div class="funnel-step-rate">등록 고객</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">문자 발송</div>
+            <div id="funnelSent" class="funnel-step-value">0</div>
+            <div id="funnelSentRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">페이지 방문</div>
+            <div id="funnelPageView" class="funnel-step-value">0</div>
+            <div id="funnelPageViewRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">과정 상세 클릭</div>
+            <div id="funnelCourseClick" class="funnel-step-value">0</div>
+            <div id="funnelCourseClickRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">상담 CTA 클릭</div>
+            <div id="funnelConsultClick" class="funnel-step-value">0</div>
+            <div id="funnelConsultClickRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">상담 신청</div>
+            <div id="funnelConsultation" class="funnel-step-value">0</div>
+            <div id="funnelConsultationRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">상담 완료</div>
+            <div id="funnelConsultComplete" class="funnel-step-value">0</div>
+            <div id="funnelConsultCompleteRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">고용24 신청</div>
+            <div id="funnelEmployment" class="funnel-step-value">0</div>
+            <div id="funnelEmploymentRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">결제 완료</div>
+            <div id="funnelPayment" class="funnel-step-value">0</div>
+            <div id="funnelPaymentRate" class="funnel-step-rate">-</div>
+          </div>
+
+        </div>
+
+        <div id="goalBox" class="goal-box">
+          최종 전환율을 계산하려면 문자 발송 기록이 필요합니다.
+        </div>
+
+      </section>
+
+
       <div class="toolbar">
 
         <input
@@ -587,6 +774,7 @@
       sessionStorage.getItem(SESSION_KEY);
 
     let consultations = [];
+    let funnelRows = [];
 
 
     // ==========================================
@@ -616,6 +804,9 @@
 
     const statusFilter =
       document.getElementById("statusFilter");
+
+    const campaignFilter =
+      document.getElementById("campaignFilter");
 
 
     // ==========================================
@@ -814,11 +1005,299 @@
       updateSummary();
       renderConsultations();
 
+      await loadFunnelSummary();
+
     }
 
 
     // ==========================================
-    // 7. 관리자 요약
+    // 7. CRM 퍼널 요약 API
+    // ==========================================
+
+    async function loadFunnelSummary() {
+
+      if (!accessToken) {
+        return;
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_funnel_summary`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_campaign_code: null
+          })
+        }
+      );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          "퍼널 데이터를 불러오지 못했습니다."
+        );
+      }
+
+
+      funnelRows =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      renderCampaignOptions();
+      renderFunnel();
+
+    }
+
+
+    function renderCampaignOptions() {
+
+      const currentValue =
+        campaignFilter.value;
+
+
+      campaignFilter.innerHTML =
+        '<option value="">전체 캠페인 합계</option>' +
+        funnelRows
+          .map(row => `
+            <option value="${escapeHtml(row.campaign_code)}">
+              ${escapeHtml(row.campaign_code)}
+            </option>
+          `)
+          .join("");
+
+
+      if (
+        currentValue &&
+        funnelRows.some(
+          row =>
+            row.campaign_code === currentValue
+        )
+      ) {
+        campaignFilter.value =
+          currentValue;
+      }
+
+    }
+
+
+    function sumField(rows, field) {
+
+      return rows.reduce(
+        (total, row) =>
+          total + Number(row[field] || 0),
+        0
+      );
+
+    }
+
+
+    function rate(value, denominator) {
+
+      const n =
+        Number(value || 0);
+
+      const d =
+        Number(denominator || 0);
+
+      if (!d) return "-";
+
+      return `${(
+        (n / d) * 100
+      ).toFixed(1)}%`;
+
+    }
+
+
+    function renderFunnel() {
+
+      const selectedCampaign =
+        campaignFilter.value;
+
+
+      const rows =
+        selectedCampaign
+          ? funnelRows.filter(
+              row =>
+                row.campaign_code ===
+                selectedCampaign
+            )
+          : funnelRows;
+
+
+      const target =
+        sumField(rows, "target_count");
+
+      const sent =
+        sumField(rows, "sent_count");
+
+      const pageView =
+        sumField(rows, "page_view_count");
+
+      const courseClick =
+        sumField(
+          rows,
+          "course_detail_click_count"
+        );
+
+      const consultClick =
+        sumField(
+          rows,
+          "consult_cta_click_count"
+        );
+
+      const consultation =
+        sumField(
+          rows,
+          "consultation_count"
+        );
+
+      const consultComplete =
+        sumField(
+          rows,
+          "consultation_complete_count"
+        );
+
+      const employment =
+        sumField(
+          rows,
+          "employment24_count"
+        );
+
+      const payment =
+        sumField(
+          rows,
+          "payment_count"
+        );
+
+
+      document.getElementById(
+        "funnelTarget"
+      ).textContent = target;
+
+      document.getElementById(
+        "funnelSent"
+      ).textContent = sent;
+
+      document.getElementById(
+        "funnelPageView"
+      ).textContent = pageView;
+
+      document.getElementById(
+        "funnelCourseClick"
+      ).textContent = courseClick;
+
+      document.getElementById(
+        "funnelConsultClick"
+      ).textContent = consultClick;
+
+      document.getElementById(
+        "funnelConsultation"
+      ).textContent = consultation;
+
+      document.getElementById(
+        "funnelConsultComplete"
+      ).textContent = consultComplete;
+
+      document.getElementById(
+        "funnelEmployment"
+      ).textContent = employment;
+
+      document.getElementById(
+        "funnelPayment"
+      ).textContent = payment;
+
+
+      document.getElementById(
+        "funnelSentRate"
+      ).textContent =
+        `대상 대비 ${rate(sent, target)}`;
+
+      document.getElementById(
+        "funnelPageViewRate"
+      ).textContent =
+        `발송 대비 ${rate(pageView, sent)}`;
+
+      document.getElementById(
+        "funnelCourseClickRate"
+      ).textContent =
+        `발송 대비 ${rate(courseClick, sent)}`;
+
+      document.getElementById(
+        "funnelConsultClickRate"
+      ).textContent =
+        `발송 대비 ${rate(consultClick, sent)}`;
+
+      document.getElementById(
+        "funnelConsultationRate"
+      ).textContent =
+        `발송 대비 ${rate(consultation, sent)}`;
+
+      document.getElementById(
+        "funnelConsultCompleteRate"
+      ).textContent =
+        `발송 대비 ${rate(consultComplete, sent)}`;
+
+      document.getElementById(
+        "funnelEmploymentRate"
+      ).textContent =
+        `발송 대비 ${rate(employment, sent)}`;
+
+      document.getElementById(
+        "funnelPaymentRate"
+      ).textContent =
+        `발송 대비 ${rate(payment, sent)}`;
+
+
+      const goalBox =
+        document.getElementById("goalBox");
+
+
+      if (!sent) {
+
+        goalBox.innerHTML =
+          "아직 <strong>문자 발송 기록(sent_at)</strong>이 없습니다. " +
+          "실제 문자 발송과 연결하면 최종 KPI 10%를 여기서 계산합니다.";
+
+      } else {
+
+        const finalRate =
+          (payment / sent) * 100;
+
+        const gap =
+          finalRate - 10;
+
+        goalBox.innerHTML =
+          `최종 신청 전환율 <strong>${finalRate.toFixed(1)}%</strong> ` +
+          `(${payment} / ${sent}) · 목표 10% 대비 ` +
+          `<strong>${gap >= 0 ? "+" : ""}${gap.toFixed(1)}%p</strong>`;
+
+      }
+
+    }
+
+
+    campaignFilter.addEventListener(
+      "change",
+      renderFunnel
+    );
+
+
+    // ==========================================
+    // 8. 관리자 요약
     // ==========================================
 
     function updateSummary() {
@@ -866,7 +1345,7 @@
 
 
     // ==========================================
-    // 8. HTML 안전 출력
+    // 9. HTML 안전 출력
     // ==========================================
 
     function escapeHtml(value) {
@@ -930,7 +1409,7 @@
 
 
     // ==========================================
-    // 9. 상담 목록 렌더링
+    // 10. 상담 목록 렌더링
     // ==========================================
 
     function renderConsultations() {
@@ -1253,7 +1732,7 @@
 
 
     // ==========================================
-    // 10. 상담/전환 상태 수정
+    // 11. 상담/전환 상태 수정
     // ==========================================
 
     async function updateAdminCase(
@@ -1425,7 +1904,7 @@
 
 
     // ==========================================
-    // 11. 검색 / 필터
+    // 12. 검색 / 필터
     // ==========================================
 
     searchInput.addEventListener(
@@ -1456,7 +1935,7 @@
 
 
     // ==========================================
-    // 12. 로그아웃
+    // 13. 로그아웃
     // ==========================================
 
     document
@@ -1483,7 +1962,7 @@
 
 
     // ==========================================
-    // 13. 기존 세션 복구
+    // 14. 기존 세션 복구
     // ==========================================
 
     async function initialize() {
