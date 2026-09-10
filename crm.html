@@ -192,6 +192,13 @@
       resize: vertical;
     }
 
+    .field-note {
+      margin-top: 7px;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
     .privacy {
       display: flex;
       gap: 9px;
@@ -403,16 +410,25 @@
           id="preferredDate"
           name="preferredDate"
         >
+        <div class="field-note">
+          상담은 평일(영업일)에 가능합니다.
+        </div>
 
 
         <label for="preferredTime">상담 희망 시간</label>
         <select id="preferredTime" name="preferredTime">
           <option value="">시간을 선택해주세요</option>
-          <option value="10:00~12:00">10:00 ~ 12:00</option>
-          <option value="13:00~15:00">13:00 ~ 15:00</option>
-          <option value="15:00~17:00">15:00 ~ 17:00</option>
-          <option value="협의 필요">시간 협의 필요</option>
+          <option value="10:00~11:00">10:00 ~ 11:00</option>
+          <option value="11:00~12:00">11:00 ~ 12:00</option>
+          <option value="12:00~13:00">12:00 ~ 13:00</option>
+          <option value="14:00~15:00">14:00 ~ 15:00</option>
+          <option value="15:00~16:00">15:00 ~ 16:00</option>
+          <option value="16:00~17:00">16:00 ~ 17:00</option>
+          <option value="17:00~18:00">17:00 ~ 18:00</option>
         </select>
+        <div class="field-note">
+          상담 가능 시간: 10:00 ~ 18:00 · 점심시간 13:00 ~ 14:00 제외
+        </div>
 
 
         <div class="privacy">
@@ -662,6 +678,85 @@
 
 
   // ==========================================
+  // 상담 가능 날짜/시간
+  // 평일 10:00~18:00, 점심 13:00~14:00 제외
+  // ==========================================
+
+  const preferredDateInput =
+    document.getElementById("preferredDate");
+
+
+  function formatLocalDate(date) {
+
+    const year =
+      date.getFullYear();
+
+    const month =
+      String(date.getMonth() + 1)
+        .padStart(2, "0");
+
+    const day =
+      String(date.getDate())
+        .padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
+
+  function isWeekend(dateString) {
+
+    if (!dateString) {
+      return false;
+    }
+
+    const parts =
+      dateString
+        .split("-")
+        .map(Number);
+
+    const date =
+      new Date(
+        parts[0],
+        parts[1] - 1,
+        parts[2]
+      );
+
+    const day =
+      date.getDay();
+
+    return day === 0 || day === 6;
+  }
+
+
+  if (preferredDateInput) {
+
+    preferredDateInput.min =
+      formatLocalDate(new Date());
+
+
+    preferredDateInput.addEventListener(
+      "change",
+      function() {
+
+        if (
+          preferredDateInput.value &&
+          isWeekend(
+            preferredDateInput.value
+          )
+        ) {
+
+          alert(
+            "상담은 평일(영업일)에 가능합니다."
+          );
+
+          preferredDateInput.value = "";
+        }
+      }
+    );
+  }
+
+
+  // ==========================================
   // 6. 상담 신청 폼 → Supabase 저장
   // ==========================================
 
@@ -698,6 +793,15 @@
 
       const privacyConsent =
         document.getElementById("privacy").checked;
+
+
+      if (
+        preferredDate &&
+        isWeekend(preferredDate)
+      ) {
+        alert("상담은 평일(영업일)에 가능합니다.");
+        return;
+      }
 
 
       if (!selectedCourse) {
