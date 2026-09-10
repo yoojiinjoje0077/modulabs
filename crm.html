@@ -444,6 +444,40 @@
   const params = new URLSearchParams(window.location.search);
   const token = params.get("t");
 
+// ==========================================
+// CRM 행동 추적
+// ==========================================
+
+async function trackEvent(eventType, courseName = null) {
+
+  if (!token) return;
+
+  try {
+
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/track_crm_event`,
+      {
+        method: "POST",
+        keepalive: true,
+
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_PUBLISHABLE_KEY
+        },
+
+        body: JSON.stringify({
+          p_token: token,
+          p_event_type: eventType,
+          p_course_name: courseName
+        })
+      }
+    );
+
+  } catch (error) {
+    console.error("CRM 행동 기록 실패:", error);
+  }
+}
+  
   if (token) {
     document.getElementById("crmToken").value = token;
   }
@@ -751,6 +785,142 @@ document
   });
 
 </script>
+
+// ==========================================
+// 5. 페이지 방문 추적
+// 실제 화면을 약 3초 이상 본 경우만 기록
+// ==========================================
+
+setTimeout(function () {
+
+  if (
+    token &&
+    document.visibilityState === "visible" &&
+    document.hasFocus()
+  ) {
+
+    const pageViewKey = `crm_page_view_${token}`;
+
+    // 같은 탭에서 새로고침할 때 중복 기록 방지
+    if (!sessionStorage.getItem(pageViewKey)) {
+
+      trackEvent("page_view");
+
+      sessionStorage.setItem(
+        pageViewKey,
+        "true"
+      );
+    }
+  }
+
+}, 3000);
+
+
+// ==========================================
+// 6. 추천 과정 상세보기 클릭
+// ==========================================
+
+document
+  .querySelectorAll(".course-card")
+  .forEach(function(card) {
+
+    const detailButton =
+      card.querySelector(".btn-primary");
+
+    const titleElement =
+      card.querySelector(".course-title");
+
+    if (detailButton) {
+
+      detailButton.addEventListener(
+        "click",
+        function() {
+
+          const courseName =
+            titleElement
+              ? titleElement.textContent.trim()
+              : null;
+
+          trackEvent(
+            "course_detail_click",
+            courseName
+          );
+
+        }
+      );
+    }
+
+  });
+
+
+// ==========================================
+// 7. 상담 CTA 클릭
+// ==========================================
+
+document
+  .querySelectorAll(
+    '.btn-secondary[href="#consult"]'
+  )
+  .forEach(function(button) {
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        trackEvent(
+          "consult_cta_click"
+        );
+
+      }
+    );
+
+  });
+
+
+// ==========================================
+// 8. 전체 과정 보기 클릭
+// ==========================================
+
+const allCoursesButton =
+  document.querySelector(".all-course-btn");
+
+if (allCoursesButton) {
+
+  allCoursesButton.addEventListener(
+    "click",
+    function() {
+
+      trackEvent(
+        "all_courses_click"
+      );
+
+    }
+  );
+
+}
+
+
+// ==========================================
+// 9. 모두의연구소 로고 클릭
+// ==========================================
+
+const logoLink =
+  document.querySelector(".brand a");
+
+if (logoLink) {
+
+  logoLink.addEventListener(
+    "click",
+    function() {
+
+      trackEvent(
+        "logo_click"
+      );
+
+    }
+  );
+
+}
 
 </body>
 </html>
