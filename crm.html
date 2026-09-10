@@ -474,11 +474,11 @@
 
   async function trackEvent(eventType, courseName = null) {
 
-    if (!token) return;
+    if (!token) return false;
 
     try {
 
-      await fetch(
+      const response = await fetch(
         `${SUPABASE_URL}/rest/v1/rpc/track_crm_event`,
         {
           method: "POST",
@@ -497,8 +497,29 @@
         }
       );
 
+      if (!response.ok) {
+
+        const errorText = await response.text();
+
+        console.error(
+          "CRM 행동 기록 실패:",
+          response.status,
+          errorText
+        );
+
+        return false;
+      }
+
+      return true;
+
     } catch (error) {
-      console.error("CRM 행동 기록 실패:", error);
+
+      console.error(
+        "CRM 행동 기록 실패:",
+        error
+      );
+
+      return false;
     }
   }
 
@@ -804,32 +825,71 @@
 
   // ==========================================
   // 7. 페이지 방문 추적
-  // 실제 화면을 약 3초 이상 본 경우만 기록
+  // 모바일/인앱 브라우저에서도 동작하도록
+  // focus 조건은 사용하지 않고, 실제 화면이 보인 뒤 기록
   // ==========================================
 
-  setTimeout(function () {
+  let pageViewRecording = false;
+
+  async function recordPageView() {
 
     if (
-      token &&
-      document.visibilityState === "visible" &&
-      document.hasFocus()
+      !token ||
+      document.visibilityState !== "visible" ||
+      pageViewRecording
     ) {
+      return;
+    }
 
-      const pageViewKey =
-        `crm_page_view_${token}`;
+    // v2 키를 사용해 이전 버전의 잘못된 기록 상태와 분리
+    const pageViewKey =
+      `crm_page_view_v2_${token}`;
 
-      if (!sessionStorage.getItem(pageViewKey)) {
+    if (sessionStorage.getItem(pageViewKey)) {
+      return;
+    }
 
-        trackEvent("page_view");
+    pageViewRecording = true;
 
-        sessionStorage.setItem(
-          pageViewKey,
-          "true"
+    const success =
+      await trackEvent("page_view");
+
+    if (success) {
+
+      sessionStorage.setItem(
+        pageViewKey,
+        "true"
+      );
+    }
+
+    pageViewRecording = false;
+  }
+
+
+  // 처음 페이지를 실제로 본 뒤 약 3초 후 기록
+  setTimeout(
+    recordPageView,
+    3000
+  );
+
+
+  // 메시지 앱 내 브라우저 등에서
+  // 페이지가 다시 visible 상태가 되는 경우 재시도
+  document.addEventListener(
+    "visibilitychange",
+    function() {
+
+      if (
+        document.visibilityState === "visible"
+      ) {
+
+        setTimeout(
+          recordPageView,
+          1000
         );
       }
     }
-
-  }, 3000);
+  );
 
 
   // ==========================================
