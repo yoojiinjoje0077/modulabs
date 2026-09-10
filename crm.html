@@ -248,12 +248,19 @@
 
     <header class="header">
       <div class="brand">
-  <img
-    src="./모두연 로고.png"
-    alt="모두의연구소"
-    class="brand-logo"
-  >
-</div>
+        <a
+          href="https://class.modulabs.co.kr/explore/12"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="모두의연구소 온라인 국비지원 과정 보기"
+        >
+          <img
+            src="./모두연 로고.png"
+            alt="모두의연구소"
+            class="brand-logo"
+          >
+        </a>
+      </div>
 
       <h1>AI·데이터 학습을 이어갈<br>추천 과정을 확인해보세요.</h1>
 
@@ -446,53 +453,147 @@
 
 
   // ==========================================
-  // 2. 문자 링크에서 CRM 토큰 가져오기
+  // 2. 문자 링크에서 CRM 토큰 / UTM 가져오기
   // ==========================================
 
   const params = new URLSearchParams(window.location.search);
   const token = params.get("t");
 
-// ==========================================
-// CRM 행동 추적
-// ==========================================
+  const UTM_KEYS = [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "utm_term"
+  ];
 
-async function trackEvent(eventType, courseName = null) {
+  function appendCurrentUtm(rawUrl) {
+    if (!rawUrl) return rawUrl;
 
-  if (!token) return;
+    try {
+      const url = new URL(rawUrl, window.location.href);
 
-  try {
+      UTM_KEYS.forEach(function(key) {
+        const value = params.get(key);
 
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/rpc/track_crm_event`,
-      {
-        method: "POST",
-        keepalive: true,
+        if (value) {
+          url.searchParams.set(key, value);
+        }
+      });
 
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_PUBLISHABLE_KEY
-        },
+      return url.toString();
 
-        body: JSON.stringify({
-          p_token: token,
-          p_event_type: eventType,
-          p_course_name: courseName
-        })
-      }
-    );
-
-  } catch (error) {
-    console.error("CRM 행동 기록 실패:", error);
+    } catch (error) {
+      console.error("UTM 적용 실패:", error);
+      return rawUrl;
+    }
   }
-}
-  
+
   if (token) {
-    document.getElementById("crmToken").value = token;
+    const tokenInput = document.getElementById("crmToken");
+
+    if (tokenInput) {
+      tokenInput.value = token;
+    }
   }
 
 
   // ==========================================
-  // 3. Supabase에서 추천 과정 가져오기
+  // 3. CRM 행동 추적
+  // ==========================================
+
+  async function trackEvent(eventType, courseName = null) {
+
+    if (!token) return;
+
+    try {
+
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/track_crm_event`,
+        {
+          method: "POST",
+          keepalive: true,
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY
+          },
+
+          body: JSON.stringify({
+            p_token: token,
+            p_event_type: eventType,
+            p_course_name: courseName
+          })
+        }
+      );
+
+    } catch (error) {
+      console.error("CRM 행동 기록 실패:", error);
+    }
+  }
+
+
+  // ==========================================
+  // 4. 추천 과정 카드에 DB 정보 적용
+  // ==========================================
+
+  function applyCourseToCard(
+    card,
+    courseName,
+    courseDescription,
+    courseUrl
+  ) {
+
+    if (!card || !courseName) {
+      if (card) {
+        card.style.display = "none";
+      }
+      return;
+    }
+
+    card.style.display = "block";
+
+    const titleElement =
+      card.querySelector(".course-title");
+
+    if (titleElement) {
+      titleElement.textContent = courseName;
+    }
+
+
+    const reasonElement =
+      card.querySelector(".course-reason");
+
+    if (reasonElement && courseDescription) {
+      reasonElement.textContent = courseDescription;
+    }
+
+
+    const detailButton =
+      card.querySelector(".btn-primary");
+
+    if (detailButton) {
+
+      if (courseUrl) {
+
+        detailButton.href =
+          appendCurrentUtm(courseUrl);
+
+        detailButton.target = "_blank";
+        detailButton.rel = "noopener noreferrer";
+        detailButton.style.display = "inline-block";
+
+      } else {
+
+        detailButton.style.display = "none";
+
+      }
+    }
+  }
+
+
+  // ==========================================
+  // 5. Supabase에서 추천 과정 가져오기
   // ==========================================
 
   async function loadRecommendation() {
@@ -531,11 +632,8 @@ async function trackEvent(eventType, courseName = null) {
       console.log("추천 과정 조회 결과:", data);
 
 
-      // 토큰과 일치하는 고객이 없는 경우
       if (!data || data.length === 0) {
-
         alert("유효하지 않거나 만료된 추천 링크입니다.");
-
         return;
       }
 
@@ -546,90 +644,22 @@ async function trackEvent(eventType, courseName = null) {
         document.querySelectorAll(".course-card");
 
 
-// ==========================================
-// 추천 과정 카드에 DB 정보 적용
-// ==========================================
-
-function applyCourseToCard(
-  card,
-  courseName,
-  courseDescription,
-  courseUrl
-) {
-
-  if (!card || !courseName) {
-    if (card) {
-      card.style.display = "none";
-    }
-    return;
-  }
-
-  card.style.display = "block";
-
-  // 과정명
-  const titleElement =
-    card.querySelector(".course-title");
-
-  if (titleElement) {
-    titleElement.textContent = courseName;
-  }
+      applyCourseToCard(
+        courseCards[0],
+        recommendation.recommended_kdc_1,
+        recommendation.recommended_kdc_1_description,
+        recommendation.recommended_kdc_1_url
+      );
 
 
-  // 추천 설명
-  const reasonElement =
-    card.querySelector(".course-reason");
+      applyCourseToCard(
+        courseCards[1],
+        recommendation.recommended_kdc_2,
+        recommendation.recommended_kdc_2_description,
+        recommendation.recommended_kdc_2_url
+      );
 
-  if (reasonElement && courseDescription) {
-    reasonElement.textContent =
-      courseDescription;
-  }
-
-
-  // 과정 자세히 보기 버튼
-  const detailButton =
-    card.querySelector(".btn-primary");
-
-  if (detailButton) {
-
-    if (courseUrl) {
-
-      detailButton.href = courseUrl;
-      detailButton.target = "_blank";
-      detailButton.rel = "noopener noreferrer";
-      detailButton.style.display = "inline-block";
-
-    } else {
-
-      // 아직 상세 URL이 없으면 버튼 숨김
-      detailButton.style.display = "none";
-
-    }
-
-  }
-
-}
-
-
-// 추천 과정 1 적용
-applyCourseToCard(
-  courseCards[0],
-  recommendation.recommended_kdc_1,
-  recommendation.recommended_kdc_1_description,
-  recommendation.recommended_kdc_1_url
-);
-
-
-// 추천 과정 2 적용
-applyCourseToCard(
-  courseCards[1],
-  recommendation.recommended_kdc_2,
-  recommendation.recommended_kdc_2_description,
-  recommendation.recommended_kdc_2_url
-);
-
-    }
-
-    catch (error) {
+    } catch (error) {
 
       console.error(error);
 
@@ -638,325 +668,366 @@ applyCourseToCard(
       );
 
     }
-
   }
 
 
-  // 페이지가 열리면 추천 과정 조회
-  loadRecommendation();
+  // ==========================================
+  // 6. 고정 링크에 현재 UTM 이어붙이기
+  // ==========================================
 
+  function applyUtmToStaticLinks() {
 
-// ==========================================
-// 4. 상담 신청 폼 → Supabase 저장
-// ==========================================
+    const allCoursesButton =
+      document.querySelector(".all-course-btn");
 
-document
-  .getElementById("consultForm")
-  .addEventListener("submit", async function(event) {
-
-    event.preventDefault();
-
-    // 고객 링크 토큰 확인
-    if (!token) {
-      alert("유효한 추천 링크를 통해 접속해주세요.");
-      return;
-    }
-
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const inquiry = document.getElementById("inquiry").value.trim();
-
-    const preferredDate =
-      document.getElementById("preferredDate").value || null;
-
-    const preferredTime =
-      document.getElementById("preferredTime").value || null;
-
-    const privacyConsent =
-      document.getElementById("privacy").checked;
-
-    // 기본 확인
-    if (!name) {
-      alert("이름을 입력해주세요.");
-      return;
-    }
-
-    if (!phone) {
-      alert("연락처를 입력해주세요.");
-      return;
-    }
-
-    if (!privacyConsent) {
-      alert("개인정보 수집 및 이용에 동의해주세요.");
-      return;
+    if (allCoursesButton) {
+      allCoursesButton.href =
+        appendCurrentUtm(allCoursesButton.href);
     }
 
 
-    const submitButton =
-      document.querySelector(".submit-btn");
+    const logoLink =
+      document.querySelector(".brand a");
 
-    const originalButtonText =
-      submitButton.textContent;
-
-    submitButton.disabled = true;
-    submitButton.textContent = "신청 중...";
-
-
-    try {
-
-      const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/rpc/submit_consultation`,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_PUBLISHABLE_KEY
-          },
-
-          body: JSON.stringify({
-            p_token: token,
-            p_name: name,
-            p_phone: phone,
-            p_inquiry: inquiry || null,
-            p_preferred_date: preferredDate,
-            p_preferred_time: preferredTime,
-            p_privacy_consent: privacyConsent
-          })
-        }
-      );
+    if (logoLink) {
+      logoLink.href =
+        appendCurrentUtm(logoLink.href);
+    }
+  }
 
 
-      if (!response.ok) {
+  // ==========================================
+  // 7. 상담 신청 폼 → Supabase 저장
+  // ==========================================
 
-        const errorText = await response.text();
+  document
+    .getElementById("consultForm")
+    .addEventListener("submit", async function(event) {
 
-        console.error(
-          "상담 신청 오류:",
-          response.status,
-          errorText
-        );
-
-        throw new Error(
-          `상담 신청 실패: ${response.status}`
-        );
-      }
+      event.preventDefault();
 
 
-      const data = await response.json();
-
-      console.log("상담 신청 결과:", data);
-
-
-      if (
-        !data ||
-        data.length === 0 ||
-        data[0].success !== true
-      ) {
-
-        const message =
-          data?.[0]?.message ||
-          "상담 신청을 처리하지 못했습니다.";
-
-        alert(message);
+      if (!token) {
+        alert("유효한 추천 링크를 통해 접속해주세요.");
         return;
       }
 
 
-      alert(
-        "상담 신청이 완료되었습니다.\n" +
-        "확인 후 연락드리겠습니다."
-      );
+      const selectedCourse =
+        document.getElementById("selectedCourse").value.trim();
 
-      document
-        .getElementById("consultForm")
-        .reset();
+      const name =
+        document.getElementById("name").value.trim();
 
+      const phone =
+        document.getElementById("phone").value.trim();
 
-    } catch (error) {
+      const inquiry =
+        document.getElementById("inquiry").value.trim();
 
-      console.error(error);
+      const preferredDate =
+        document.getElementById("preferredDate").value || null;
 
-      alert(
-        "상담 신청 중 문제가 발생했습니다.\n" +
-        "잠시 후 다시 시도해주세요."
-      );
+      const preferredTime =
+        document.getElementById("preferredTime").value || null;
 
-    } finally {
-
-      submitButton.disabled = false;
-      submitButton.textContent =
-        originalButtonText;
-
-    }
-
-  });
-
-</script>
-
-// ==========================================
-// 5. 페이지 방문 추적
-// 실제 화면을 약 3초 이상 본 경우만 기록
-// ==========================================
-
-setTimeout(function () {
-
-  if (
-    token &&
-    document.visibilityState === "visible" &&
-    document.hasFocus()
-  ) {
-
-    const pageViewKey = `crm_page_view_${token}`;
-
-    // 같은 탭에서 새로고침할 때 중복 기록 방지
-    if (!sessionStorage.getItem(pageViewKey)) {
-
-      trackEvent("page_view");
-
-      sessionStorage.setItem(
-        pageViewKey,
-        "true"
-      );
-    }
-  }
-
-}, 3000);
+      const privacyConsent =
+        document.getElementById("privacy").checked;
 
 
-// ==========================================
-// 6. 추천 과정 상세보기 클릭
-// ==========================================
+      if (!selectedCourse) {
+        alert("추천 과정의 '학습 상담 신청' 버튼을 먼저 눌러주세요.");
+        return;
+      }
 
-document
-  .querySelectorAll(".course-card")
-  .forEach(function(card) {
+      if (!name) {
+        alert("이름을 입력해주세요.");
+        return;
+      }
 
-    const detailButton =
-      card.querySelector(".btn-primary");
+      if (!phone) {
+        alert("연락처를 입력해주세요.");
+        return;
+      }
 
-    const titleElement =
-      card.querySelector(".course-title");
+      if (!privacyConsent) {
+        alert("개인정보 수집 및 이용에 동의해주세요.");
+        return;
+      }
 
-    if (detailButton) {
 
-      detailButton.addEventListener(
-        "click",
-        function() {
+      const submitButton =
+        document.querySelector(".submit-btn");
 
-          const courseName =
-            titleElement
-              ? titleElement.textContent.trim()
-              : null;
+      const originalButtonText =
+        submitButton.textContent;
 
-          trackEvent(
-            "course_detail_click",
-            courseName
+      submitButton.disabled = true;
+      submitButton.textContent = "신청 중...";
+
+
+      try {
+
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/rpc/submit_consultation`,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+              "apikey": SUPABASE_PUBLISHABLE_KEY
+            },
+
+            body: JSON.stringify({
+              p_token: token,
+              p_name: name,
+              p_phone: phone,
+              p_inquiry: inquiry || null,
+              p_preferred_date: preferredDate,
+              p_preferred_time: preferredTime,
+              p_privacy_consent: privacyConsent
+            })
+          }
+        );
+
+
+        if (!response.ok) {
+
+          const errorText = await response.text();
+
+          console.error(
+            "상담 신청 오류:",
+            response.status,
+            errorText
           );
 
+          throw new Error(
+            `상담 신청 실패: ${response.status}`
+          );
         }
-      );
+
+
+        const data = await response.json();
+
+        console.log("상담 신청 결과:", data);
+
+
+        if (
+          !data ||
+          data.length === 0 ||
+          data[0].success !== true
+        ) {
+
+          const message =
+            data?.[0]?.message ||
+            "상담 신청을 처리하지 못했습니다.";
+
+          alert(message);
+          return;
+        }
+
+
+        alert(
+          "상담 신청이 완료되었습니다.\n" +
+          "확인 후 연락드리겠습니다."
+        );
+
+        document
+          .getElementById("consultForm")
+          .reset();
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "상담 신청 중 문제가 발생했습니다.\n" +
+          "잠시 후 다시 시도해주세요."
+        );
+
+      } finally {
+
+        submitButton.disabled = false;
+        submitButton.textContent =
+          originalButtonText;
+
+      }
+
+    });
+
+
+  // ==========================================
+  // 8. 페이지 방문 추적
+  // 실제 화면을 약 3초 이상 본 경우만 기록
+  // ==========================================
+
+  setTimeout(function () {
+
+    if (
+      token &&
+      document.visibilityState === "visible" &&
+      document.hasFocus()
+    ) {
+
+      const pageViewKey =
+        `crm_page_view_${token}`;
+
+      if (!sessionStorage.getItem(pageViewKey)) {
+
+        trackEvent("page_view");
+
+        sessionStorage.setItem(
+          pageViewKey,
+          "true"
+        );
+      }
     }
 
-  });
+  }, 3000);
 
 
-// ==========================================
-// 7. 상담 CTA 클릭
-// 선택한 과정을 상담폼에 자동 표시
-// ==========================================
+  // ==========================================
+  // 9. 추천 과정 상세보기 클릭
+  // ==========================================
 
-document
-  .querySelectorAll(".course-card")
-  .forEach(function(card) {
+  document
+    .querySelectorAll(".course-card")
+    .forEach(function(card) {
 
-    const consultButton =
-      card.querySelector(
-        '.btn-secondary[href="#consult"]'
-      );
+      const detailButton =
+        card.querySelector(".btn-primary");
 
-    const titleElement =
-      card.querySelector(".course-title");
+      const titleElement =
+        card.querySelector(".course-title");
 
-    if (consultButton) {
+      if (detailButton) {
 
-      consultButton.addEventListener(
-        "click",
-        function() {
+        detailButton.addEventListener(
+          "click",
+          function() {
 
-          const courseName =
-            titleElement
-              ? titleElement.textContent.trim()
-              : "";
+            const courseName =
+              titleElement
+                ? titleElement.textContent.trim()
+                : null;
 
-          // 상담폼에 선택 과정 표시
-          const selectedCourseInput =
-            document.getElementById(
-              "selectedCourse"
+            trackEvent(
+              "course_detail_click",
+              courseName
             );
 
-          if (selectedCourseInput) {
-            selectedCourseInput.value =
-              courseName;
           }
+        );
+      }
 
-          // 기존 행동 추적
-          trackEvent(
-            "consult_cta_click"
-          );
-
-        }
-      );
-
-    }
-
-  });
+    });
 
 
-// ==========================================
-// 8. 전체 과정 보기 클릭
-// ==========================================
+  // ==========================================
+  // 10. 상담 CTA 클릭
+  // 선택한 과정을 상담폼에 자동 표시
+  // ==========================================
 
-const allCoursesButton =
-  document.querySelector(".all-course-btn");
+  document
+    .querySelectorAll(".course-card")
+    .forEach(function(card) {
 
-if (allCoursesButton) {
+      const consultButton =
+        card.querySelector(
+          '.btn-secondary[href="#consult"]'
+        );
 
-  allCoursesButton.addEventListener(
-    "click",
-    function() {
+      const titleElement =
+        card.querySelector(".course-title");
 
-      trackEvent(
-        "all_courses_click"
-      );
+      if (consultButton) {
 
-    }
-  );
+        consultButton.addEventListener(
+          "click",
+          function() {
 
-}
+            const courseName =
+              titleElement
+                ? titleElement.textContent.trim()
+                : "";
+
+            const selectedCourseInput =
+              document.getElementById(
+                "selectedCourse"
+              );
+
+            if (selectedCourseInput) {
+              selectedCourseInput.value =
+                courseName;
+            }
+
+            trackEvent(
+              "consult_cta_click"
+            );
+
+          }
+        );
+
+      }
+
+    });
 
 
-// ==========================================
-// 9. 모두의연구소 로고 클릭
-// ==========================================
+  // ==========================================
+  // 11. 전체 과정 보기 클릭
+  // ==========================================
 
-const logoLink =
-  document.querySelector(".brand a");
+  const allCoursesButton =
+    document.querySelector(".all-course-btn");
 
-if (logoLink) {
+  if (allCoursesButton) {
 
-  logoLink.addEventListener(
-    "click",
-    function() {
+    allCoursesButton.addEventListener(
+      "click",
+      function() {
 
-      trackEvent(
-        "logo_click"
-      );
+        trackEvent(
+          "all_courses_click"
+        );
 
-    }
-  );
+      }
+    );
 
-}
+  }
+
+
+  // ==========================================
+  // 12. 모두의연구소 로고 클릭
+  // ==========================================
+
+  const logoLink =
+    document.querySelector(".brand a");
+
+  if (logoLink) {
+
+    logoLink.addEventListener(
+      "click",
+      function() {
+
+        trackEvent(
+          "logo_click"
+        );
+
+      }
+    );
+
+  }
+
+
+  // ==========================================
+  // 13. 초기 실행
+  // ==========================================
+
+  applyUtmToStaticLinks();
+  loadRecommendation();
+
+</script>
 
 </body>
 </html>
