@@ -323,6 +323,91 @@
       color: #047857;
     }
 
+    .history-actions {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f2;
+    }
+
+    .history-toggle-btn {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .history-toggle-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .history-container {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .history-container.open {
+      display: block;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .history-item {
+      padding: 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #f9fafb;
+    }
+
+    .history-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-bottom: 10px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .history-course {
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .history-inquiry {
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .history-empty,
+    .history-loading,
+    .history-error {
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .history-empty,
+    .history-loading {
+      background: #f9fafb;
+      color: #6b7280;
+    }
+
+    .history-error {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
     .admin-controls {
       margin-top: 16px;
       padding-top: 16px;
@@ -1002,6 +1087,8 @@
       consultations =
         await response.json();
 
+      consultationHistoryCache?.clear?.();
+
       updateSummary();
       renderConsultations();
 
@@ -1644,6 +1731,24 @@
                 </div>
 
 
+                <div class="history-actions">
+
+                  <button
+                    type="button"
+                    class="history-toggle-btn"
+                  >
+                    상담 신청 이력 보기
+                  </button>
+
+                  <div class="history-container">
+                    <div class="history-loading">
+                      상담 신청 이력을 불러오는 중입니다.
+                    </div>
+                  </div>
+
+                </div>
+
+
                 <div class="admin-controls">
 
                   <div>
@@ -1734,6 +1839,153 @@
     // ==========================================
     // 11. 상담/전환 상태 수정
     // ==========================================
+
+    const consultationHistoryCache =
+      new Map();
+
+
+    async function getConsultationHistory(
+      consultationId
+    ) {
+
+      if (!accessToken) {
+        throw new Error("관리자 로그인이 필요합니다.");
+      }
+
+
+      if (
+        consultationHistoryCache.has(
+          consultationId
+        )
+      ) {
+        return consultationHistoryCache.get(
+          consultationId
+        );
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultation_history`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_consultation_id:
+              consultationId
+          })
+        }
+      );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "상담 신청 이력을 불러오지 못했습니다."
+        );
+      }
+
+
+      const history =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      consultationHistoryCache.set(
+        consultationId,
+        history
+      );
+
+
+      return history;
+
+    }
+
+
+    function renderConsultationHistory(
+      container,
+      history
+    ) {
+
+      if (!history.length) {
+
+        container.innerHTML =
+          '<div class="history-empty">저장된 상담 신청 이력이 없습니다.</div>';
+
+        return;
+      }
+
+
+      container.innerHTML =
+        `<div class="history-list">${
+          history
+            .map(function(item, index) {
+
+              const dateText =
+                formatDate(
+                  item.submitted_at
+                );
+
+              const scheduleText =
+                [
+                  item.preferred_date,
+                  item.preferred_time
+                ]
+                  .filter(Boolean)
+                  .join(" · ") || "-";
+
+
+              return `
+                <div class="history-item">
+
+                  <div class="history-meta">
+                    <span>
+                      ${history.length - index}번째 신청
+                    </span>
+
+                    <span>
+                      ${dateText}
+                    </span>
+
+                    <span>
+                      희망일시: ${escapeHtml(scheduleText)}
+                    </span>
+                  </div>
+
+                  <div class="history-course">
+                    상담 희망 과정:
+                    ${escapeHtml(
+                      item.selected_course || "-"
+                    )}
+                  </div>
+
+                  <div class="history-inquiry">${
+                    escapeHtml(
+                      item.inquiry || "문의 내용 없음"
+                    )
+                  }</div>
+
+                </div>
+              `;
+
+            })
+            .join("")
+        }</div>`;
+
+    }
+
 
     async function updateAdminCase(
       consultationId,
@@ -1832,6 +2084,125 @@
     consultationList.addEventListener(
       "click",
       async function(event) {
+
+        const historyButton =
+          event.target.closest(
+            ".history-toggle-btn"
+          );
+
+
+        if (historyButton) {
+
+          const card =
+            historyButton.closest(
+              ".consult-card"
+            );
+
+          if (!card) return;
+
+
+          const consultationId =
+            card.dataset.consultationId;
+
+          const container =
+            card.querySelector(
+              ".history-container"
+            );
+
+
+          if (
+            container.classList.contains(
+              "open"
+            )
+          ) {
+
+            container.classList.remove(
+              "open"
+            );
+
+            historyButton.textContent =
+              "상담 신청 이력 보기";
+
+            return;
+          }
+
+
+          container.classList.add("open");
+
+
+          if (
+            consultationHistoryCache.has(
+              consultationId
+            )
+          ) {
+
+            const history =
+              consultationHistoryCache.get(
+                consultationId
+              );
+
+            renderConsultationHistory(
+              container,
+              history
+            );
+
+            historyButton.textContent =
+              `상담 신청 이력 접기 (${history.length}건)`;
+
+            return;
+          }
+
+
+          historyButton.disabled = true;
+          historyButton.textContent =
+            "이력 불러오는 중...";
+
+          container.innerHTML =
+            '<div class="history-loading">상담 신청 이력을 불러오는 중입니다.</div>';
+
+
+          try {
+
+            const history =
+              await getConsultationHistory(
+                consultationId
+              );
+
+
+            renderConsultationHistory(
+              container,
+              history
+            );
+
+
+            historyButton.textContent =
+              `상담 신청 이력 접기 (${history.length}건)`;
+
+
+          } catch (error) {
+
+            container.innerHTML =
+              `<div class="history-error">${
+                escapeHtml(
+                  error.message ||
+                  "상담 신청 이력을 불러오지 못했습니다."
+                )
+              }</div>`;
+
+            historyButton.textContent =
+              "상담 신청 이력 다시 시도";
+
+          } finally {
+
+            historyButton.disabled =
+              false;
+
+          }
+
+
+          return;
+        }
+
 
         const button =
           event.target.closest(".save-case-btn");
