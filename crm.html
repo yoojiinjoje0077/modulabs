@@ -435,43 +435,86 @@
         document.querySelectorAll(".course-card");
 
 
-      // 추천 과정 1
-      if (
-        courseCards[0] &&
-        recommendation.recommended_kdc_1
-      ) {
+// ==========================================
+// 추천 과정 카드에 DB 정보 적용
+// ==========================================
 
-        courseCards[0]
-          .querySelector(".course-title")
-          .textContent =
-          recommendation.recommended_kdc_1;
+function applyCourseToCard(
+  card,
+  courseName,
+  courseDescription,
+  courseUrl
+) {
 
-      }
+  if (!card || !courseName) {
+    if (card) {
+      card.style.display = "none";
+    }
+    return;
+  }
+
+  card.style.display = "block";
+
+  // 과정명
+  const titleElement =
+    card.querySelector(".course-title");
+
+  if (titleElement) {
+    titleElement.textContent = courseName;
+  }
 
 
-      // 추천 과정 2
-      if (
-        courseCards[1] &&
-        recommendation.recommended_kdc_2
-      ) {
+  // 추천 설명
+  const reasonElement =
+    card.querySelector(".course-reason");
 
-        courseCards[1]
-          .querySelector(".course-title")
-          .textContent =
-          recommendation.recommended_kdc_2;
-
-      }
+  if (reasonElement && courseDescription) {
+    reasonElement.textContent =
+      courseDescription;
+  }
 
 
-      // 추천 과정 2가 없는 고객이라면 두 번째 카드 숨기기
-      if (
-        courseCards[1] &&
-        !recommendation.recommended_kdc_2
-      ) {
+  // 과정 자세히 보기 버튼
+  const detailButton =
+    card.querySelector(".btn-primary");
 
-        courseCards[1].style.display = "none";
+  if (detailButton) {
 
-      }
+    if (courseUrl) {
+
+      detailButton.href = courseUrl;
+      detailButton.target = "_blank";
+      detailButton.rel = "noopener noreferrer";
+      detailButton.style.display = "inline-block";
+
+    } else {
+
+      // 아직 상세 URL이 없으면 버튼 숨김
+      detailButton.style.display = "none";
+
+    }
+
+  }
+
+}
+
+
+// 추천 과정 1 적용
+applyCourseToCard(
+  courseCards[0],
+  recommendation.recommended_kdc_1,
+  recommendation.recommended_kdc_1_description,
+  recommendation.recommended_kdc_1_url
+);
+
+
+// 추천 과정 2 적용
+applyCourseToCard(
+  courseCards[1],
+  recommendation.recommended_kdc_2,
+  recommendation.recommended_kdc_2_description,
+  recommendation.recommended_kdc_2_url
+);
 
     }
 
