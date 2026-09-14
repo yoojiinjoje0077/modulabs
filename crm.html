@@ -52,6 +52,39 @@
       line-height: 1.6;
     }
 
+    .deadline-notice {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid #fed7aa;
+      border-radius: 12px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .deadline-notice strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #7c2d12;
+    }
+
+    .consult-guide {
+      display: none;
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border: 1px solid #c7d2fe;
+      border-radius: 10px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .consult-guide.is-visible {
+      display: block;
+    }
+
     .section-title {
       font-size: 20px;
       margin: 32px 0 14px;
@@ -63,6 +96,20 @@
       border-radius: 16px;
       padding: 22px;
       margin-bottom: 14px;
+    }
+
+    .course-thumbnail {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      background: #f0f1f3;
+    }
+
+    .course-thumbnail[hidden] {
+      display: none;
     }
 
     .course-label {
@@ -148,7 +195,41 @@
 .all-course-btn:hover {
   background: #e5e7eb;
 }
-    
+
+.all-course-consult-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid #d7d9dd;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #222;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.all-course-consult-btn:hover {
+  background: #f6f7f9;
+}
+
+.btn-secondary.is-selected,
+.all-course-consult-btn.is-selected {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.consult-highlight {
+  outline: 3px solid #6366f1;
+  outline-offset: 3px;
+}
+
+#selectedCourse {
+  cursor: pointer;
+}
+
     .consult-box {
       background: white;
       border: 1px solid #e5e7eb;
@@ -275,15 +356,37 @@
         이전에 관심을 보여주신 학습 분야를 바탕으로
         관련 KDC 과정을 추천드립니다.
       </p>
+
+      <div class="deadline-notice" id="deadlineNotice">
+        <strong>9월 23일 모집 마감이 얼마 남지 않았어요.</strong>
+        일부 국비지원 과정은 9월 23일 모집이 마감됩니다. 수강을 고민 중이라면 마감 전에 신청해 주세요.
+      </div>
     </header>
 
 
-    <h2 class="section-title">추천 과정</h2>
+    <h2 class="section-title" id="recommendationSectionTitle">추천 과정</h2>
+
+    <div
+      class="consult-guide"
+      id="consultSelectionGuide"
+      role="status"
+      aria-live="polite"
+    >
+      상담받고 싶은 과정의 <strong>학습 상담 신청</strong> 버튼을 눌러주세요.
+      두 과정 모두 선택할 수 있습니다.
+    </div>
 
 
     <section class="course-card">
 
       <div class="course-label">추천 과정 01</div>
+
+      <img
+        class="course-thumbnail"
+        src=""
+        alt=""
+        hidden
+      >
 
       <div class="course-title">
         AI와 함께 코딩하자!<br>
@@ -312,6 +415,13 @@
     <section class="course-card">
 
       <div class="course-label">추천 과정 02</div>
+
+      <img
+        class="course-thumbnail"
+        src=""
+        alt=""
+        hidden
+      >
 
       <div class="course-title">
         AI by Hand:<br>
@@ -354,6 +464,14 @@
     온라인 국비 지원 전 과정 보러가기
   </a>
 
+  <button
+    type="button"
+    class="all-course-consult-btn"
+    id="otherCourseConsultButton"
+  >
+    추천 과정 외의 과정 학습 상담 신청
+  </button>
+
 </section>
     <section class="consult-box" id="consult">
 
@@ -374,7 +492,7 @@
   id="selectedCourse"
   name="selectedCourse"
   readonly
-  placeholder="위 추천 과정에서 학습 상담 신청을 눌러주세요."
+  placeholder="위 추천 과정의 학습 상담 신청 버튼을 눌러주세요. (복수 선택 가능)"
 >
         <label for="name">이름 *</label>
         <input
@@ -392,6 +510,9 @@
           id="phone"
           name="phone"
           required
+          inputmode="numeric"
+          autocomplete="tel"
+          maxlength="13"
           placeholder="010-0000-0000"
         >
 
@@ -544,6 +665,69 @@
   // 4. 추천 과정 카드에 DB 정보 적용
   // ==========================================
 
+  const COURSE_THUMBNAIL_FILES = {
+    "AI by Hand: 내 손으로 이해하는 딥러닝 기초수학":
+      "AI by Hand 내 손으로 이해하는 딥러닝 기초수학.png",
+
+    "AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음":
+      "AI와 함께 코딩하자! 인공지능 데이터 커리어 첫걸음.png",
+
+    "[AI 능력자] 바이브 코딩 with Cursor 챗봇, DB 배포까지":
+      "[AI 능력자] 바이브 코딩 with Cursor 챗봇, DB 배포까지.png",
+
+    "[AI 능력자] 비개발자도 할 수 있는 바이브 코딩 업무 자동화":
+      "[AI 능력자] 비개발자도 할 수 있는 바이브 코딩 업무 자동화.png",
+
+    "[왕초보] 비개발자도 할 수 있는 바이브 코딩 웹 개발":
+      "[왕초보] 비개발자도 할 수 있는 바이브 코딩 웹 개발.png",
+
+    "[첫걸음] 기본부터 탄탄하게, 파이썬 데이터 분석 첫 만남":
+      "[첫걸음] 기본부터 탄탄하게, 파이썬 데이터 분석 첫 만남.png",
+
+    "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초":
+      "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초.png",
+
+    "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링":
+      "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링.png",
+
+    "생성형 AI를 활용한 15초 광고(숏폼) 만들기":
+      "생성형 AI를 활용한 15초 광고(숏폼) 만들기.png"
+  };
+
+
+  function applyCourseThumbnail(card, courseName) {
+
+    const thumbnail =
+      card.querySelector(".course-thumbnail");
+
+    if (!thumbnail) {
+      return;
+    }
+
+
+    const fileName =
+      COURSE_THUMBNAIL_FILES[courseName];
+
+
+    if (!fileName) {
+      thumbnail.hidden = true;
+      thumbnail.removeAttribute("src");
+      thumbnail.alt = "";
+      return;
+    }
+
+
+    thumbnail.src =
+      "./images/" +
+      encodeURIComponent(fileName);
+
+    thumbnail.alt =
+      `${courseName} 썸네일`;
+
+    thumbnail.hidden = false;
+  }
+
+
   function applyCourseToCard(
     card,
     courseName,
@@ -566,6 +750,12 @@
     if (titleElement) {
       titleElement.textContent = courseName;
     }
+
+
+    applyCourseThumbnail(
+      card,
+      courseName
+    );
 
 
     const reasonElement =
@@ -673,6 +863,92 @@
         "추천 과정을 불러오는 중 문제가 발생했습니다."
       );
 
+    }
+  }
+
+
+  // ==========================================
+  // 연락처 자동 하이픈
+  // ==========================================
+
+  const phoneInput =
+    document.getElementById("phone");
+
+
+  function formatKoreanMobilePhone(value) {
+
+    const digits =
+      String(value || "")
+        .replace(/\D/g, "")
+        .slice(0, 11);
+
+
+    if (digits.length === 0) {
+      return "";
+    }
+
+
+    if (digits.length < 3) {
+      return digits;
+    }
+
+
+    if (digits.length === 3) {
+      return `${digits}-`;
+    }
+
+
+    if (digits.length < 7) {
+      return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    }
+
+
+    if (digits.length === 7) {
+      return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-`;
+    }
+
+
+    return (
+      `${digits.slice(0, 3)}-` +
+      `${digits.slice(3, 7)}-` +
+      `${digits.slice(7, 11)}`
+    );
+  }
+
+
+  if (phoneInput) {
+
+    phoneInput.addEventListener(
+      "input",
+      function() {
+
+        phoneInput.value =
+          formatKoreanMobilePhone(
+            phoneInput.value
+          );
+      }
+    );
+  }
+
+
+  // 9월 23일 이후에는 마감 안내 자동 숨김
+  const deadlineNotice =
+    document.getElementById("deadlineNotice");
+
+  if (deadlineNotice) {
+
+    const deadlineEnd =
+      new Date(
+        2026,
+        8,
+        23,
+        23,
+        59,
+        59
+      );
+
+    if (new Date() > deadlineEnd) {
+      deadlineNotice.style.display = "none";
     }
   }
 
@@ -805,7 +1081,7 @@
 
 
       if (!selectedCourse) {
-        alert("추천 과정의 '학습 상담 신청' 버튼을 먼저 눌러주세요.");
+        alert("상담받고 싶은 과정의 '학습 상담 신청' 버튼을 먼저 눌러주세요.");
         return;
       }
 
@@ -905,6 +1181,8 @@
         document
           .getElementById("consultForm")
           .reset();
+
+        clearConsultSelections();
 
 
       } catch (error) {
@@ -1036,7 +1314,172 @@
   // ==========================================
   // 9. 상담 CTA 클릭
   // 선택한 과정을 상담폼에 자동 표시
+  // 복수 과정 선택 가능
   // ==========================================
+
+  const selectedConsultCourses =
+    new Set();
+
+  const selectedCourseInput =
+    document.getElementById(
+      "selectedCourse"
+    );
+
+  const consultSelectionGuide =
+    document.getElementById(
+      "consultSelectionGuide"
+    );
+
+  const recommendationSectionTitle =
+    document.getElementById(
+      "recommendationSectionTitle"
+    );
+
+  const otherCourseConsultButton =
+    document.getElementById(
+      "otherCourseConsultButton"
+    );
+
+  const OTHER_COURSE_LABEL =
+    "추천 과정 외의 과정";
+
+
+  function updateSelectedCourseInput() {
+
+    if (!selectedCourseInput) {
+      return;
+    }
+
+    selectedCourseInput.value =
+      Array
+        .from(selectedConsultCourses)
+        .join(" · ");
+  }
+
+
+  function setConsultButtonSelected(
+    button,
+    selected,
+    selectedText
+  ) {
+
+    if (!button) {
+      return;
+    }
+
+
+    button.classList.toggle(
+      "is-selected",
+      selected
+    );
+
+
+    if (selected) {
+
+      button.textContent =
+        selectedText;
+
+    } else {
+
+      button.textContent =
+        button.dataset.defaultText ||
+        "학습 상담 신청";
+    }
+  }
+
+
+  function scrollToConsultForm() {
+
+    const consultBox =
+      document.getElementById("consult");
+
+    if (consultBox) {
+
+      consultBox.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  }
+
+
+  function showCourseSelectionGuide() {
+
+    if (consultSelectionGuide) {
+
+      consultSelectionGuide.classList.add(
+        "is-visible"
+      );
+    }
+
+
+    if (recommendationSectionTitle) {
+
+      recommendationSectionTitle
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+    }
+
+
+    const buttons =
+      document.querySelectorAll(
+        ".course-card .btn-secondary, " +
+        ".all-course-consult-btn"
+      );
+
+
+    buttons.forEach(function(button) {
+      button.classList.add(
+        "consult-highlight"
+      );
+    });
+
+
+    setTimeout(
+      function() {
+
+        buttons.forEach(function(button) {
+          button.classList.remove(
+            "consult-highlight"
+          );
+        });
+
+      },
+      2500
+    );
+  }
+
+
+  function clearConsultSelections() {
+
+    selectedConsultCourses.clear();
+    updateSelectedCourseInput();
+
+
+    document
+      .querySelectorAll(
+        ".course-card .btn-secondary"
+      )
+      .forEach(function(button) {
+
+        setConsultButtonSelected(
+          button,
+          false
+        );
+      });
+
+
+    if (otherCourseConsultButton) {
+
+      setConsultButtonSelected(
+        otherCourseConsultButton,
+        false
+      );
+    }
+  }
+
 
   document
     .querySelectorAll(".course-card")
@@ -1050,30 +1493,67 @@
       const titleElement =
         card.querySelector(".course-title");
 
+
       if (consultButton) {
+
+        consultButton.dataset.defaultText =
+          consultButton.textContent.trim();
+
 
         consultButton.addEventListener(
           "click",
-          function() {
+          function(event) {
+
+            event.preventDefault();
+
 
             const courseName =
               titleElement
                 ? titleElement.textContent.trim()
                 : "";
 
-            const selectedCourseInput =
-              document.getElementById(
-                "selectedCourse"
+
+            if (!courseName) {
+              return;
+            }
+
+
+            if (
+              selectedConsultCourses.has(
+                courseName
+              )
+            ) {
+
+              selectedConsultCourses.delete(
+                courseName
               );
 
-            if (selectedCourseInput) {
-              selectedCourseInput.value =
-                courseName;
+              setConsultButtonSelected(
+                consultButton,
+                false
+              );
+
+            } else {
+
+              selectedConsultCourses.add(
+                courseName
+              );
+
+              setConsultButtonSelected(
+                consultButton,
+                true,
+                "상담 과정 선택됨 ✓"
+              );
             }
+
+
+            updateSelectedCourseInput();
 
             trackEvent(
               "consult_cta_click"
             );
+
+            scrollToConsultForm();
 
           }
         );
@@ -1081,6 +1561,70 @@
       }
 
     });
+
+
+  if (selectedCourseInput) {
+
+    selectedCourseInput.addEventListener(
+      "click",
+      function() {
+
+        showCourseSelectionGuide();
+      }
+    );
+  }
+
+
+  if (otherCourseConsultButton) {
+
+    otherCourseConsultButton.dataset.defaultText =
+      otherCourseConsultButton.textContent.trim();
+
+
+    otherCourseConsultButton.addEventListener(
+      "click",
+      function() {
+
+        if (
+          selectedConsultCourses.has(
+            OTHER_COURSE_LABEL
+          )
+        ) {
+
+          selectedConsultCourses.delete(
+            OTHER_COURSE_LABEL
+          );
+
+          setConsultButtonSelected(
+            otherCourseConsultButton,
+            false
+          );
+
+        } else {
+
+          selectedConsultCourses.add(
+            OTHER_COURSE_LABEL
+          );
+
+          setConsultButtonSelected(
+            otherCourseConsultButton,
+            true,
+            "추천 과정 외 상담 선택됨 ✓"
+          );
+        }
+
+
+        updateSelectedCourseInput();
+
+        trackEvent(
+          "consult_cta_click"
+        );
+
+        scrollToConsultForm();
+
+      }
+    );
+  }
 
 
   // ==========================================
