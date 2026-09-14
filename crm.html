@@ -675,10 +675,64 @@
   function normalizeCourseName(courseName) {
     const normalized =
       String(courseName || "")
-        .replace(/\\s+/g, " ")
+        .replace(/\s+/g, " ")
         .trim();
 
     return COURSE_NAME_ALIASES[normalized] || normalized;
+  }
+
+
+  const COURSE_DETAIL_URL_RULES = [
+    {
+      match: "생성형 AI를 활용한 15초 광고",
+      url: "https://service.modulabs.co.kr/r/6N4KVy1c"
+    },
+    {
+      match: "고급 프롬프트 엔지니어링",
+      url: "https://service.modulabs.co.kr/r/OMJDXODv"
+    },
+    {
+      match: "바이브 코딩 with Cursor",
+      url: "https://service.modulabs.co.kr/r/j1HvHDNr"
+    },
+    {
+      match: "바이브 코딩 업무 자동화",
+      url: "https://service.modulabs.co.kr/r/EOsG0Fmr"
+    },
+    {
+      match: "바이브 코딩 웹 개발",
+      url: "https://service.modulabs.co.kr/r/GgXh1eWj"
+    },
+    {
+      match: "파이썬 데이터 분석 첫 만남",
+      url: "https://service.modulabs.co.kr/r/X0KHXbNS"
+    },
+    {
+      match: "파이썬으로 배우는 통계 기초",
+      url: "https://service.modulabs.co.kr/r/Qb1agg79"
+    },
+    {
+      match: "AI와 함께 코딩하자!",
+      url: "https://service.modulabs.co.kr/r/rh0DUAjF"
+    },
+    {
+      match: "AI by Hand",
+      url: "https://service.modulabs.co.kr/r/rytJP9OX"
+    }
+  ];
+
+
+  function getCourseDetailUrl(courseName) {
+    const normalizedCourseName =
+      normalizeCourseName(courseName);
+
+    const rule =
+      COURSE_DETAIL_URL_RULES.find(
+        item =>
+          normalizedCourseName.includes(item.match)
+      );
+
+    return rule ? rule.url : null;
   }
 
 
@@ -828,9 +882,16 @@
 
     if (detailButton) {
 
-      if (courseUrl) {
+      const resolvedCourseUrl =
+        courseUrl ||
+        getCourseDetailUrl(
+          normalizedCourseName
+        );
 
-        detailButton.href = courseUrl;
+      if (resolvedCourseUrl) {
+
+        detailButton.href =
+          resolvedCourseUrl;
 
         detailButton.target = "_blank";
         detailButton.rel = "noopener noreferrer";
@@ -843,6 +904,62 @@
       }
     }
   }
+
+
+  function initializeVisibleCourseCards() {
+
+    document
+      .querySelectorAll(".course-card")
+      .forEach(function(card) {
+
+        const titleElement =
+          card.querySelector(".course-title");
+
+        if (!titleElement) {
+          return;
+        }
+
+        const courseName =
+          normalizeCourseName(
+            titleElement.textContent
+          );
+
+        if (!courseName) {
+          return;
+        }
+
+        titleElement.textContent =
+          courseName;
+
+        applyCourseThumbnail(
+          card,
+          courseName
+        );
+
+        const detailButton =
+          card.querySelector(".btn-primary");
+
+        const fallbackUrl =
+          getCourseDetailUrl(courseName);
+
+        if (
+          detailButton &&
+          fallbackUrl
+        ) {
+          detailButton.href =
+            fallbackUrl;
+
+          detailButton.target =
+            "_blank";
+
+          detailButton.rel =
+            "noopener noreferrer";
+        }
+      });
+  }
+
+
+  initializeVisibleCourseCards();
 
 
   // ==========================================
