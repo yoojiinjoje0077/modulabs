@@ -373,7 +373,7 @@
       aria-live="polite"
     >
       상담받고 싶은 과정의 <strong>학습 상담 신청</strong> 버튼을 눌러주세요.
-      여러 과정을 선택할 수 있습니다.
+      두 과정 모두 선택할 수 있습니다.
     </div>
 
 
@@ -682,34 +682,58 @@
   }
 
 
-  const COURSE_THUMBNAIL_FILES = {
-    "생성형 AI를 활용한 15초 광고(숏폼) 만들기":
-      "생성형 AI를 활용한 15초 광고(숏폼) 만들기.png",
+  const COURSE_THUMBNAIL_RULES = [
+    {
+      match: "생성형 AI를 활용한 15초 광고",
+      file: "생성형 AI를 활용한 15초 광고(숏폼) 만들기.png"
+    },
+    {
+      match: "고급 프롬프트 엔지니어링",
+      file: "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링.png"
+    },
+    {
+      match: "바이브 코딩 with Cursor",
+      file: "[AI 능력자] 바이브 코딩 with Cursor 챗봇, DB 배포까지.png"
+    },
+    {
+      match: "바이브 코딩 업무 자동화",
+      file: "[AI 능력자] 비개발자도 할 수 있는 바이브 코딩 업무 자동화.png"
+    },
+    {
+      match: "바이브 코딩 웹 개발",
+      file: "[왕초보] 비개발자도 할 수 있는 바이브 코딩 웹 개발.png"
+    },
+    {
+      match: "파이썬 데이터 분석 첫 만남",
+      file: "[첫걸음] 기본부터 탄탄하게, 파이썬 데이터 분석 첫 만남.png"
+    },
+    {
+      match: "파이썬으로 배우는 통계 기초",
+      file: "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초.png"
+    },
+    {
+      match: "AI와 함께 코딩하자!",
+      file: "AI와 함께 코딩하자! 인공지능 데이터 커리어 첫걸음.png"
+    },
+    {
+      match: "AI by Hand",
+      file: "AI by Hand 내 손으로 이해하는 딥러닝 기초수학.png"
+    }
+  ];
 
-    "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링":
-      "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링.png",
 
-    "[AI 능력자] 바이브 코딩 with Cursor 챗봇, DB 배포까지":
-      "[AI 능력자] 바이브 코딩 with Cursor 챗봇, DB 배포까지.png",
+  function getCourseThumbnailFile(courseName) {
+    const normalizedCourseName =
+      normalizeCourseName(courseName);
 
-    "[AI 능력자] 비개발자도 할 수 있는 바이브 코딩 업무 자동화":
-      "[AI 능력자] 비개발자도 할 수 있는 바이브 코딩 업무 자동화.png",
+    const rule =
+      COURSE_THUMBNAIL_RULES.find(
+        item =>
+          normalizedCourseName.includes(item.match)
+      );
 
-    "[왕초보] 비개발자도 할 수 있는 바이브 코딩 웹 개발":
-      "[왕초보] 비개발자도 할 수 있는 바이브 코딩 웹 개발.png",
-
-    "[첫걸음] 기본부터 탄탄하게, 파이썬 데이터 분석 첫 만남":
-      "[첫걸음] 기본부터 탄탄하게, 파이썬 데이터 분석 첫 만남.png",
-
-    "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초":
-      "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초.png",
-
-    "AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음":
-      "AI와 함께 코딩하자! 인공지능 데이터 커리어 첫걸음.png",
-
-    "AI by Hand: 내 손으로 이해하는 딥러닝 기초수학":
-      "AI by Hand 내 손으로 이해하는 딥러닝 기초수학.png"
-  };
+    return rule ? rule.file : null;
+  }
 
 
   function applyCourseThumbnail(card, courseName) {
@@ -726,7 +750,7 @@
       normalizeCourseName(courseName);
 
     const fileName =
-      COURSE_THUMBNAIL_FILES[normalizedCourseName];
+      getCourseThumbnailFile(normalizedCourseName);
 
 
     if (!fileName) {
@@ -737,14 +761,24 @@
     }
 
 
+    // GitHub Pages의 /images 폴더를 기준으로 직접 연결
     thumbnail.src =
-      "./images/" +
-      encodeURIComponent(fileName);
+      new URL(
+        "images/" + fileName,
+        document.baseURI
+      ).href;
 
     thumbnail.alt =
       `${normalizedCourseName} 썸네일`;
 
     thumbnail.hidden = false;
+
+    thumbnail.onerror = function() {
+      console.error(
+        "썸네일 로드 실패:",
+        thumbnail.src
+      );
+    };
   }
 
 
