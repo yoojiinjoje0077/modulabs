@@ -373,7 +373,7 @@
       aria-live="polite"
     >
       상담받고 싶은 과정의 <strong>학습 상담 신청</strong> 버튼을 눌러주세요.
-      두 과정 모두 선택할 수 있습니다.
+      여러 과정을 선택할 수 있습니다.
     </div>
 
 
@@ -665,12 +665,29 @@
   // 4. 추천 과정 카드에 DB 정보 적용
   // ==========================================
 
-  const COURSE_THUMBNAIL_FILES = {
-    "AI by Hand: 내 손으로 이해하는 딥러닝 기초수학":
-      "AI by Hand 내 손으로 이해하는 딥러닝 기초수학.png",
+  const COURSE_NAME_ALIASES = {
+    // 사용자가 전달한 과정명 기준. 공백 차이는 아래 normalizeCourseName에서 정리합니다.
+    "[AI 능력자] 비개발자도 할 수 있는ㅁ 바이브 코딩 업무 자동화":
+      "[AI 능력자] 비개발자도 할 수 있는 바이브 코딩 업무 자동화"
+  };
 
-    "AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음":
-      "AI와 함께 코딩하자! 인공지능 데이터 커리어 첫걸음.png",
+
+  function normalizeCourseName(courseName) {
+    const normalized =
+      String(courseName || "")
+        .replace(/\\s+/g, " ")
+        .trim();
+
+    return COURSE_NAME_ALIASES[normalized] || normalized;
+  }
+
+
+  const COURSE_THUMBNAIL_FILES = {
+    "생성형 AI를 활용한 15초 광고(숏폼) 만들기":
+      "생성형 AI를 활용한 15초 광고(숏폼) 만들기.png",
+
+    "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링":
+      "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링.png",
 
     "[AI 능력자] 바이브 코딩 with Cursor 챗봇, DB 배포까지":
       "[AI 능력자] 바이브 코딩 with Cursor 챗봇, DB 배포까지.png",
@@ -687,11 +704,11 @@
     "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초":
       "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초.png",
 
-    "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링":
-      "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링.png",
+    "AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음":
+      "AI와 함께 코딩하자! 인공지능 데이터 커리어 첫걸음.png",
 
-    "생성형 AI를 활용한 15초 광고(숏폼) 만들기":
-      "생성형 AI를 활용한 15초 광고(숏폼) 만들기.png"
+    "AI by Hand: 내 손으로 이해하는 딥러닝 기초수학":
+      "AI by Hand 내 손으로 이해하는 딥러닝 기초수학.png"
   };
 
 
@@ -705,8 +722,11 @@
     }
 
 
+    const normalizedCourseName =
+      normalizeCourseName(courseName);
+
     const fileName =
-      COURSE_THUMBNAIL_FILES[courseName];
+      COURSE_THUMBNAIL_FILES[normalizedCourseName];
 
 
     if (!fileName) {
@@ -722,7 +742,7 @@
       encodeURIComponent(fileName);
 
     thumbnail.alt =
-      `${courseName} 썸네일`;
+      `${normalizedCourseName} 썸네일`;
 
     thumbnail.hidden = false;
   }
@@ -744,17 +764,20 @@
 
     card.style.display = "block";
 
+    const normalizedCourseName =
+      normalizeCourseName(courseName);
+
     const titleElement =
       card.querySelector(".course-title");
 
     if (titleElement) {
-      titleElement.textContent = courseName;
+      titleElement.textContent = normalizedCourseName;
     }
 
 
     applyCourseThumbnail(
       card,
-      courseName
+      normalizedCourseName
     );
 
 
