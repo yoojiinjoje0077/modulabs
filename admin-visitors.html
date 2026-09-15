@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM 링크 방문 고객</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR",Arial,sans-serif;background:#f5f6f8;color:#1f2937}.page{max-width:1180px;margin:0 auto;padding:28px 18px 60px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:12px}.brand img{width:128px;height:auto}.title{font-size:20px;font-weight:850}.top-actions{display:flex;gap:8px}.btn{border:1px solid #d1d5db;background:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;text-decoration:none;color:#111827}.panel{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;margin-bottom:18px}.login{max-width:440px;margin:80px auto 0}.login h1{margin:0 0 8px;font-size:28px}.help{color:#6b7280;font-size:13px;line-height:1.6}.login label{display:block;margin:16px 0 7px;font-size:14px;font-weight:800}.login input,.toolbar input,.toolbar select{width:100%;padding:12px 13px;border:1px solid #d1d5db;border-radius:10px;background:#fff}.primary{width:100%;margin-top:18px;padding:13px 15px;border:0;border-radius:10px;background:#111827;color:#fff;font-weight:850;cursor:pointer}.error{display:none;margin-top:12px;padding:12px;border-radius:10px;background:#fef2f2;color:#991b1b;font-size:13px}.dashboard{display:none}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}.stat{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}.stat-label{color:#6b7280;font-size:12px;margin-bottom:6px}.stat-value{font-size:24px;font-weight:850}.toolbar{display:grid;grid-template-columns:1fr 220px 130px;gap:10px;margin-bottom:16px}.visitor-list{display:grid;gap:12px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px}.card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.customer{font-size:18px;font-weight:850}.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.badge,.tag{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f3f4f6;color:#4b5563;font-size:11px;font-weight:800}.tag.on{background:#ecfdf5;color:#047857}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 18px}.label{color:#6b7280;font-size:11px;font-weight:800;margin-bottom:4px}.value{font-size:14px;line-height:1.5;word-break:break-word}.wide{grid-column:1/-1}.empty,.loading{padding:34px;text-align:center;color:#6b7280}.section-title{font-size:18px;font-weight:850;margin-bottom:4px}@media(max-width:780px){.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.card-head{flex-direction:column}.wide{grid-column:auto}.topbar{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section id="loginView" class="login">
+      <div class="panel">
+        <div class="brand" style="margin-bottom:22px"><img src="./모두연 로고.png" alt="모두의연구소"></div>
+        <h1>CRM 방문 고객 확인</h1>
+        <div class="help">CRM 관리자 계정으로 로그인하면 상담 신청 여부와 관계없이 개인 링크를 방문한 고객을 확인할 수 있습니다.</div>
+        <form id="loginForm">
+          <label for="email">이메일</label><input id="email" type="email" autocomplete="username" required>
+          <label for="password">비밀번호</label><input id="password" type="password" autocomplete="current-password" required>
+          <button id="loginButton" class="primary" type="submit">관리자 로그인</button>
+          <div id="loginError" class="error"></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="dashboardView" class="dashboard">
+      <div class="topbar">
+        <div class="brand"><img src="./모두연 로고.png" alt="모두의연구소"><div class="title">CRM 링크 방문 고객</div></div>
+        <div class="top-actions"><a class="btn" href="./admin.html">기존 관리자 페이지</a><button id="logoutButton" class="btn" type="button">로그아웃</button></div>
+      </div>
+
+      <div class="summary">
+        <div class="stat"><div class="stat-label">링크 방문 고객</div><div id="sumVisitors" class="stat-value">0</div></div>
+        <div class="stat"><div class="stat-label">상담 없이 방문</div><div id="sumNoConsult" class="stat-value">0</div></div>
+        <div class="stat"><div class="stat-label">과정 신청 중</div><div id="sumApplied" class="stat-value">0</div></div>
+        <div class="stat"><div class="stat-label">훈련생 등록</div><div id="sumPaid" class="stat-value">0</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">방문 고객 내역</div>
+        <div class="help" style="margin-bottom:14px">방문 횟수는 page_view 기준입니다. 방문 후 전환은 CRM 영향 가능성을 보는 보조 지표이며, 방문만으로 직접 기여를 확정하지는 않습니다.</div>
+        <div class="toolbar">
+          <input id="searchInput" type="search" placeholder="고객ID, 캠페인, KDT 과정, 추천 과정 검색">
+          <select id="campaignFilter"><option value="">전체 캠페인</option></select>
+          <button id="refreshButton" class="btn" type="button">새로고침</button>
+        </div>
+        <div id="visitorList" class="visitor-list"><div class="loading">방문 고객을 불러오는 중입니다.</div></div>
+      </div>
+    </section>
+  </div>
+
+<script>
+const SUPABASE_URL="https://qxilvmeppmmsuaepwahf.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_kRCNvac8W9OKtm-snZA2fQ_ASDPTHVm";
+const SESSION_KEY="kdc_kdt_crm_admin_access_token";
+let accessToken=sessionStorage.getItem(SESSION_KEY);
+let visitors=[];
+const loginView=document.getElementById("loginView");
+const dashboardView=document.getElementById("dashboardView");
+const loginForm=document.getElementById("loginForm");
+const loginButton=document.getElementById("loginButton");
+const loginError=document.getElementById("loginError");
+const visitorList=document.getElementById("visitorList");
+const searchInput=document.getElementById("searchInput");
+const campaignFilter=document.getElementById("campaignFilter");
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function fmt(v){if(!v)return"-";const d=new Date(v);if(Number.isNaN(d.getTime()))return esc(v);return new Intl.DateTimeFormat("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
+function showLogin(){loginView.style.display="block";dashboardView.style.display="none"}
+function showDashboard(){loginView.style.display="none";dashboardView.style.display="block"}
+async function loadVisitors(){if(!accessToken){showLogin();return}visitorList.innerHTML='<div class="loading">방문 고객을 불러오는 중입니다.</div>';const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_admin_crm_visitors`,{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY,"Authorization":`Bearer ${accessToken}`},body:"{}"});let data;try{data=await r.json()}catch(_){data=[]}if(!r.ok){if(r.status===401||r.status===403){sessionStorage.removeItem(SESSION_KEY);accessToken=null;showLogin()}throw new Error(data?.message||"방문 고객을 불러오지 못했습니다.")}visitors=Array.isArray(data)?data:[];renderCampaigns();renderSummary();renderVisitors();showDashboard()}
+function renderCampaigns(){const cur=campaignFilter.value;const campaigns=[...new Set(visitors.map(v=>v.campaign_code).filter(Boolean))].sort();campaignFilter.innerHTML='<option value="">전체 캠페인</option>'+campaigns.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");if(campaigns.includes(cur))campaignFilter.value=cur}
+function filteredRows(){const q=searchInput.value.trim().toLowerCase();const c=campaignFilter.value;return visitors.filter(v=>{if(c&&v.campaign_code!==c)return false;if(!q)return true;return[v.external_customer_id,v.campaign_code,v.kdt_course,v.customer_status,v.recommended_kdc_1,v.recommended_kdc_2].filter(Boolean).join(" ").toLowerCase().includes(q)})}
+function renderSummary(){const rows=filteredRows();document.getElementById("sumVisitors").textContent=rows.length;document.getElementById("sumNoConsult").textContent=rows.filter(v=>!v.consultation_submitted).length;document.getElementById("sumApplied").textContent=rows.filter(v=>v.employment24_applied===true).length;document.getElementById("sumPaid").textContent=rows.filter(v=>v.payment_completed===true).length}
+function renderVisitors(){const rows=filteredRows();renderSummary();if(!rows.length){visitorList.innerHTML='<div class="empty">조건에 맞는 방문 고객이 없습니다.</div>';return}visitorList.innerHTML=rows.map(v=>`<article class="card"><div class="card-head"><div><div class="customer">고객ID ${esc(v.external_customer_id||"-")}</div><div class="badges"><span class="badge">${esc(v.campaign_code||"-")}</span><span class="badge">${esc(v.customer_status||"-")}</span></div></div><div class="badges"><span class="tag ${v.consultation_submitted?"on":""}">${v.consultation_submitted?"✓ 상담 신청":"상담 미신청"}</span><span class="tag ${v.employment24_applied?"on":""}">${v.employment24_applied?"✓ 과정 신청 중":"과정 신청 전"}</span><span class="tag ${v.payment_completed?"on":""}">${v.payment_completed?"✓ 훈련생 등록":"훈련생 등록 전"}</span></div></div><div class="grid"><div><div class="label">KDT 이력</div><div class="value">${esc(v.kdt_course||"-")} · ${esc(v.customer_status||"-")}</div></div><div><div class="label">문자 발송 시각</div><div class="value">${fmt(v.sent_at)}</div></div><div><div class="label">CRM 페이지 방문</div><div class="value">${Number(v.page_view_count||0)}회</div></div><div><div class="label">최초 방문</div><div class="value">${fmt(v.first_page_view_at)}</div></div><div><div class="label">최근 방문</div><div class="value">${fmt(v.last_page_view_at)}</div></div><div><div class="label">과정 상세 클릭</div><div class="value">${Number(v.course_detail_click_count||0)}회</div></div><div class="wide"><div class="label">추천 과정</div><div class="value">${esc(v.recommended_kdc_1||"-")} / ${esc(v.recommended_kdc_2||"-")}</div></div></div></article>`).join("")}
+loginForm.addEventListener("submit",async e=>{e.preventDefault();loginError.style.display="none";loginButton.disabled=true;loginButton.textContent="로그인 중...";try{const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({email:document.getElementById("email").value.trim(),password:document.getElementById("password").value})});const d=await r.json();if(!r.ok||!d.access_token)throw new Error(d?.error_description||d?.msg||"로그인에 실패했습니다.");accessToken=d.access_token;sessionStorage.setItem(SESSION_KEY,accessToken);await loadVisitors()}catch(err){loginError.textContent=err.message||"로그인에 실패했습니다.";loginError.style.display="block"}finally{loginButton.disabled=false;loginButton.textContent="관리자 로그인"}});
+document.getElementById("logoutButton").addEventListener("click",()=>{sessionStorage.removeItem(SESSION_KEY);accessToken=null;showLogin()});document.getElementById("refreshButton").addEventListener("click",()=>loadVisitors().catch(err=>{visitorList.innerHTML=`<div class="empty">${esc(err.message)}</div>`}));searchInput.addEventListener("input",renderVisitors);campaignFilter.addEventListener("change",renderVisitors);
+if(accessToken){loadVisitors().catch(()=>showLogin())}else{showLogin()}
+</script>
+</body>
+</html>
