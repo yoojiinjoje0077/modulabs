@@ -1,0 +1,3244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KDC-KDT CRM 관리자</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard",
+        "Noto Sans KR", Arial, sans-serif;
+      background: #f5f6f8;
+      color: #1f2937;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      display: block;
+      width: 128px;
+      height: auto;
+    }
+
+    .top-title {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .logout-btn {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .login-wrap {
+      max-width: 440px;
+      margin: 80px auto 0;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .subtext {
+      margin: 0 0 24px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 7px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      color: #111827;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid #111827;
+      outline-offset: 1px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .error {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #fef2f2;
+      color: #991b1b;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .summary-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .summary-label {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 26px;
+      font-weight: 850;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 190px 150px;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .toolbar input,
+    .toolbar select,
+    .refresh-btn {
+      height: 44px;
+    }
+
+    .refresh-btn {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .empty {
+      background: #fff;
+      border: 1px dashed #d1d5db;
+      border-radius: 14px;
+      padding: 36px;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    .consult-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .name {
+      font-size: 19px;
+      font-weight: 850;
+      margin-bottom: 6px;
+    }
+
+    .phone {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .identity-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .identity-badge {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: #f3f4f6;
+      color: #4b5563;
+      font-size: 11px;
+      font-weight: 800;
+      word-break: break-all;
+    }
+
+    .identity-badge strong {
+      margin-right: 4px;
+      color: #111827;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 76px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #f3f4f6;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    .status.waiting {
+      background: #fff7ed;
+      color: #9a3412;
+    }
+
+    .status.scheduled {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .status.done {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 22px;
+    }
+
+    .info-item {
+      min-width: 0;
+    }
+
+    .info-label {
+      color: #6b7280;
+      font-size: 12px;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .info-value {
+      font-size: 14px;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .pill {
+      background: #f3f4f6;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .conversion {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .conversion-tag {
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .conversion-tag.on {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .history-actions {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f2;
+    }
+
+    .history-toggle-btn {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .history-toggle-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .history-container {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .history-container.open {
+      display: block;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .history-item {
+      padding: 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #f9fafb;
+    }
+
+    .history-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-bottom: 10px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .history-course {
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .history-inquiry {
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .history-empty,
+    .history-loading,
+    .history-error {
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .history-empty,
+    .history-loading {
+      background: #f9fafb;
+      color: #6b7280;
+    }
+
+    .history-error {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .counsel-note-panel {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f2;
+    }
+
+    .counsel-note-title {
+      font-size: 14px;
+      font-weight: 850;
+      margin-bottom: 4px;
+    }
+
+    .counsel-note-help {
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .counsel-note-grid {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .counsel-note-panel textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      color: #111827;
+      font: inherit;
+      line-height: 1.6;
+    }
+
+    .counsel-note-panel textarea:focus {
+      outline: 2px solid #111827;
+      outline-offset: 1px;
+    }
+
+    .note-save-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .note-save-btn {
+      min-height: 42px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .note-save-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .note-save-message {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .note-save-message.success {
+      color: #047857;
+    }
+
+    .note-save-message.error {
+      color: #991b1b;
+    }
+
+    .note-history-actions {
+      margin-top: 12px;
+    }
+
+    .note-history-toggle {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .note-history-container {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .note-history-container.open {
+      display: block;
+    }
+
+    .note-history-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .note-history-item {
+      padding: 13px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 11px;
+      background: #f9fafb;
+    }
+
+    .note-history-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 12px;
+      margin-bottom: 8px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .interest-score-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .note-history-text {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .consult-stats-panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .consult-stats-head {
+      margin-bottom: 14px;
+    }
+
+    .consult-stats-title {
+      font-size: 18px;
+      font-weight: 850;
+      margin-bottom: 5px;
+    }
+
+    .consult-stats-note {
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .consult-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .consult-stat {
+      padding: 14px;
+      border: 1px solid #eef0f2;
+      border-radius: 12px;
+      background: #f9fafb;
+    }
+
+    .consult-stat-label {
+      color: #6b7280;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .consult-stat-value {
+      font-size: 22px;
+      font-weight: 850;
+    }
+
+    .admin-controls {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eef0f2;
+      display: grid;
+      grid-template-columns: 190px 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .admin-control-label {
+      display: block;
+      margin: 0 0 6px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .admin-checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      min-height: 44px;
+      align-items: center;
+    }
+
+    .admin-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .admin-check input {
+      width: auto;
+      margin: 0;
+    }
+
+    .save-case-btn {
+      height: 44px;
+      padding: 0 18px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .save-case-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .funnel-panel {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .funnel-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .funnel-title {
+      font-size: 18px;
+      font-weight: 850;
+      margin-bottom: 5px;
+    }
+
+    .funnel-note {
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .campaign-select-wrap {
+      min-width: 240px;
+    }
+
+    .campaign-select-wrap select {
+      width: 100%;
+    }
+
+    .funnel-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .funnel-step {
+      background: #f9fafb;
+      border: 1px solid #eef0f2;
+      border-radius: 12px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .funnel-step-label {
+      color: #6b7280;
+      font-size: 11px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .funnel-step-value {
+      font-size: 22px;
+      font-weight: 850;
+    }
+
+    .funnel-step-rate {
+      margin-top: 4px;
+      color: #6b7280;
+      font-size: 11px;
+    }
+
+    .goal-box {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f9fafb;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .goal-box strong {
+      font-size: 16px;
+    }
+
+    .loading {
+      padding: 36px;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    @media (max-width: 780px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .funnel-head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .campaign-select-wrap {
+        min-width: 0;
+      }
+
+      .funnel-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .counsel-note-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .consult-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .save-case-btn {
+        width: 100%;
+      }
+
+      .wide {
+        grid-column: auto;
+      }
+
+      .card-head {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <section id="loginView" class="login-wrap">
+      <div class="panel">
+
+        <div class="brand-wrap" style="margin-bottom:24px;">
+          <img
+            src="./모두연 로고.png"
+            alt="모두의연구소"
+            class="brand-logo"
+          >
+        </div>
+
+        <h1>CRM 관리자 로그인</h1>
+
+        <p class="subtext">
+          등록된 관리자 계정으로 로그인해주세요.
+          상담자 개인정보는 로그인 후에만 표시됩니다.
+        </p>
+
+        <form id="loginForm">
+
+          <label for="email">이메일</label>
+          <input
+            type="email"
+            id="email"
+            autocomplete="username"
+            required
+            placeholder="admin@modulabs.co.kr"
+          >
+
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            autocomplete="current-password"
+            required
+            placeholder="비밀번호"
+          >
+
+          <button
+            type="submit"
+            id="loginButton"
+            class="primary-btn"
+          >
+            관리자 로그인
+          </button>
+
+          <div id="loginError" class="error"></div>
+
+        </form>
+      </div>
+    </section>
+
+
+    <section id="dashboardView" class="dashboard">
+
+      <div class="topbar">
+
+        <div class="brand-wrap">
+          <img
+            src="./모두연 로고.png"
+            alt="모두의연구소"
+            class="brand-logo"
+          >
+          <div class="top-title">
+            KDC-KDT CRM 관리자
+          </div>
+        </div>
+
+        <button
+          type="button"
+          id="logoutButton"
+          class="logout-btn"
+        >
+          로그아웃
+        </button>
+
+      </div>
+
+
+      <div class="summary-grid">
+
+        <div class="summary-card">
+          <div class="summary-label">전체 상담</div>
+          <div id="summaryTotal" class="summary-value">0</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-label">상담대기</div>
+          <div id="summaryWaiting" class="summary-value">0</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-label">과정 신청 중</div>
+          <div id="summaryEmployment" class="summary-value">0</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-label">훈련생 등록</div>
+          <div id="summaryPayment" class="summary-value">0</div>
+        </div>
+
+      </div>
+
+
+      <section class="funnel-panel">
+
+        <div class="funnel-head">
+
+          <div>
+            <div class="funnel-title">
+              개인별 CRM 퍼널
+            </div>
+
+            <div class="funnel-note">
+              같은 고객이 여러 번 행동해도 단계별 고객 수는 1명으로 집계됩니다.
+              최종 전환율은 실제 문자 발송 기록(sent_at)을 분모로 계산합니다.
+            </div>
+          </div>
+
+          <div class="campaign-select-wrap">
+            <label for="campaignFilter" style="margin:0 0 6px;">
+              캠페인
+            </label>
+
+            <select id="campaignFilter">
+              <option value="">전체 캠페인 합계</option>
+            </select>
+          </div>
+
+        </div>
+
+
+        <div class="funnel-grid">
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">CRM 대상</div>
+            <div id="funnelTarget" class="funnel-step-value">0</div>
+            <div class="funnel-step-rate">등록 고객</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">문자 발송</div>
+            <div id="funnelSent" class="funnel-step-value">0</div>
+            <div id="funnelSentRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">페이지 방문</div>
+            <div id="funnelPageView" class="funnel-step-value">0</div>
+            <div id="funnelPageViewRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">과정 상세 클릭</div>
+            <div id="funnelCourseClick" class="funnel-step-value">0</div>
+            <div id="funnelCourseClickRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">상담 CTA 클릭</div>
+            <div id="funnelConsultClick" class="funnel-step-value">0</div>
+            <div id="funnelConsultClickRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">상담 신청</div>
+            <div id="funnelConsultation" class="funnel-step-value">0</div>
+            <div id="funnelConsultationRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">상담 완료</div>
+            <div id="funnelConsultComplete" class="funnel-step-value">0</div>
+            <div id="funnelConsultCompleteRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">과정 신청 중</div>
+            <div id="funnelEmployment" class="funnel-step-value">0</div>
+            <div id="funnelEmploymentRate" class="funnel-step-rate">-</div>
+          </div>
+
+          <div class="funnel-step">
+            <div class="funnel-step-label">훈련생 등록</div>
+            <div id="funnelPayment" class="funnel-step-value">0</div>
+            <div id="funnelPaymentRate" class="funnel-step-rate">-</div>
+          </div>
+
+        </div>
+
+        <div id="goalBox" class="goal-box">
+          최종 전환율을 계산하려면 문자 발송 기록이 필요합니다.
+        </div>
+
+      </section>
+
+
+      <section class="consult-stats-panel">
+
+        <div class="consult-stats-head">
+          <div class="consult-stats-title">
+            상담 기록 통계
+          </div>
+
+          <div class="consult-stats-note">
+            위에서 선택한 캠페인 기준입니다. 평균 관심도는 고객별 가장 최근 점수만 반영합니다.
+          </div>
+        </div>
+
+        <div class="consult-stats-grid">
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">상담 기록 고객</div>
+            <div id="statRecordedCustomers" class="consult-stat-value">0</div>
+          </div>
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">상담 기록 건수</div>
+            <div id="statNoteCount" class="consult-stat-value">0</div>
+          </div>
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">평균 관심도</div>
+            <div id="statAvgInterest" class="consult-stat-value">0.0 / 5</div>
+          </div>
+
+          <div class="consult-stat">
+            <div class="consult-stat-label">고관심 고객 (4~5점)</div>
+            <div id="statHighInterest" class="consult-stat-value">0</div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <div class="toolbar">
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="이름, 전화번호, 고객ID, 캠페인, 과정명 검색"
+        >
+
+        <select id="statusFilter">
+          <option value="">전체 상담 상태</option>
+          <option value="상담대기">상담대기</option>
+          <option value="상담예정">상담예정</option>
+          <option value="상담완료">상담완료</option>
+          <option value="연락불가">연락불가</option>
+          <option value="상담취소">상담취소</option>
+        </select>
+
+        <button
+          type="button"
+          id="refreshButton"
+          class="refresh-btn"
+        >
+          새로고침
+        </button>
+
+      </div>
+
+
+      <div id="consultationList" class="list">
+        <div class="loading">상담 목록을 불러오는 중입니다.</div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <script>
+
+    // ==========================================
+    // 1. Supabase 공개 연결 정보
+    // ==========================================
+
+    const SUPABASE_URL =
+      "https://qxilvmeppmmsuaepwahf.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_kRCNvac8W9OKtm-snZA2fQ_ASDPTHVm";
+
+
+    // ==========================================
+    // 2. 상태
+    // ==========================================
+
+    const SESSION_KEY =
+      "kdc_kdt_crm_admin_access_token";
+
+    let accessToken =
+      sessionStorage.getItem(SESSION_KEY);
+
+    let consultations = [];
+    let funnelRows = [];
+
+
+    // ==========================================
+    // 3. DOM
+    // ==========================================
+
+    const loginView =
+      document.getElementById("loginView");
+
+    const dashboardView =
+      document.getElementById("dashboardView");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const loginError =
+      document.getElementById("loginError");
+
+    const consultationList =
+      document.getElementById("consultationList");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const statusFilter =
+      document.getElementById("statusFilter");
+
+    const campaignFilter =
+      document.getElementById("campaignFilter");
+
+
+    // ==========================================
+    // 4. 화면 전환
+    // ==========================================
+
+    function showLogin() {
+
+      loginView.style.display = "block";
+      dashboardView.style.display = "none";
+
+    }
+
+
+    function showDashboard() {
+
+      loginView.style.display = "none";
+      dashboardView.style.display = "block";
+
+    }
+
+
+    function showLoginError(message) {
+
+      loginError.textContent = message;
+      loginError.style.display = "block";
+
+    }
+
+
+    function clearLoginError() {
+
+      loginError.textContent = "";
+      loginError.style.display = "none";
+
+    }
+
+
+    // ==========================================
+    // 5. 관리자 로그인
+    // ==========================================
+
+    loginForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+        clearLoginError();
+
+        const email =
+          document.getElementById("email").value.trim();
+
+        const password =
+          document.getElementById("password").value;
+
+        loginButton.disabled = true;
+        loginButton.textContent = "로그인 중...";
+
+
+        try {
+
+          const response = await fetch(
+            `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_PUBLISHABLE_KEY
+              },
+
+              body: JSON.stringify({
+                email,
+                password
+              })
+            }
+          );
+
+
+          const data = await response.json();
+
+
+          if (!response.ok || !data.access_token) {
+
+            throw new Error(
+              data?.error_description ||
+              data?.msg ||
+              "이메일 또는 비밀번호를 확인해주세요."
+            );
+          }
+
+
+          accessToken = data.access_token;
+
+          sessionStorage.setItem(
+            SESSION_KEY,
+            accessToken
+          );
+
+
+          // 실제 CRM 관리자 계정인지 검증하면서 목록 로드
+          await loadConsultations();
+
+          showDashboard();
+
+
+        } catch (error) {
+
+          sessionStorage.removeItem(SESSION_KEY);
+          accessToken = null;
+
+          showLoginError(
+            error.message ||
+            "로그인에 실패했습니다."
+          );
+
+        } finally {
+
+          loginButton.disabled = false;
+          loginButton.textContent =
+            "관리자 로그인";
+
+        }
+
+      }
+    );
+
+
+    // ==========================================
+    // 6. 상담 목록 API
+    // ==========================================
+
+    async function loadConsultations() {
+
+      if (!accessToken) {
+        showLogin();
+        return;
+      }
+
+
+      consultationList.innerHTML =
+        '<div class="loading">상담 목록을 불러오는 중입니다.</div>';
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultations_v2`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: "{}"
+        }
+      );
+
+
+      if (!response.ok) {
+
+        let message =
+          "상담 목록을 불러오지 못했습니다.";
+
+        try {
+          const errorData =
+            await response.json();
+
+          message =
+            errorData?.message ||
+            errorData?.hint ||
+            message;
+        } catch (_) {}
+
+
+        if (
+          response.status === 401 ||
+          response.status === 403 ||
+          message.includes("관리자")
+        ) {
+
+          sessionStorage.removeItem(SESSION_KEY);
+          accessToken = null;
+          showLogin();
+
+        }
+
+        throw new Error(message);
+      }
+
+
+      consultations =
+        await response.json();
+
+      consultationHistoryCache?.clear?.();
+      adminNoteCache?.clear?.();
+
+      updateSummary();
+      renderConsultations();
+
+      await loadFunnelSummary();
+      await loadConsultationNoteStats();
+
+    }
+
+
+    // ==========================================
+    // 7. CRM 퍼널 요약 API
+    // ==========================================
+
+    async function loadFunnelSummary() {
+
+      if (!accessToken) {
+        return;
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_funnel_summary`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_campaign_code: null
+          })
+        }
+      );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          "퍼널 데이터를 불러오지 못했습니다."
+        );
+      }
+
+
+      funnelRows =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      renderCampaignOptions();
+      renderFunnel();
+
+    }
+
+
+    function renderCampaignOptions() {
+
+      const currentValue =
+        campaignFilter.value;
+
+
+      campaignFilter.innerHTML =
+        '<option value="">전체 캠페인 합계</option>' +
+        funnelRows
+          .map(row => `
+            <option value="${escapeHtml(row.campaign_code)}">
+              ${escapeHtml(row.campaign_code)}
+            </option>
+          `)
+          .join("");
+
+
+      if (
+        currentValue &&
+        funnelRows.some(
+          row =>
+            row.campaign_code === currentValue
+        )
+      ) {
+        campaignFilter.value =
+          currentValue;
+      }
+
+    }
+
+
+    function sumField(rows, field) {
+
+      return rows.reduce(
+        (total, row) =>
+          total + Number(row[field] || 0),
+        0
+      );
+
+    }
+
+
+    function rate(value, denominator) {
+
+      const n =
+        Number(value || 0);
+
+      const d =
+        Number(denominator || 0);
+
+      if (!d) return "-";
+
+      return `${(
+        (n / d) * 100
+      ).toFixed(1)}%`;
+
+    }
+
+
+    function renderFunnel() {
+
+      const selectedCampaign =
+        campaignFilter.value;
+
+
+      const rows =
+        selectedCampaign
+          ? funnelRows.filter(
+              row =>
+                row.campaign_code ===
+                selectedCampaign
+            )
+          : funnelRows;
+
+
+      const target =
+        sumField(rows, "target_count");
+
+      const sent =
+        sumField(rows, "sent_count");
+
+      const pageView =
+        sumField(rows, "page_view_count");
+
+      const courseClick =
+        sumField(
+          rows,
+          "course_detail_click_count"
+        );
+
+      const consultClick =
+        sumField(
+          rows,
+          "consult_cta_click_count"
+        );
+
+      const consultation =
+        sumField(
+          rows,
+          "consultation_count"
+        );
+
+      const consultComplete =
+        sumField(
+          rows,
+          "consultation_complete_count"
+        );
+
+      const employment =
+        sumField(
+          rows,
+          "employment24_count"
+        );
+
+      const payment =
+        sumField(
+          rows,
+          "payment_count"
+        );
+
+
+      document.getElementById(
+        "funnelTarget"
+      ).textContent = target;
+
+      document.getElementById(
+        "funnelSent"
+      ).textContent = sent;
+
+      document.getElementById(
+        "funnelPageView"
+      ).textContent = pageView;
+
+      document.getElementById(
+        "funnelCourseClick"
+      ).textContent = courseClick;
+
+      document.getElementById(
+        "funnelConsultClick"
+      ).textContent = consultClick;
+
+      document.getElementById(
+        "funnelConsultation"
+      ).textContent = consultation;
+
+      document.getElementById(
+        "funnelConsultComplete"
+      ).textContent = consultComplete;
+
+      document.getElementById(
+        "funnelEmployment"
+      ).textContent = employment;
+
+      document.getElementById(
+        "funnelPayment"
+      ).textContent = payment;
+
+
+      document.getElementById(
+        "funnelSentRate"
+      ).textContent =
+        `대상 대비 ${rate(sent, target)}`;
+
+      document.getElementById(
+        "funnelPageViewRate"
+      ).textContent =
+        `발송 대비 ${rate(pageView, sent)}`;
+
+      document.getElementById(
+        "funnelCourseClickRate"
+      ).textContent =
+        `발송 대비 ${rate(courseClick, sent)}`;
+
+      document.getElementById(
+        "funnelConsultClickRate"
+      ).textContent =
+        `발송 대비 ${rate(consultClick, sent)}`;
+
+      document.getElementById(
+        "funnelConsultationRate"
+      ).textContent =
+        `발송 대비 ${rate(consultation, sent)}`;
+
+      document.getElementById(
+        "funnelConsultCompleteRate"
+      ).textContent =
+        `발송 대비 ${rate(consultComplete, sent)}`;
+
+      document.getElementById(
+        "funnelEmploymentRate"
+      ).textContent =
+        `발송 대비 ${rate(employment, sent)}`;
+
+      document.getElementById(
+        "funnelPaymentRate"
+      ).textContent =
+        `발송 대비 ${rate(payment, sent)}`;
+
+
+      const goalBox =
+        document.getElementById("goalBox");
+
+
+      if (!sent) {
+
+        goalBox.innerHTML =
+          "아직 <strong>문자 발송 기록(sent_at)</strong>이 없습니다. " +
+          "실제 문자 발송과 연결하면 최종 KPI 10%를 여기서 계산합니다.";
+
+      } else {
+
+        const finalRate =
+          (payment / sent) * 100;
+
+        const gap =
+          finalRate - 10;
+
+        goalBox.innerHTML =
+          `훈련생 등록 전환율 <strong>${finalRate.toFixed(1)}%</strong> ` +
+          `(${payment} / ${sent}) · 목표 10% 대비 ` +
+          `<strong>${gap >= 0 ? "+" : ""}${gap.toFixed(1)}%p</strong>`;
+
+      }
+
+    }
+
+
+    campaignFilter.addEventListener(
+      "change",
+      async function() {
+
+        renderFunnel();
+
+        try {
+          await loadConsultationNoteStats();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    );
+
+
+    // ==========================================
+    // 8. 관리자 요약
+    // ==========================================
+
+    function updateSummary() {
+
+      const total =
+        consultations.length;
+
+      const waiting =
+        consultations.filter(
+          item =>
+            item.consultation_status ===
+            "상담대기"
+        ).length;
+
+      const employment =
+        consultations.filter(
+          item =>
+            item.employment24_applied === true
+        ).length;
+
+      const payment =
+        consultations.filter(
+          item =>
+            item.payment_completed === true
+        ).length;
+
+
+      document.getElementById(
+        "summaryTotal"
+      ).textContent = total;
+
+      document.getElementById(
+        "summaryWaiting"
+      ).textContent = waiting;
+
+      document.getElementById(
+        "summaryEmployment"
+      ).textContent = employment;
+
+      document.getElementById(
+        "summaryPayment"
+      ).textContent = payment;
+
+    }
+
+
+    // ==========================================
+    // 9. HTML 안전 출력
+    // ==========================================
+
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) return "-";
+
+      const date =
+        new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return escapeHtml(value);
+      }
+
+      return new Intl.DateTimeFormat(
+        "ko-KR",
+        {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: value.includes?.("T")
+            ? "2-digit"
+            : undefined,
+          minute: value.includes?.("T")
+            ? "2-digit"
+            : undefined
+        }
+      ).format(date);
+
+    }
+
+
+    function statusClass(status) {
+
+      if (status === "상담대기") {
+        return "waiting";
+      }
+
+      if (status === "상담예정") {
+        return "scheduled";
+      }
+
+      if (status === "상담완료") {
+        return "done";
+      }
+
+      return "";
+
+    }
+
+
+    // ==========================================
+    // 10. 상담 목록 렌더링
+    // ==========================================
+
+    function renderConsultations() {
+
+      const keyword =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      const selectedStatus =
+        statusFilter.value;
+
+
+      const filtered =
+        consultations.filter(function(item) {
+
+          if (
+            selectedStatus &&
+            item.consultation_status !==
+              selectedStatus
+          ) {
+            return false;
+          }
+
+
+          if (!keyword) {
+            return true;
+          }
+
+
+          const targetText = [
+            item.name,
+            item.phone,
+            item.external_customer_id,
+            item.campaign_code,
+            item.selected_course,
+            item.kdt_course,
+            item.customer_status,
+            item.recommended_kdc_1,
+            item.recommended_kdc_2,
+            item.inquiry
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+          return targetText.includes(keyword);
+
+        });
+
+
+      if (filtered.length === 0) {
+
+        consultationList.innerHTML =
+          '<div class="empty">조건에 맞는 상담 신청이 없습니다.</div>';
+
+        return;
+      }
+
+
+      consultationList.innerHTML =
+        filtered
+          .map(function(item) {
+
+            const status =
+              item.consultation_status ||
+              "상담대기";
+
+            const phoneHref =
+              String(item.phone || "")
+                .replace(/[^\d+]/g, "");
+
+            return `
+              <article
+                class="consult-card"
+                data-consultation-id="${escapeHtml(item.consultation_id)}"
+              >
+
+                <div class="card-head">
+
+                  <div>
+                    <div class="name">
+                      ${escapeHtml(item.name)}
+                    </div>
+
+                    <a
+                      class="phone"
+                      href="tel:${escapeHtml(phoneHref)}"
+                    >
+                      ${escapeHtml(item.phone)}
+                    </a>
+
+                    <div class="identity-row">
+
+                      <span class="identity-badge">
+                        <strong>고객ID</strong>
+                        ${escapeHtml(
+                          item.external_customer_id || "-"
+                        )}
+                      </span>
+
+                      <span class="identity-badge">
+                        <strong>캠페인</strong>
+                        ${escapeHtml(
+                          item.campaign_code || "-"
+                        )}
+                      </span>
+
+                    </div>
+                  </div>
+
+                  <span
+                    class="status ${statusClass(status)}"
+                  >
+                    ${escapeHtml(status)}
+                  </span>
+
+                </div>
+
+
+                <div class="info-grid">
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      상담 희망 과정
+                    </div>
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.selected_course || "-"
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      상담 희망 시간
+                    </div>
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.preferred_date || "-"
+                      )}
+                      ·
+                      ${escapeHtml(
+                        item.preferred_time || "-"
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      KDT 이력
+                    </div>
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.kdt_course || "-"
+                      )}
+                      ·
+                      ${escapeHtml(
+                        item.customer_status || "-"
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item">
+                    <div class="info-label">
+                      상담 신청일
+                    </div>
+                    <div class="info-value">
+                      ${formatDate(
+                        item.consultation_created_at
+                      )}
+                    </div>
+                  </div>
+
+
+                  <div class="info-item wide">
+                    <div class="info-label">
+                      추천 과정
+                    </div>
+
+                    <div class="pill-row">
+
+                      ${
+                        item.recommended_kdc_1
+                          ? `<span class="pill">
+                              ${escapeHtml(
+                                item.recommended_kdc_1
+                              )}
+                            </span>`
+                          : ""
+                      }
+
+                      ${
+                        item.recommended_kdc_2
+                          ? `<span class="pill">
+                              ${escapeHtml(
+                                item.recommended_kdc_2
+                              )}
+                            </span>`
+                          : ""
+                      }
+
+                    </div>
+                  </div>
+
+
+                  <div class="info-item wide">
+                    <div class="info-label">
+                      상담 문의 내용
+                    </div>
+
+                    <div class="info-value">
+                      ${escapeHtml(
+                        item.inquiry || "-"
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <div class="conversion">
+
+                  <span class="conversion-tag ${
+                    item.employment24_applied
+                      ? "on"
+                      : ""
+                  }">
+                    ${
+                      item.employment24_applied
+                        ? "✓ 과정 신청 중"
+                        : "과정 신청 전"
+                    }
+                  </span>
+
+                  <span class="conversion-tag ${
+                    item.payment_completed
+                      ? "on"
+                      : ""
+                  }">
+                    ${
+                      item.payment_completed
+                        ? "✓ 훈련생 등록"
+                        : "훈련생 등록 전"
+                    }
+                  </span>
+
+                </div>
+
+
+                <div class="counsel-note-panel">
+
+                  <div class="counsel-note-title">
+                    관리자 상담 기록
+                  </div>
+
+                  <div class="counsel-note-help">
+                    실제 상담 후 내부 메모와 고객 관심도를 저장합니다.
+                    기록은 덮어쓰지 않고 상담할 때마다 누적됩니다.
+                  </div>
+
+                  <div class="counsel-note-grid">
+
+                    <div>
+                      <span class="admin-control-label">
+                        관심도
+                      </span>
+
+                      <select class="interest-score-select">
+                        <option value="">점수 선택</option>
+                        <option value="1">1점 · 매우 낮음</option>
+                        <option value="2">2점 · 낮음</option>
+                        <option value="3">3점 · 보통</option>
+                        <option value="4">4점 · 높음</option>
+                        <option value="5">5점 · 매우 높음</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <span class="admin-control-label">
+                        상담 내용
+                      </span>
+
+                      <textarea
+                        class="counsel-note-text"
+                        maxlength="5000"
+                        placeholder="예: 데이터 분석 직무 전환 희망. 통계 과정에 관심이 높고, 이번 주 안에 과정 신청 중 예정. 금요일 오후 재연락하기."
+                      ></textarea>
+                    </div>
+
+                  </div>
+
+                  <div class="note-save-row">
+                    <button
+                      type="button"
+                      class="note-save-btn"
+                    >
+                      상담 기록 저장
+                    </button>
+                  </div>
+
+                  <div class="note-save-message"></div>
+
+                  <div class="note-history-actions">
+                    <button
+                      type="button"
+                      class="note-history-toggle"
+                    >
+                      관리자 상담 기록 보기
+                    </button>
+
+                    <div class="note-history-container"></div>
+                  </div>
+
+                </div>
+
+
+                <div class="history-actions">
+
+                  <button
+                    type="button"
+                    class="history-toggle-btn"
+                  >
+                    상담 신청 이력 보기
+                  </button>
+
+                  <div class="history-container">
+                    <div class="history-loading">
+                      상담 신청 이력을 불러오는 중입니다.
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <div class="admin-controls">
+
+                  <div>
+                    <span class="admin-control-label">
+                      상담 상태
+                    </span>
+
+                    <select class="case-status-select">
+                      ${[
+                        "상담대기",
+                        "상담예정",
+                        "상담완료",
+                        "연락불가",
+                        "상담취소"
+                      ]
+                        .map(option => `
+                          <option
+                            value="${option}"
+                            ${
+                              option === status
+                                ? "selected"
+                                : ""
+                            }
+                          >
+                            ${option}
+                          </option>
+                        `)
+                        .join("")}
+                    </select>
+                  </div>
+
+
+                  <div>
+                    <span class="admin-control-label">
+                      전환 상태
+                    </span>
+
+                    <div class="admin-checks">
+
+                      <div style="width:100%; color:#6b7280; font-size:12px; line-height:1.5; margin-bottom:2px;">
+                        과정 신청 중 = 고용24 신청 진행 · 훈련생 등록 = 모든 결제 완료 후 등록
+                      </div>
+
+                      <label class="admin-check">
+                        <input
+                          type="checkbox"
+                          class="employment-check"
+                          ${
+                            item.employment24_applied
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                        과정 신청 중
+                      </label>
+
+                      <label class="admin-check">
+                        <input
+                          type="checkbox"
+                          class="payment-check"
+                          ${
+                            item.payment_completed
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                        훈련생 등록
+                      </label>
+
+                    </div>
+                  </div>
+
+
+                  <button
+                    type="button"
+                    class="save-case-btn"
+                  >
+                    변경사항 저장
+                  </button>
+
+                </div>
+
+              </article>
+            `;
+
+          })
+          .join("");
+
+    }
+
+
+    // ==========================================
+    // 11. 상담/전환 상태 수정
+    // ==========================================
+
+    const consultationHistoryCache =
+      new Map();
+
+    const adminNoteCache =
+      new Map();
+
+
+    async function getConsultationHistory(
+      consultationId
+    ) {
+
+      if (!accessToken) {
+        throw new Error("관리자 로그인이 필요합니다.");
+      }
+
+
+      if (
+        consultationHistoryCache.has(
+          consultationId
+        )
+      ) {
+        return consultationHistoryCache.get(
+          consultationId
+        );
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultation_history`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_consultation_id:
+              consultationId
+          })
+        }
+      );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "상담 신청 이력을 불러오지 못했습니다."
+        );
+      }
+
+
+      const history =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      consultationHistoryCache.set(
+        consultationId,
+        history
+      );
+
+
+      return history;
+
+    }
+
+
+    function renderConsultationHistory(
+      container,
+      history
+    ) {
+
+      if (!history.length) {
+
+        container.innerHTML =
+          '<div class="history-empty">저장된 상담 신청 이력이 없습니다.</div>';
+
+        return;
+      }
+
+
+      container.innerHTML =
+        `<div class="history-list">${
+          history
+            .map(function(item, index) {
+
+              const dateText =
+                formatDate(
+                  item.submitted_at
+                );
+
+              const scheduleText =
+                [
+                  item.preferred_date,
+                  item.preferred_time
+                ]
+                  .filter(Boolean)
+                  .join(" · ") || "-";
+
+
+              return `
+                <div class="history-item">
+
+                  <div class="history-meta">
+                    <span>
+                      ${history.length - index}번째 신청
+                    </span>
+
+                    <span>
+                      ${dateText}
+                    </span>
+
+                    <span>
+                      희망일시: ${escapeHtml(scheduleText)}
+                    </span>
+                  </div>
+
+                  <div class="history-course">
+                    상담 희망 과정:
+                    ${escapeHtml(
+                      item.selected_course || "-"
+                    )}
+                  </div>
+
+                  <div class="history-inquiry">${
+                    escapeHtml(
+                      item.inquiry || "문의 내용 없음"
+                    )
+                  }</div>
+
+                </div>
+              `;
+
+            })
+            .join("")
+        }</div>`;
+
+    }
+
+
+    async function addAdminConsultationNote(
+      consultationId,
+      note,
+      interestScore
+    ) {
+
+      if (!accessToken) {
+        throw new Error("관리자 로그인이 필요합니다.");
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/add_admin_consultation_note`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_consultation_id: consultationId,
+            p_note: note,
+            p_interest_score: Number(interestScore)
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "상담 기록을 저장하지 못했습니다."
+        );
+      }
+
+
+      if (
+        !Array.isArray(data) ||
+        data.length === 0 ||
+        data[0].success !== true
+      ) {
+        throw new Error(
+          data?.[0]?.message ||
+          "상담 기록을 저장하지 못했습니다."
+        );
+      }
+
+
+      return data[0];
+
+    }
+
+
+    async function getAdminConsultationNotes(
+      consultationId,
+      forceRefresh = false
+    ) {
+
+      if (!accessToken) {
+        throw new Error("관리자 로그인이 필요합니다.");
+      }
+
+
+      if (
+        !forceRefresh &&
+        adminNoteCache.has(consultationId)
+      ) {
+        return adminNoteCache.get(
+          consultationId
+        );
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultation_notes`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_consultation_id:
+              consultationId
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "관리자 상담 기록을 불러오지 못했습니다."
+        );
+      }
+
+
+      const notes =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      adminNoteCache.set(
+        consultationId,
+        notes
+      );
+
+
+      return notes;
+
+    }
+
+
+    function renderAdminConsultationNotes(
+      container,
+      notes
+    ) {
+
+      if (!notes.length) {
+
+        container.innerHTML =
+          '<div class="history-empty">저장된 관리자 상담 기록이 없습니다.</div>';
+
+        return;
+      }
+
+
+      container.innerHTML =
+        `<div class="note-history-list">${
+          notes
+            .map(function(item) {
+
+              return `
+                <div class="note-history-item">
+
+                  <div class="note-history-meta">
+                    <span class="interest-score-badge">
+                      관심도 ${escapeHtml(item.interest_score)} / 5
+                    </span>
+
+                    <span>
+                      ${formatDate(item.created_at)}
+                    </span>
+
+                    ${
+                      item.admin_email
+                        ? `<span>${escapeHtml(item.admin_email)}</span>`
+                        : ""
+                    }
+                  </div>
+
+                  <div class="note-history-text">${
+                    escapeHtml(item.note || "")
+                  }</div>
+
+                </div>
+              `;
+
+            })
+            .join("")
+        }</div>`;
+
+    }
+
+
+    async function loadConsultationNoteStats() {
+
+      if (!accessToken) return;
+
+
+      const selectedCampaign =
+        campaignFilter.value || null;
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_admin_consultation_note_stats`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_campaign_code:
+              selectedCampaign
+          })
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "상담 기록 통계를 불러오지 못했습니다."
+        );
+      }
+
+
+      const stats =
+        Array.isArray(data) && data.length
+          ? data[0]
+          : {};
+
+
+      document.getElementById(
+        "statRecordedCustomers"
+      ).textContent =
+        Number(stats.recorded_customer_count || 0);
+
+
+      document.getElementById(
+        "statNoteCount"
+      ).textContent =
+        Number(stats.note_count || 0);
+
+
+      document.getElementById(
+        "statAvgInterest"
+      ).textContent =
+        `${Number(stats.avg_latest_interest_score || 0).toFixed(1)} / 5`;
+
+
+      document.getElementById(
+        "statHighInterest"
+      ).textContent =
+        Number(stats.high_interest_customer_count || 0);
+
+    }
+
+
+    async function updateAdminCase(
+      consultationId,
+      consultationStatus,
+      employment24Applied,
+      paymentCompleted
+    ) {
+
+      if (!accessToken) {
+        throw new Error("관리자 로그인이 필요합니다.");
+      }
+
+
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/update_admin_case`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": `Bearer ${accessToken}`
+          },
+
+          body: JSON.stringify({
+            p_consultation_id: consultationId,
+            p_consultation_status: consultationStatus,
+            p_employment24_applied: employment24Applied,
+            p_payment_completed: paymentCompleted
+          })
+        }
+      );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data?.message ||
+          data?.hint ||
+          "변경사항을 저장하지 못했습니다."
+        );
+      }
+
+
+      if (
+        !data ||
+        data.length === 0 ||
+        data[0].success !== true
+      ) {
+
+        throw new Error(
+          data?.[0]?.message ||
+          "변경사항을 저장하지 못했습니다."
+        );
+      }
+
+
+      return data[0];
+
+    }
+
+
+    consultationList.addEventListener(
+      "change",
+      function(event) {
+
+        // 훈련생 등록 체크 시 고용24도 자동 체크
+        if (
+          event.target.classList.contains(
+            "payment-check"
+          ) &&
+          event.target.checked
+        ) {
+
+          const card =
+            event.target.closest(".consult-card");
+
+          const employmentCheck =
+            card?.querySelector(
+              ".employment-check"
+            );
+
+          if (employmentCheck) {
+            employmentCheck.checked = true;
+          }
+        }
+
+      }
+    );
+
+
+    consultationList.addEventListener(
+      "click",
+      async function(event) {
+
+        const noteSaveButton =
+          event.target.closest(
+            ".note-save-btn"
+          );
+
+
+        if (noteSaveButton) {
+
+          const card =
+            noteSaveButton.closest(
+              ".consult-card"
+            );
+
+          if (!card) return;
+
+
+          const consultationId =
+            card.dataset.consultationId;
+
+          const scoreSelect =
+            card.querySelector(
+              ".interest-score-select"
+            );
+
+          const noteText =
+            card.querySelector(
+              ".counsel-note-text"
+            );
+
+          const message =
+            card.querySelector(
+              ".note-save-message"
+            );
+
+
+          const score =
+            scoreSelect.value;
+
+          const note =
+            noteText.value.trim();
+
+
+          message.className =
+            "note-save-message";
+
+          message.textContent = "";
+
+
+          if (!score) {
+
+            message.classList.add("error");
+            message.textContent =
+              "관심도 1~5점을 선택해주세요.";
+
+            return;
+          }
+
+
+          if (!note) {
+
+            message.classList.add("error");
+            message.textContent =
+              "상담 내용을 입력해주세요.";
+
+            return;
+          }
+
+
+          const originalText =
+            noteSaveButton.textContent;
+
+          noteSaveButton.disabled = true;
+          noteSaveButton.textContent =
+            "저장 중...";
+
+
+          try {
+
+            await addAdminConsultationNote(
+              consultationId,
+              note,
+              score
+            );
+
+
+            adminNoteCache.delete(
+              consultationId
+            );
+
+
+            noteText.value = "";
+
+
+            message.classList.add(
+              "success"
+            );
+
+            message.textContent =
+              "상담 기록이 저장되었습니다.";
+
+
+            const noteContainer =
+              card.querySelector(
+                ".note-history-container"
+              );
+
+            const noteToggle =
+              card.querySelector(
+                ".note-history-toggle"
+              );
+
+
+            if (
+              noteContainer.classList.contains(
+                "open"
+              )
+            ) {
+
+              const notes =
+                await getAdminConsultationNotes(
+                  consultationId,
+                  true
+                );
+
+              renderAdminConsultationNotes(
+                noteContainer,
+                notes
+              );
+
+              noteToggle.textContent =
+                `관리자 상담 기록 접기 (${notes.length}건)`;
+            }
+
+
+            await loadConsultationNoteStats();
+
+
+          } catch (error) {
+
+            message.classList.add("error");
+
+            message.textContent =
+              error.message ||
+              "상담 기록 저장 중 문제가 발생했습니다.";
+
+          } finally {
+
+            noteSaveButton.disabled =
+              false;
+
+            noteSaveButton.textContent =
+              originalText;
+          }
+
+
+          return;
+        }
+
+
+        const noteHistoryButton =
+          event.target.closest(
+            ".note-history-toggle"
+          );
+
+
+        if (noteHistoryButton) {
+
+          const card =
+            noteHistoryButton.closest(
+              ".consult-card"
+            );
+
+          if (!card) return;
+
+
+          const consultationId =
+            card.dataset.consultationId;
+
+          const container =
+            card.querySelector(
+              ".note-history-container"
+            );
+
+
+          if (
+            container.classList.contains(
+              "open"
+            )
+          ) {
+
+            container.classList.remove(
+              "open"
+            );
+
+            noteHistoryButton.textContent =
+              "관리자 상담 기록 보기";
+
+            return;
+          }
+
+
+          container.classList.add("open");
+
+          container.innerHTML =
+            '<div class="history-loading">관리자 상담 기록을 불러오는 중입니다.</div>';
+
+          noteHistoryButton.disabled =
+            true;
+
+
+          try {
+
+            const notes =
+              await getAdminConsultationNotes(
+                consultationId
+              );
+
+
+            renderAdminConsultationNotes(
+              container,
+              notes
+            );
+
+
+            noteHistoryButton.textContent =
+              `관리자 상담 기록 접기 (${notes.length}건)`;
+
+
+          } catch (error) {
+
+            container.innerHTML =
+              `<div class="history-error">${
+                escapeHtml(
+                  error.message ||
+                  "관리자 상담 기록을 불러오지 못했습니다."
+                )
+              }</div>`;
+
+            noteHistoryButton.textContent =
+              "관리자 상담 기록 다시 시도";
+
+          } finally {
+
+            noteHistoryButton.disabled =
+              false;
+          }
+
+
+          return;
+        }
+
+
+        const historyButton =
+          event.target.closest(
+            ".history-toggle-btn"
+          );
+
+
+        if (historyButton) {
+
+          const card =
+            historyButton.closest(
+              ".consult-card"
+            );
+
+          if (!card) return;
+
+
+          const consultationId =
+            card.dataset.consultationId;
+
+          const container =
+            card.querySelector(
+              ".history-container"
+            );
+
+
+          if (
+            container.classList.contains(
+              "open"
+            )
+          ) {
+
+            container.classList.remove(
+              "open"
+            );
+
+            historyButton.textContent =
+              "상담 신청 이력 보기";
+
+            return;
+          }
+
+
+          container.classList.add("open");
+
+
+          if (
+            consultationHistoryCache.has(
+              consultationId
+            )
+          ) {
+
+            const history =
+              consultationHistoryCache.get(
+                consultationId
+              );
+
+            renderConsultationHistory(
+              container,
+              history
+            );
+
+            historyButton.textContent =
+              `상담 신청 이력 접기 (${history.length}건)`;
+
+            return;
+          }
+
+
+          historyButton.disabled = true;
+          historyButton.textContent =
+            "이력 불러오는 중...";
+
+          container.innerHTML =
+            '<div class="history-loading">상담 신청 이력을 불러오는 중입니다.</div>';
+
+
+          try {
+
+            const history =
+              await getConsultationHistory(
+                consultationId
+              );
+
+
+            renderConsultationHistory(
+              container,
+              history
+            );
+
+
+            historyButton.textContent =
+              `상담 신청 이력 접기 (${history.length}건)`;
+
+
+          } catch (error) {
+
+            container.innerHTML =
+              `<div class="history-error">${
+                escapeHtml(
+                  error.message ||
+                  "상담 신청 이력을 불러오지 못했습니다."
+                )
+              }</div>`;
+
+            historyButton.textContent =
+              "상담 신청 이력 다시 시도";
+
+          } finally {
+
+            historyButton.disabled =
+              false;
+
+          }
+
+
+          return;
+        }
+
+
+        const button =
+          event.target.closest(".save-case-btn");
+
+        if (!button) return;
+
+
+        const card =
+          button.closest(".consult-card");
+
+        if (!card) return;
+
+
+        const consultationId =
+          card.dataset.consultationId;
+
+        const statusSelect =
+          card.querySelector(
+            ".case-status-select"
+          );
+
+        const employmentCheck =
+          card.querySelector(
+            ".employment-check"
+          );
+
+        const paymentCheck =
+          card.querySelector(
+            ".payment-check"
+          );
+
+
+        const originalText =
+          button.textContent;
+
+        button.disabled = true;
+        button.textContent = "저장 중...";
+
+
+        try {
+
+          await updateAdminCase(
+            consultationId,
+            statusSelect.value,
+            employmentCheck.checked,
+            paymentCheck.checked
+          );
+
+
+          button.textContent = "저장 완료";
+
+          await loadConsultations();
+
+
+        } catch (error) {
+
+          alert(
+            error.message ||
+            "변경사항 저장 중 문제가 발생했습니다."
+          );
+
+          button.disabled = false;
+          button.textContent =
+            originalText;
+
+        }
+
+      }
+    );
+
+
+    // ==========================================
+    // 12. 검색 / 필터
+    // ==========================================
+
+    searchInput.addEventListener(
+      "input",
+      renderConsultations
+    );
+
+    statusFilter.addEventListener(
+      "change",
+      renderConsultations
+    );
+
+
+    document
+      .getElementById("refreshButton")
+      .addEventListener(
+        "click",
+        async function() {
+
+          try {
+            await loadConsultations();
+          } catch (error) {
+            alert(error.message);
+          }
+
+        }
+      );
+
+
+    // ==========================================
+    // 13. 로그아웃
+    // ==========================================
+
+    document
+      .getElementById("logoutButton")
+      .addEventListener(
+        "click",
+        function() {
+
+          sessionStorage.removeItem(
+            SESSION_KEY
+          );
+
+          accessToken = null;
+          consultations = [];
+
+          document.getElementById(
+            "password"
+          ).value = "";
+
+          showLogin();
+
+        }
+      );
+
+
+    // ==========================================
+    // 14. 기존 세션 복구
+    // ==========================================
+
+    async function initialize() {
+
+      if (!accessToken) {
+        showLogin();
+        return;
+      }
+
+
+      try {
+
+        await loadConsultations();
+        showDashboard();
+
+      } catch (error) {
+
+        console.error(error);
+
+        sessionStorage.removeItem(
+          SESSION_KEY
+        );
+
+        accessToken = null;
+        showLogin();
+
+      }
+    }
+
+
+    initialize();
+
+  </script>
+
+</body>
+</html>
