@@ -141,7 +141,7 @@
         }
 
         #progress-bar {
-            width: 25%;
+            width: 50%;
             height: 100%;
             background: var(--accent-color);
             transition: width 0.4s ease;
@@ -299,6 +299,18 @@
 
         .result-card-thumb:hover {
             opacity: 0.9;
+        }
+
+        .result-card-thumb.thumb-missing {
+            min-height: 160px;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+
+        .result-card-thumb.thumb-missing::after {
+            content: "과정 이미지를 불러올 수 없습니다";
         }
 
         .result-card-thumb img {
@@ -564,7 +576,7 @@
     <main>
         <section class="hero-section">
             <div class="badge">K-디지털 기초역량훈련</div>
-            <h1>AI 교육만 10년 모두의연구소에서,<br>90% 국비지원으로 AI 커리어를 시작해 보세요!</h1>
+            <h1>AI 교육만 11년 모두의연구소에서,<br>90% 국비지원으로 AI 커리어를 시작해 보세요!</h1>
             <p>어떤 강의부터 시작할지 고민이라면?<br>1분 만에 진단받으세요.<br> </p>
 
             <section class="recommend-section">
@@ -576,40 +588,22 @@
 
                         <div class="step-container active" data-step="1">
                             <span class="tag">STEP 01</span>
-                            <h2>지금 바로 해보고 싶은 것은 무엇인가요?</h2>
+                            <h2>지금 가장 배우고 싶은 주제는 무엇인가요?</h2>
+                            <p style="color:var(--text-sub); margin-bottom:18px;">관심 분야를 선택해 주세요.</p>
                             <div class="options-list">
-                                <div class="option-item" onclick="nextStep(1, 'purpose', 'work')">💼 업무 효율화</div>
-                                <div class="option-item" onclick="nextStep(1, 'purpose', 'content')">🎨 콘텐츠 제작</div>
-                                <div class="option-item" onclick="nextStep(1, 'purpose', 'data')">📊 데이터 분석</div>
-                                <div class="option-item" onclick="nextStep(1, 'purpose', 'theory')">🧠 AI 이해 / 이론</div>
-                                <div class="option-item" onclick="nextStep(1, 'purpose', 'dev')">🛠 서비스 개발</div>
+                                <div class="option-item" onclick="chooseTopic('everyday')">🤖 일상에서 AI를 안전하게 활용하기</div>
+                                <div class="option-item" onclick="chooseTopic('applied')">🎨 AI로 콘텐츠를 만들고 업무에 활용하기</div>
+                                <div class="option-item" onclick="chooseTopic('career')">🧭 AI · 데이터 직무와 프로젝트 경험하기</div>
+                                <div class="option-item" onclick="chooseTopic('technical')">📐 AI 코딩과 딥러닝 원리 배우기</div>
                             </div>
                         </div>
 
                         <div class="step-container" data-step="2">
                             <span class="tag">STEP 02</span>
-                            <h2>현재 수준은 어디에 가깝나요?</h2>
-                            <div class="options-list">
-                                <div class="option-item" onclick="nextStep(2, 'level', 'beginner')">🐣 입문<br>(AI를 거의 처음
-                                    접하거나, 사용 경험이 거의 없는 단계)</div>
-                                <div class="option-item" onclick="nextStep(2, 'level', 'intermediate')">🙂 기초<br>(AI 사용
-                                    경험은 있지만, 실무에 활용해본 경험은 적은 단계)</div>
-                                <div class="option-item" onclick="nextStep(2, 'level', 'advanced')">💻 실무<br>(AI를 활용하고
-                                    있으며 고급 활용 방법이 필요한 단계)</div>
-                            </div>
+                            <h2 id="followup-title">어떤 방식으로 배우고 싶나요?</h2>
+                            <p id="followup-description" style="color:var(--text-sub); margin-bottom:18px;"></p>
+                            <div class="options-list" id="followup-options"></div>
                             <button class="back-btn" onclick="prevStep(2)">이전 질문으로</button>
-                        </div>
-
-                        <div class="step-container" data-step="3">
-                            <span class="tag">STEP 03</span>
-                            <h2>최종적으로 이루고 싶은 목표는 무엇인가요?</h2>
-                            <div class="options-list">
-                                <div class="option-item" onclick="processResult('productivity')">🚀 생산성 향상</div>
-                                <div class="option-item" onclick="processResult('contents')">🎬 콘텐츠 제작</div>
-                                <div class="option-item" onclick="processResult('data_skill')">📈 데이터 역량</div>
-                                <div class="option-item" onclick="processResult('maker')">🛠 AI 서비스 개발</div>
-                            </div>
-                            <button class="back-btn" onclick="prevStep(3)">이전 질문으로</button>
                         </div>
 
                         <div id="loading-page" style="display:none; text-align:center; padding: 30px 0;">
@@ -849,45 +843,113 @@
     </footer>
 
     <script>
-        let answers = { purpose: '', level: '', goal: '' };
+        let answers = { topic: '' };
 
-        // 11개 핵심 코스 데이터 적용 완료
-        const courseData = {
-            L1: { title: "[첫걸음] 일상부터 업무까지: ChatGPT와 친해지기", url: "https://service.modulabs.co.kr/r/7s9B0gEZ", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/937f3831-3374-4851-8341-8baf8d515ac3.jpg" },
-            L2: { title: "생성형 AI를 활용한 15초 광고(숏폼) 만들기", url: "https://service.modulabs.co.kr/r/4wrHCFzd", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/a1a24780-a952-4d1e-9091-0c9c3d6989b0.png" },
-            L3: { title: "[AI 능력자] AI로 시작하는 콘텐츠 크리에이터", url: "https://service.modulabs.co.kr/r/Mhj4TrQb", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/8c329a36-be2d-410c-b2be-f7b433f32387.jpg" },
-            L4: { title: "[첫걸음] 데이터를 보는 눈, 파이썬으로 배우는 통계 기초", url: "https://service.modulabs.co.kr/r/-c8NTiXF", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/f2f336b3-2c64-417e-b927-f97f9f9ac668.jpg" },
-            L5: { title: "[첫걸음] 기본부터 탄탄하게, 파이썬 데이터 분석 첫 만남", url: "https://service.modulabs.co.kr/r/KmfbgwZQ", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/cd1e09d1-b538-4b54-94c6-88d0950c35fa.jpg" },
-            L6: { title: "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링", url: "https://service.modulabs.co.kr/r/z2ShDcth", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/b8d30fad-fcb0-4aa2-aa24-24cd7a51a31e.png" },
-            L7: { title: "[AI 능력자] 바이브 코딩 with Cursor: 챗봇, DB 배포까지", url: "https://service.modulabs.co.kr/r/oMjw_smL", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/c3b889aa-bb9a-4be9-aad9-e0d72869b5d1.jpg" },
-            L8: { title: "[왕초보] 비개발자도 할 수 있는 바이브 코딩 웹 개발", url: "https://service.modulabs.co.kr/r/kJoK2DYs", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/c3a06b19-9ae9-4fcb-91e2-52a31e3d8385.jpg" },
-            L9: { title: "[AI 능력자] 비개발자도 할 수 있는 바이브 코딩 업무 자동화", url: "https://service.modulabs.co.kr/r/Tfs4weJ9", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/0b1565a3-94d4-4d3d-aefb-d64ee1e984c8.jpg" },
-            L10: { title: "AI by Hand: 내 손으로 이해하는 딥러닝 기초수학", url: "https://service.modulabs.co.kr/r/I4JFXpQS", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/a7b09116-d2be-4e8d-9cad-d052d4bba9d4.png" },
-            L11: { title: "AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음", url: "https://service.modulabs.co.kr/r/eujvSgir", thumb: "https://resources-public-prd.modulabs.co.kr/class/images/0db370b8-95af-40a7-9232-c9f86e647bff.png" }
+        // Supabase > Project Settings > API 에서 확인한 값으로 설정하세요.
+        // anon/publishable key만 사용하고 service_role key는 절대 넣지 마세요.
+        const ANALYTICS_CONFIG = {
+            supabaseUrl: 'https://fecvtbpiaxxohpcvuaul.supabase.co',
+            publishableKey: 'sb_publishable_YZR3HWJnl5HMZF-NcnZSwQ_Dv8irlMn
+'
         };
 
-        function nextStep(currentStep, key, value) {
-            answers[key] = value;
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-            const next = document.querySelector(`[data-step="${currentStep + 1}"]`);
-            if (next) {
-                next.classList.add('active');
-                document.getElementById('progress-bar').style.width = ((currentStep + 1) / 3 * 100) + '%';
+        const analyticsSessionId = getOrCreateSessionId();
+        const analyticsStartedAt = new Date().toISOString();
+
+        function getOrCreateSessionId() {
+            const key = 'course_recommendation_analytics_session';
+            try {
+                let id = sessionStorage.getItem(key);
+                if (!id) {
+                    id = crypto.randomUUID();
+                    sessionStorage.setItem(key, id);
+                }
+                return id;
+            } catch (_) {
+                return crypto.randomUUID();
             }
+        }
+
+        function trackEvent(eventName, properties = {}) {
+            if (!ANALYTICS_CONFIG.supabaseUrl.startsWith('https://') ||
+                ANALYTICS_CONFIG.publishableKey === 'YOUR_SUPABASE_PUBLISHABLE_KEY') return;
+
+            const params = new URLSearchParams(location.search);
+            const payload = {
+                session_id: analyticsSessionId,
+                event_name: eventName,
+                properties: {
+                    ...properties,
+                    page_path: location.pathname,
+                    referrer_host: document.referrer ? new URL(document.referrer).host : null,
+                    utm_source: params.get('utm_source'),
+                    utm_medium: params.get('utm_medium'),
+                    utm_campaign: params.get('utm_campaign'),
+                    elapsed_ms: Date.now() - Date.parse(analyticsStartedAt)
+                }
+            };
+
+            fetch(`${ANALYTICS_CONFIG.supabaseUrl}/rest/v1/funnel_events`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': ANALYTICS_CONFIG.publishableKey,
+                    'Authorization': `Bearer ${ANALYTICS_CONFIG.publishableKey}`,
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify(payload),
+                keepalive: true
+            }).catch(() => {}); // 분석 장애가 추천 페이지 동작을 막지 않게 합니다.
+        }
+
+        trackEvent('page_view');
+
+        // 썸네일은 GitHub 저장소의 images 폴더를 기준으로 한 상대 경로입니다.
+        const courseData = {
+            chatgpt: { title: "[무료] ChatGPT 입문: 로그인부터 커스텀 GPT 만들기까지", url: "https://class.modulabs.co.kr/classes/141", thumb: "images/[무료] ChatGPT 입문 로그인부터 커스텀 GPT 만들기까지.png", summary: "로그인과 기본 대화부터 나만의 커스텀 GPT 만들기까지 다루는 짧은 입문 과정입니다." },
+            safe: { title: "[무료] AI에게 속지 말자! AI 피싱 & AI 기본법 파헤치기", url: "https://class.modulabs.co.kr/classes/181", thumb: "images/[무료]AI에게 속지 말자! AI 피싱 & AI 기본법 파헤치기.png", summary: "AI 합성 사례와 식별 기술, AI 기본법을 살펴보며 안전하게 AI를 이해합니다." },
+            health: { title: "[무료] 중장년을 위한 AI: ChatGPT와 건강 상담하기", url: "https://class.modulabs.co.kr/classes/129", thumb: "images/[무료] 중장년을 위한 AI ChatGPT와 건강 상담하기.png", summary: "업무와 일상에서 AI를 활용하고 건강 고민을 정리하는 방법을 익히는 입문 과정입니다." },
+            shortform: { title: "생성형 AI를 활용한 15초 광고(숏폼) 만들기", url: "https://class.modulabs.co.kr/classes/16", thumb: "images/생성형 AI를 활용한 15초 광고(숏폼) 만들기.png", summary: "생성형 AI로 광고를 기획하고 이미지 · 영상을 만들어 15초 숏폼으로 완성합니다." },
+            prompt: { title: "상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링", url: "https://class.modulabs.co.kr/classes/57", thumb: "images/상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링.png", summary: "업무 요청 설계와 결과 검증, 반복 업무용 GPTs, Codex 데이터 분석, 스프레드시트 · 엑셀 자동화를 실습합니다.", curriculum: ["AI 업무 요청 설계의 기초와 결과 검증", "반복 업무 자동화를 위한 GPTs 설계", "나만의 업무 비서 GPTs 만들기", "Codex를 활용한 업무 파일 관리와 데이터 분석", "스프레드시트와 엑셀 업무 자동화", "프로젝트: 나의 업무용 GPTs 제작", "심화 프로젝트: Codex 데이터 통합 분석 보고서"] },
+            career: { title: "AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음", url: "https://class.modulabs.co.kr/classes/137", thumb: "images/AI와 함께 코딩하자! 인공지능 데이터 커리어 첫걸음.png", summary: "AI 코딩 도구를 활용해 데이터 분석부터 머신러닝 · 딥러닝 서비스까지 여러 AI 직무의 흐름을 경험합니다." },
+            math: { title: "AI by Hand: 내 손으로 이해하는 딥러닝 기초수학", url: "https://class.modulabs.co.kr/classes/136", thumb: "images/AI by Hand 내 손으로 이해하는 딥러닝 기초수학.png", summary: "수식과 계산을 손으로 따라가며 딥러닝의 원리를 이해하는 기초 수학 과정입니다." },
+            vibe: { title: "[무료] 바이브 코딩 입문 with Windsurf(Devin)", url: "https://class.modulabs.co.kr/classes/140", thumb: "images/[무료] 바이브 코딩 입문 with Windsurf(Devin).png", summary: "무료 입문 과정으로 AI 코딩 도구를 처음 사용해 웹 개발을 경험합니다." }
+        };
+
+        // 각 분야의 후속 선택지로 난이도와 관심사를 구분합니다.
+        const followups = {
+            everyday: { title: "AI를 어디에 활용하고 싶으신가요?", description: "세 과정 모두 입문용이며, 관심 있는 활용 분야를 골라주세요.", options: [["😖 ChatGPT를 처음 사용해요", "chatgpt"], ["👮 AI 피싱 · 가짜 정보와 AI 기본법을 알고 싶어요", "safe"], ["🍙 일상 · 업무와 건강 상담에 AI를 활용하고 싶어요", "health"]] },
+            applied: { title: "어떤 AI 활용 역량을 익히고 싶으신가요?", description: "기초 활용부터 콘텐츠 제작, 프롬프트 작성까지 선택할 수 있어요.", options: [["📕 기초부터 시작하고 싶어요", "health"], ["📽️ 콘텐츠를 만들고 싶어요", "shortform"], ["🏢 업무 자동화를 익히고 싶어요", "prompt"]] },
+            career: { title: "어떤 경험을 우선하고 싶으신가요?", description: "직무 프로젝트 과정과 수학 중심 과정은 난이도와 내용이 다릅니다.", options: [["🔎 AI 직무에 대한 전과을 경험하고 싶어요", "career"], ["🧮 수식과 계산을 직접 따라가며 딥러닝 원리를 공부하고 싶어요", "math"]] },
+            technical: { title: "어떤 기술 경험부터 시작하고 싶으신가요?", description: "무료 코딩 입문부터 AI 직무 프로젝트, 수학 중심 학습까지 가능해요.", options: [["🌐 무료로 웹 개발을 시작하고 싶어요", "vibe"], ["🔎 데이터 · AI 직무와 프로젝트를 폭넓게 경험하고 싶어요", "career"], ["🧮 수식을 직접 다루며 딥러닝 원리를 깊게 공부하고 싶어요", "math"]] }
+        };
+
+        function chooseTopic(topic) {
+            answers.topic = topic;
+            trackEvent('topic_selected', { topic });
+            const item = followups[topic];
+            document.getElementById('followup-title').textContent = item.title;
+            document.getElementById('followup-description').textContent = item.description;
+            document.getElementById('followup-options').innerHTML = item.options.map(([label, code]) =>
+                `<div class="option-item" onclick="processResult('${code}')">${label}</div>`
+            ).join('');
+            document.querySelector('[data-step="1"]').classList.remove('active');
+            document.querySelector('[data-step="2"]').classList.add('active');
+            document.getElementById('progress-bar').style.width = '50%';
+            trackEvent('followup_viewed', { topic });
         }
 
         function prevStep(currentStep) {
+            trackEvent('back_clicked', { from_step: currentStep });
             document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-            const prev = document.querySelector(`[data-step="${currentStep - 1}"]`);
-            if (prev) {
-                prev.classList.add('active');
-                document.getElementById('progress-bar').style.width = ((currentStep - 1) / 3 * 100) + '%';
-            }
+            document.querySelector('[data-step="1"]').classList.add('active');
+            document.getElementById('progress-bar').style.width = '50%';
         }
 
-        function processResult(goal) {
-            answers.goal = goal;
-            document.querySelector(`[data-step="3"]`).classList.remove('active');
+        function processResult(courseCode) {
+            answers.course = courseCode;
+            trackEvent('followup_selected', { topic: answers.topic, course_code: courseCode });
+            document.querySelectorAll('.step-container.active').forEach(step => step.classList.remove('active'));
             document.getElementById('progress-container').style.display = 'none';
             document.getElementById('loading-page').style.display = 'block';
 
@@ -899,89 +961,22 @@
                 // 박스 밖의 넓은 확장 영역(후기, FAQ) 노출
                 document.getElementById('extended-result').style.display = 'block';
 
+                trackEvent('recommendation_shown', { topic: answers.topic, course_code: courseCode });
+
                 showResultCard();
             }, 1200);
         }
 
-        // Q1 + Q2 기반 1차 강의 추천 매핑 로직
-        function getCourse1(purpose, level) {
-            if (purpose === 'work') {
-                if (level === 'beginner') return 'L1';
-                if (level === 'intermediate') return 'L9';
-                if (level === 'advanced') return 'L6';
-            }
-            if (purpose === 'content') {
-                if (level === 'beginner') return 'L3';
-                if (level === 'intermediate') return 'L2';
-                if (level === 'advanced') return 'L6';
-            }
-            if (purpose === 'data') {
-                if (level === 'beginner') return 'L5';
-                if (level === 'intermediate') return 'L4';
-                if (level === 'advanced') return 'L7';
-            }
-            if (purpose === 'theory') {
-                if (level === 'beginner') return 'L1';
-                if (level === 'intermediate') return 'L6';
-                if (level === 'advanced') return 'L10';
-            }
-            if (purpose === 'dev') {
-                if (level === 'beginner') return 'L8';
-                if (level === 'intermediate') return 'L11';
-                if (level === 'advanced') return 'L7';
-            }
-            return 'L1';
-        }
-
-        // 1차 강의 + Q3 기반 2차(다음 단계) 추천 매핑 로직
-        function getCourse2(course1, goal) {
-            const rules = {
-                'productivity': {
-                    'L1': 'L9', 'L2': 'L1', 'L3': 'L1', 'L5': 'L9', 'L4': 'L9',
-                    'L8': 'L9', 'L11': 'L9', 'L7': 'L6', 'L9': 'L6', 'L6': '', 'L10': 'L6'
-                },
-                'contents': {
-                    'L1': 'L3', 'L9': 'L3', 'L8': 'L3', 'L11': 'L3', 'L5': 'L3',
-                    'L4': 'L3', 'L3': 'L2', 'L2': 'L6'
-                },
-                'data_skill': {
-                    'L1': 'L5', 'L2': 'L5', 'L3': 'L5', 'L5': 'L4', 'L4': 'L7',
-                    'L9': 'L4', 'L6': 'L4', 'L8': 'L7', 'L11': 'L7'
-                },
-                'maker': {
-                    'L1': 'L8', 'L2': 'L8', 'L3': 'L8', 'L5': 'L8', 'L4': 'L8',
-                    'L8': 'L11', 'L11': 'L7', 'L9': 'L7', 'L6': 'L10', 'L7': 'L10'
-                }
-            };
-            return rules[goal][course1] || "";
-        }
-
         function showResultCard() {
-            const recommendCode = getCourse1(answers.purpose, answers.level);
-            const nextCode = getCourse2(recommendCode, answers.goal);
-
-            const resultCourse = courseData[recommendCode];
-            const nextCourse = courseData[nextCode];
+            const resultCourse = courseData[answers.course];
 
             const resultDiv = document.getElementById('recommendation-result');
-
-            let roadmapHTML = "";
-            if (nextCourse) {
-                roadmapHTML = `
-                    <div style="background-color: var(--bg-gray); padding: 12px 16px; border-radius: 8px; font-size: 13.5px;">
-                        <b style="color:var(--primary-color); display:block; margin-bottom:4px;">💡 다음 추천 로드맵</b>
-                        <a href="${nextCourse.url}" target="_blank" style="color:var(--text-main); text-decoration:underline; cursor:pointer;">
-                            ${nextCourse.title}
-                        </a>
-                    </div>
-                `;
-            }
 
             resultDiv.innerHTML = `
                 <div class="result-card">
                     <a href="${resultCourse.url}" target="_blank" style="text-decoration: none; display: block;">
                         <div class="result-card-thumb">
-                            <img src="${resultCourse.thumb}" alt="강의 썸네일">
+                            <img src="${resultCourse.thumb}" alt="${resultCourse.title} 강의 썸네일" onerror="this.closest('.result-card-thumb').classList.add('thumb-missing'); this.remove()">
                         </div>
                     </a>
                     <div style="padding: 24px;">
@@ -991,14 +986,23 @@
                             </h4>
                         </a>
                         <p style="font-size:14px; color:var(--text-sub); margin-bottom: 16px;">
-                            연구원님의 현재 수준과 목적에 가장 최적화된 맞춤 강의입니다.
+                            ${resultCourse.summary}
                         </p>
-                        ${roadmapHTML}
+                        ${resultCourse.curriculum ? `<details style="font-size:14px; color:var(--text-sub);"><summary style="cursor:pointer; color:var(--primary-color); font-weight:700;">변경된 1~7차시 커리큘럼 보기</summary><ol style="padding-left:22px; margin-top:10px;">${resultCourse.curriculum.map(item => `<li style="margin-bottom:6px;">${item}</li>`).join('')}</ol></details>` : ''}
                     </div>
                 </div>
             `;
 
             document.getElementById('result-link').href = resultCourse.url;
+
+            document.querySelectorAll('#recommendation-result a, #result-link, .extra-buttons-wrapper a').forEach((link) => {
+                link.addEventListener('click', () => trackEvent('outbound_click', {
+                    topic: answers.topic,
+                    course_code: answers.course,
+                    link_text: link.textContent.trim().slice(0, 100),
+                    destination_host: new URL(link.href, location.href).host
+                }));
+            });
         }
     </script>
 </body>
