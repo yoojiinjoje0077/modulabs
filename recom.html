@@ -848,10 +848,21 @@
         // Supabase > Project Settings > API 에서 확인한 값으로 설정하세요.
         // anon/publishable key만 사용하고 service_role key는 절대 넣지 마세요.
         const ANALYTICS_CONFIG = {
-            supabaseUrl: 'https://fecvtbpiaxxohpcvuaul.supabase.co',
-            publishableKey: 'sb_publishable_YZR3HWJnl5HMZF-NcnZSwQ_Dv8irlMn
-'
+            supabaseUrl: 'YOUR_SUPABASE_PROJECT_URL',
+            publishableKey: 'YOUR_SUPABASE_PUBLISHABLE_KEY'
         };
+
+        function createAnalyticsSessionId() {
+            if (globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function') {
+                return globalThis.crypto.randomUUID();
+            }
+            // Analytics session IDs do not grant access; use a UUID-shaped fallback
+            // for older or non-HTTPS preview environments.
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (char) => {
+                const random = Math.floor(Math.random() * 16);
+                return (char === 'x' ? random : (random & 0x3) | 0x8).toString(16);
+            });
+        }
 
         const analyticsSessionId = getOrCreateSessionId();
         const analyticsStartedAt = new Date().toISOString();
@@ -861,12 +872,12 @@
             try {
                 let id = sessionStorage.getItem(key);
                 if (!id) {
-                    id = crypto.randomUUID();
+                    id = createAnalyticsSessionId();
                     sessionStorage.setItem(key, id);
                 }
                 return id;
             } catch (_) {
-                return crypto.randomUUID();
+                return createAnalyticsSessionId();
             }
         }
 
@@ -874,17 +885,12 @@
             if (!ANALYTICS_CONFIG.supabaseUrl.startsWith('https://') ||
                 ANALYTICS_CONFIG.publishableKey === 'YOUR_SUPABASE_PUBLISHABLE_KEY') return;
 
-            const params = new URLSearchParams(location.search);
             const payload = {
                 session_id: analyticsSessionId,
                 event_name: eventName,
                 properties: {
                     ...properties,
                     page_path: location.pathname,
-                    referrer_host: document.referrer ? new URL(document.referrer).host : null,
-                    utm_source: params.get('utm_source'),
-                    utm_medium: params.get('utm_medium'),
-                    utm_campaign: params.get('utm_campaign'),
                     elapsed_ms: Date.now() - Date.parse(analyticsStartedAt)
                 }
             };
