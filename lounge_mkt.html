@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>라운지 과정 홍보</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #080d20; }
+    body { font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; color: white; }
+    #stage { position: fixed; inset: 0; overflow: hidden; }
+    .slide { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transition: opacity .45s ease; background: #fff; }
+    .slide.active { opacity: 1; z-index: 1; }
+    .slide img, .slide video { position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
+    .slide::before { content: ""; position: absolute; inset: -5%; background: var(--bg) cenQter/cover; filter: blur(34px) brightness(.72); }
+    .slide.video { background: #000; }
+    .slide.video::before { display: none; }
+    #toolbar { position: fixed; z-index: 5; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(4, 10, 30, .76); backdrop-filter: blur(12px); transition: opacity .3s; }
+    body.idle #toolbar { opacity: 0; pointer-events: none; }
+    body.idle { cursor: none; }
+    button { border: 0; border-radius: 999px; background: #fff; color: #101831; font: inherit; font-size: 14px; font-weight: 700; padding: 9px 13px; cursor: pointer; white-space: nowrap; }
+    button:hover { background: #dce8ff; }
+    #counter { min-width: 50px; text-align: center; font-size: 13px; font-weight: 700; }
+    #pick { display: none; }
+    #setup { position: fixed; z-index: 6; left: 50%; bottom: 90px; transform: translateX(-50%); width: min(90vw, 520px); padding: 18px; border-radius: 20px; background: rgba(4, 10, 30, .9); text-align: center; line-height: 1.5; box-shadow: 0 10px 30px #0005; }
+    #setup[hidden] { display: none; }
+    #setup p { margin: 0 0 12px; font-size: 15px; }
+    #status { max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+    @media (max-width: 600px) { #toolbar { gap: 5px; padding: 7px; } button { font-size: 12px; padding: 8px 9px; } }
+  </style>
+</head>
+<body class="idle">
+  <main id="stage" aria-label="과정 홍보 이미지와 영상 재생"></main>
+  <nav id="toolbar" aria-label="재생 제어">
+    <button id="prev" type="button" title="이전 콘텐츠">◀</button>
+    <span id="counter"></span>
+    <button id="next" type="button" title="다음 콘텐츠">▶</button>
+    <button id="pause" type="button">일시정지</button>
+    <button id="fullscreen" type="button">전체화면</button>
+    <button id="connect" type="button">Drive 폴더 연결</button>
+    <span id="status" aria-live="polite"></span>
+    <button id="add" type="button">파일 추가</button>
+    <input id="pick" type="file" accept="image/*,video/mp4,video/webm" multiple>
+  </nav>
+  <div id="setup" hidden><p>Google Drive의 ‘강남캠 세로형 디스플레이’ 폴더를 한 번 선택해 주세요.<br>이후 이미지·영상 추가·수정·삭제가 재생 화면에 자동 반영됩니다.</p><button id="setup-connect" type="button">Drive 폴더 선택</button></div>
+  <script>
+    const INTERVAL_MS = 5000;
+    const REFRESH_MS = 15000;
+    const defaultSlides = [
+      { src: "slides/01.png", title: "상위 1% 일잘러를 위한 프롬프트 엔지니어링" },
+      { src: "slides/02.png", title: "AI와 함께 코딩하자!" },
+      { src: "slides/03.png", title: "AI by Hand" },
+      { src: "slides/04.png", title: "단체 할인" },
+      { src: "slides/05.png", title: "비개발자의 서비스 제작 도전: 바이브 코딩부터 배포까지" },
+      { src: "slides/06.png", title: "상상을 콘텐츠로 만드는 AI: 이미지·영상부터 제작 자동화까지" },
+      { src: "slides/07.png", title: "감 대신 데이터로 승부: 파이썬 · AI로 완성하는 분석력" },
+      { src: "slides/08.png", title: "퇴근을 앞당기는 AI 활용법: 문서 작성부터 업무 자동화까지" },
+      { src: "slides/09.png", title: "AI, 쓰는 사람에서 만드는 사람으로: 코딩·딥러닝 첫걸음" }
+    ];
+    let slides = [...defaultSlides];
+    const stage = document.querySelector("#stage");
+    const counter = document.querySelector("#counter");
+    const pauseButton = document.querySelector("#pause");
+    const status = document.querySelector("#status");
+    const setup = document.querySelector("#setup");
+    let current = 0;
+    let playing = true;
+    let timer;
+    let idleTimer;
+    let directoryHandle;
+    let fingerprint = "";
+    let managedUrls = [];
+    let scanning = false;
+    const isVideoFile = name => /\.(mp4|webm)$/i.test(name);
+
+    function render() {
+      stage.querySelectorAll("video").forEach(video => video.pause());
+      stage.replaceChildren();
+      if (!slides.length) {
+        const empty = document.createElement("section");
+        empty.className = "slide active";
+        empty.style.background = "#101831";
+        empty.style.color = "white";
+        empty.style.fontSize = "clamp(22px, 4vw, 44px)";
+        empty.textContent = "연결된 폴더에 재생할 파일이 없습니다";
+        stage.append(empty);
+        counter.textContent = "0 / 0";
+        return;
+      }
+      slides.forEach((item, index) => {
+        const section = document.createElement("section");
+        const videoItem = item.kind === "video";
+        section.className = "slide" + (videoItem ? " video" : "") + (index === current ? " active" : "");
+        if (!videoItem) section.style.setProperty("--bg", `url("${item.src}")`);
+        section.setAttribute("aria-label", item.title);
+        const media = document.createElement(videoItem ? "video" : "img");
+        media.src = item.src;
+        if (videoItem) {
+          media.muted = true;
+          media.playsInline = true;
+          media.preload = "metadata";
+          media.addEventListener("ended", () => { if (playing && current === index) show(index + 1); });
+          media.addEventListener("error", () => {
+            if (current !== index) return;
+            status.textContent = "영상 재생 실패";
+            if (playing && slides.length > 1) timer = setTimeout(() => show(index + 1), INTERVAL_MS);
+          });
+        } else media.alt = item.title;
+        section.append(media);
+        stage.append(section);
+      });
+      counter.textContent = `${current + 1} / ${slides.length}`;
+    }
+    function show(index) {
+      if (!slides.length) return;
+      current = (index + slides.length) % slides.length;
+      document.querySelectorAll(".slide").forEach((el, i) => {
+        el.classList.toggle("active", i === current);
+        if (i !== current) {
+          const video = el.querySelector("video");
+          if (video) { video.pause(); video.currentTime = 0; }
+        }
+      });
+      counter.textContent = `${current + 1} / ${slides.length}`;
+      restart();
+    }
+    function restart() {
+      clearTimeout(timer);
+      const video = stage.querySelector(".slide.active video");
+      if (video) {
+        if (playing) video.play().catch(() => { status.textContent = "영상 재생 확인 필요"; });
+        else video.pause();
+      } else if (playing && slides.length > 1) timer = setTimeout(() => show(current + 1), INTERVAL_MS);
+    }
+    function togglePause() {
+      playing = !playing;
+      pauseButton.textContent = playing ? "일시정지" : "재생";
+      restart();
+    }
+    function wake() {
+      document.body.classList.remove("idle");
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => document.body.classList.add("idle"), 2000);
+    }
+    function openSettings() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open("lounge-drive-player", 1);
+        request.onupgradeneeded = () => request.result.createObjectStore("settings");
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async function readSavedFolder() {
+      const db = await openSettings();
+      return new Promise((resolve, reject) => {
+        const request = db.transaction("settings").objectStore("settings").get("folder");
+        request.onsuccess = () => { db.close(); resolve(request.result); };
+        request.onerror = () => { db.close(); reject(request.error); };
+      });
+    }
+    async function saveFolder(handle) {
+      const db = await openSettings();
+      return new Promise((resolve, reject) => {
+        const request = db.transaction("settings", "readwrite").objectStore("settings").put(handle, "folder");
+        request.onsuccess = () => { db.close(); resolve(); };
+        request.onerror = () => { db.close(); reject(request.error); };
+      });
+    }
+    async function refreshDriveSlides() {
+      if (!directoryHandle || scanning) return;
+      scanning = true;
+      try {
+        if (await directoryHandle.queryPermission({ mode: "read" }) !== "granted") {
+          setup.hidden = false;
+          status.textContent = "Drive 권한 필요";
+          return;
+        }
+        const files = [];
+        for await (const handle of directoryHandle.values()) {
+          if (handle.kind !== "file" || !/\.(png|jpe?g|webp|gif|mp4|webm)$/i.test(handle.name)) continue;
+          try { files.push({ handle, file: await handle.getFile() }); } catch (error) { console.warn("파일 읽기 실패", handle.name, error); }
+        }
+        files.sort((a, b) => a.file.name.localeCompare(b.file.name, "ko", { numeric: true }));
+        const nextFingerprint = JSON.stringify(files.map(({ file }) => [file.name, file.size, file.lastModified]));
+        if (nextFingerprint !== fingerprint) {
+          const previousTitle = slides[current]?.title;
+          const oldUrls = managedUrls;
+          managedUrls = files.map(({ file }) => URL.createObjectURL(file));
+          slides = files.map(({ file }, i) => ({ src: managedUrls[i], title: file.name, kind: isVideoFile(file.name) ? "video" : "image" }));
+          current = Math.max(0, slides.findIndex(item => item.title === previousTitle));
+          fingerprint = nextFingerprint;
+          render();
+          restart();
+          oldUrls.forEach(url => URL.revokeObjectURL(url));
+        }
+        setup.hidden = true;
+        document.querySelector("#add").hidden = true;
+        status.textContent = `Drive: ${files.length}개`;
+      } catch (error) {
+        console.error("Drive 폴더 새로고침 실패", error);
+        status.textContent = "Drive 연결 확인 필요";
+        setup.hidden = false;
+      } finally {
+        scanning = false;
+      }
+    }
+    async function chooseFolder() {
+      try {
+        if (!window.showDirectoryPicker) throw new Error("Chrome 또는 Edge에서 열어 주세요.");
+        directoryHandle = await window.showDirectoryPicker({ id: "lounge-display", mode: "read" });
+        await saveFolder(directoryHandle);
+        fingerprint = "";
+        await refreshDriveSlides();
+      } catch (error) {
+        if (error.name !== "AbortError") status.textContent = error.message || "폴더 연결 실패";
+      }
+    }
+    async function restoreFolder() {
+      try {
+        if (!window.showDirectoryPicker) throw new Error("Chrome 또는 Edge에서 열어 주세요.");
+        directoryHandle = await readSavedFolder();
+        if (directoryHandle) await refreshDriveSlides();
+        else { setup.hidden = false; status.textContent = "Drive 폴더 선택 필요"; }
+      } catch (error) {
+        setup.hidden = false;
+        status.textContent = error.message || "Drive 폴더 선택 필요";
+      }
+    }
+    document.querySelector("#prev").onclick = () => show(current - 1);
+    document.querySelector("#next").onclick = () => show(current + 1);
+    pauseButton.onclick = togglePause;
+    document.querySelector("#fullscreen").onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+    document.querySelector("#connect").onclick = chooseFolder;
+    document.querySelector("#setup-connect").onclick = async () => {
+      if (directoryHandle && await directoryHandle.requestPermission({ mode: "read" }) === "granted") await refreshDriveSlides();
+      else await chooseFolder();
+    };
+    document.querySelector("#add").onclick = () => document.querySelector("#pick").click();
+    document.querySelector("#pick").onchange = event => {
+      const files = [...event.target.files].filter(file => /\.(png|jpe?g|webp|gif|mp4|webm)$/i.test(file.name));
+      files.forEach(file => slides.push({ src: URL.createObjectURL(file), title: file.name, kind: isVideoFile(file.name) ? "video" : "image" }));
+      render();
+      restart();
+    };
+    document.addEventListener("keydown", event => {
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+      if (event.key === " " || event.key.toLowerCase() === "p") { event.preventDefault(); togglePause(); }
+      if (event.key.toLowerCase() === "f") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+      wake();
+    });
+    document.addEventListener("pointermove", wake);
+    document.addEventListener("touchstart", wake);
+    render(); restart(); restoreFolder();
+    setInterval(refreshDriveSlides, REFRESH_MS);
+  </script>
+</body>
+</html>
