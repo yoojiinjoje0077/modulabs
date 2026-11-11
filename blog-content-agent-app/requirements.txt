@@ -1,0 +1,2 @@
+Markdown==3.11.2
+PyJWT[crypto]==2.10.1
