@@ -83,6 +83,11 @@ async function run(demo) {
   } catch (error) {
     showToast(error.message || '요청을 처리할 수 없습니다.');
   } finally {
+    if (!demo) {
+      apiKeyInput.value = '';
+      statusPill.querySelector('span:last-child').textContent = 'API 키 입력 필요';
+      statusPill.classList.remove('live');
+    }
     setBusy(false, demo);
   }
 }
