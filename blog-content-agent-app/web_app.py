@@ -9,6 +9,7 @@ from __future__ import annotations
 import contextvars
 import json
 import os
+import threading
 import urllib.error
 import urllib.request
 from http.server import ThreadingHTTPServer
@@ -19,6 +20,7 @@ import server as agent
 
 ROOT = Path(__file__).resolve().parent
 CURRENT_CREDENTIAL = contextvars.ContextVar("credential", default=None)
+GENERATION_SLOTS = threading.BoundedSemaphore(2)
 MODELS = {
     "openai": ["gpt-6-astra", "gpt-5.4"],
     "gemini": ["gemini-3.8-flash", "gemini-3.1-pro-preview"],
@@ -142,6 +144,7 @@ class HostedHandler(agent.Handler):
         if public_origin and origin != public_origin.rstrip("/"):
             return self.send_json(403, {"error": "공개 웹앱 주소에서 다시 시도해 주세요."})
         credential_token = None
+        slot_acquired = False
         try:
             size = int(self.headers.get("Content-Length", "0"))
             if size < 1 or size > agent.MAX_REQUEST_BYTES:
@@ -156,6 +159,12 @@ class HostedHandler(agent.Handler):
                     raise ValueError("서비스와 모델을 선택해 주세요.")
                 if not key or len(key) > 512 or "\n" in key or "\r" in key or key.startswith("key_"):
                     raise ValueError("해당 서비스에서 발급한 비밀 API 키를 입력해 주세요. 키 ID는 사용할 수 없습니다.")
+                prefixes = {"openai": "sk-", "gemini": "AIza", "claude": "sk-ant-"}
+                if not key.startswith(prefixes[provider]):
+                    raise ValueError("선택한 AI 서비스의 API 키 형식이 아닙니다. 서비스와 키를 다시 확인하세요.")
+                slot_acquired = GENERATION_SLOTS.acquire(blocking=False)
+                if not slot_acquired:
+                    raise RuntimeError("현재 다른 글을 작성 중입니다. 잠시 후 다시 시도해 주세요.")
                 credential_token = CURRENT_CREDENTIAL.set((provider, key, model))
             data = agent.clean_input(raw)
             if data["mode"] == "full":
@@ -173,6 +182,8 @@ class HostedHandler(agent.Handler):
         finally:
             if credential_token is not None:
                 CURRENT_CREDENTIAL.reset(credential_token)
+            if slot_acquired:
+                GENERATION_SLOTS.release()
 
 
 def main():
