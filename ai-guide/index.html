@@ -12,7 +12,7 @@
 @media(max-width:720px){.header-logos{gap:12px}.header-logo-divider{height:24px}.moel-logo img{width:101px;height:30px}}
 /* 모두의연구소 소개 */
 .story{background:#f4f1fb;padding:76px 0 68px}
-.story-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px;align-items:center}
+.story-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px;align-items:center}
 .story h1{font-size:clamp(39px,5.3vw,64px);line-height:1.18;letter-spacing:-.065em;margin:0 0 26px}
 .story h1 span{color:var(--purple);font-size:clamp(22px,3.1vw,39px);white-space:nowrap}
 .story-lead{font-size:19px;line-height:1.8;color:#3e3950;max-width:640px;margin-bottom:23px}
@@ -20,14 +20,8 @@
 .story-quicklinks{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 15px}
 .story-quicklinks a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 16px;border-radius:10px;background:var(--purple);color:white;text-decoration:none;font-size:17px;font-weight:800}
 .story-quicklinks a+ a{background:white;color:var(--purple);border:1px solid #cbb9eb}
-.story-carousel{min-width:0}
-.story-photo-frame{position:relative;overflow:hidden;border-radius:20px;background:#dfd8eb;box-shadow:0 18px 42px #3a265320}
-.story-photo{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
-.story-photo[hidden]{display:none}
-.story-photo-controls{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}
-.story-photo-controls button{border:1px solid #cbb9eb;border-radius:9px;background:white;color:#412079;min-height:44px;padding:8px 12px;font-family:inherit;font-size:15px;line-height:1.2;font-weight:700;cursor:pointer}
-.story-photo-controls button:hover{background:#eee7fb}
-.story-photo-count{font-size:16px;font-weight:800;color:#4b4362;white-space:nowrap}
+.story-photo-frame{margin:0;overflow:hidden;border-radius:20px;background:#dfd8eb;box-shadow:0 18px 42px #3a265320}
+.story-photo{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:contain}
 .stats-heading{font-size:22px;line-height:1.35;margin:50px 0 18px}
 .story-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .stat-tile{background:#fff;border:1px solid #eee9f6;border-radius:17px;padding:22px 20px 24px;min-height:170px}
@@ -36,7 +30,7 @@
 .stat-tile strong{font-size:clamp(28px,3vw,39px);line-height:1.15;letter-spacing:-.04em}
 .stat-tile em{font-style:normal;color:#f45b67;margin-left:4px}
 .hero h2{font-size:clamp(35px,6vw,68px);line-height:1.15;letter-spacing:-.065em;margin-bottom:18px}
-@media(max-width:720px){.story{padding:48px 0}.story-grid{grid-template-columns:1fr;gap:25px}.story-lead{font-size:18px}.story-quicklinks a{font-size:16px}.story-photo{aspect-ratio:3/2}.stats-heading{margin-top:32px}.story-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:0}.stat-tile{min-height:145px;padding:17px}.stat-icon{margin-bottom:13px}}
+@media(max-width:720px){.story{padding:48px 0}.story-grid{grid-template-columns:1fr;gap:25px}.story-lead{font-size:18px}.story-quicklinks a{font-size:16px}.stats-heading{margin-top:32px}.story-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:0}.stat-tile{min-height:145px;padding:17px}.stat-icon{margin-bottom:13px}}
 /* 모두레터 소개 */
 .letter{background:#fff8f5;padding:70px 0 78px;border-top:1px solid #f4e5df}
 .letter .eyebrow{color:#e95e54}
@@ -105,8 +99,8 @@ nav a{display:inline-flex;align-items:center;min-height:44px;font-size:16px}
 .action-help{margin:12px 0 0;color:var(--muted);font-size:16px}
 .course a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 14px;border-radius:10px;background:#f0eafb;text-decoration:none;text-align:center}
 .free-courses .course a{background:#e9f7ef;color:#135d3c}
-@media(max-width:900px){.story-grid{grid-template-columns:1fr}.story-carousel{max-width:700px}}
-@media(max-width:720px){nav{column-gap:12px;row-gap:0}.story-photo-controls{flex-wrap:wrap}.story-photo-pause{flex-basis:100%}.story-quicklinks a{flex:1 1 100%}}
+@media(max-width:900px){.story-grid{grid-template-columns:1fr}.story-photo-frame{max-width:700px}}
+@media(max-width:720px){nav{column-gap:12px;row-gap:0}.story-quicklinks a{flex:1 1 100%}}
 
 </style></head><body>
 <header><div class="wrap"><div class="header-logos"><a class="brand" href="https://modulabs.co.kr/?utm_source=seoul_citizens_university&amp;utm_medium=leaflet&amp;utm_campaign=class_team_ai_guide_2026&amp;utm_content=header_logo"><img src="https://reco.modulabs.co.kr/%EB%AA%A8%EB%91%90%EC%97%B0%20%EB%A1%9C%EA%B3%A0.png" alt="모두의연구소"></a><span class="header-logo-divider" aria-hidden="true"></span><a class="moel-logo" href="https://www.work24.go.kr/?utm_source=seoul_citizens_university&amp;utm_medium=leaflet&amp;utm_campaign=class_team_ai_guide_2026&amp;utm_content=header_moel_logo" aria-label="고용노동부 로고, 고용24 홈페이지로 이동"><img src="assets/moel-logo.png" alt="고용노동부"></a></div><nav aria-label="페이지 메뉴"><a href="#about">모두의연구소</a><a href="#moduletter">모두레터</a><a href="#guide">내일배움카드로 국비지원 받는 법</a><a href="#courses">온라인 강의</a></nav></div></header>
@@ -119,13 +113,7 @@ nav a{display:inline-flex;align-items:center;min-height:44px;font-size:16px}
     <div class="story-quicklinks"><a href="#free-courses">무료 AI 강의 보기</a><a href="#guide">내일배움카드 안내 보기</a></div>
     <a class="story-link" href="https://modulabs.co.kr/modulabs-story?utm_source=seoul_citizens_university&amp;utm_medium=leaflet&amp;utm_campaign=class_team_ai_guide_2026&amp;utm_content=about_story">모두의연구소 더 알아보기 <span aria-hidden="true">↗</span></a>
   </div>
-  <div class="story-carousel" role="region" aria-label="모두의연구소 활동 사진">
-    <div class="story-photo-frame">
-      <img class="story-photo" src="assets/modulabs-community.png" alt="모두의연구소에서 함께 노트북을 보며 이야기를 나누는 모습" width="1200" height="600" decoding="async">
-      <img class="story-photo" src="assets/modulabs-classroom.png" alt="모두의연구소 강의실에서 강의를 듣는 모습" width="384" height="256" decoding="async" hidden>
-    </div>
-    <div class="story-photo-controls"><button type="button" class="story-photo-prev" aria-label="이전 사진">이전</button><span class="story-photo-count" aria-live="off">사진 1 / 2</span><button type="button" class="story-photo-next" aria-label="다음 사진">다음</button><button type="button" class="story-photo-pause" aria-pressed="false">자동 넘김 멈추기</button></div>
-  </div>
+  <figure class="story-photo-frame"><img class="story-photo" src="assets/modulabs-community.png" alt="모두의연구소에서 사람들이 노트북을 함께 보며 이야기를 나누는 모습" width="1200" height="600" decoding="async"></figure>
 </div>
 <h2 class="stats-heading">모두의연구소, 숫자로 보기</h2>
 <div class="story-stats" aria-label="모두의연구소 주요 지표">
@@ -201,30 +189,4 @@ nav a{display:inline-flex;align-items:center;min-height:44px;font-size:16px}
 </div></section>
 </main>
 
-<script>
-(() => {
-  const carousel = document.querySelector('.story-carousel');
-  if (!carousel) return;
-  const photos = [...carousel.querySelectorAll('.story-photo')];
-  const count = carousel.querySelector('.story-photo-count');
-  const pauseButton = carousel.querySelector('.story-photo-pause');
-  let current = 0;
-  let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const show = (index) => {
-    current = (index + photos.length) % photos.length;
-    photos.forEach((photo, i) => { photo.hidden = i !== current; });
-    count.textContent = `사진 ${current + 1} / ${photos.length}`;
-  };
-  const syncPauseButton = () => {
-    pauseButton.textContent = paused ? '자동 넘김 시작' : '자동 넘김 멈추기';
-    pauseButton.setAttribute('aria-pressed', String(paused));
-  };
-  carousel.querySelector('.story-photo-prev').addEventListener('click', () => show(current - 1));
-  carousel.querySelector('.story-photo-next').addEventListener('click', () => show(current + 1));
-  pauseButton.addEventListener('click', () => { paused = !paused; syncPauseButton(); });
-  syncPauseButton();
-  window.setInterval(() => {
-    if (!paused && !document.hidden && !carousel.matches(':hover') && !carousel.contains(document.activeElement)) show(current + 1);
-  }, 8000);
-})();
-</script></body></html>
+</body></html>
