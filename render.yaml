@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: modulabs-blog-agent
+    runtime: python
+    plan: free
+    rootDir: blog-content-agent-app
+    buildCommand: pip install -r requirements.txt
+    startCommand: python web_app.py
+    healthCheckPath: /api/status
+
