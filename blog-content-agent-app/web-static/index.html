@@ -33,7 +33,7 @@
 
       <section class="group auth-group" aria-label="AI 서비스 연결">
         <h3>사용할 AI 연결</h3>
-        <p class="form-note">OpenAI, Gemini, Claude 중 하나를 고르고 해당 서비스에서 발급한 본인의 비밀 API 키를 입력하세요. 키는 이 화면에 저장되지 않으며 생성 요청에만 사용됩니다. 사용 요금은 각 서비스 계정에 청구될 수 있습니다.</p>
+        <p class="form-note">OpenAI, Gemini, Claude 중 하나를 고르고 해당 서비스에서 발급한 본인의 비밀 API 키를 입력하세요. 키는 HTTPS로 이 웹앱의 Render 서버를 거쳐 선택한 AI 회사로 전달되며, 브라우저 저장소나 서버 파일에는 저장하지 않습니다. 생성 요청이 끝나면 입력칸을 비웁니다. 사용 요금은 각 서비스 계정에 청구될 수 있습니다.</p>
         <div class="field-grid">
           <label>AI 서비스 <select id="provider"><option value="openai">OpenAI (ChatGPT 제공사)</option><option value="gemini">Google Gemini</option><option value="claude">Anthropic Claude</option></select></label>
           <label>모델 <select id="model-select"></select></label>
