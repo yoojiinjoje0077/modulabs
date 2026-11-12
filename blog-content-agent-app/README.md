@@ -4,7 +4,7 @@
 
 저장소 루트의 `render.yaml`로 Render **Blueprint**를 만들면 이 폴더의 `web_app.py`가 배포됩니다. Render에서 GitHub 저장소를 연결하고 **New → Blueprint**를 선택해 이 저장소를 지정하세요. 배포가 끝나면 Render가 발급한 `https://...onrender.com` 주소를 사용자에게 전달합니다. GitHub Pages 주소에서는 글 생성이 작동하지 않습니다.
 
-웹 사용자는 OpenAI·Google Gemini·Anthropic Claude 중 하나를 선택하고 **해당 회사의 API 콘솔에서 발급한 본인 비밀 API 키**를 입력합니다. ChatGPT·Gemini·Claude의 일반 구독 로그인은 공개 웹 버전에서 지원하지 않습니다. 각 사용자의 API 이용 요금과 모델 권한이 적용됩니다. API 키는 브라우저 저장소나 서버 파일에 저장하지 않고 한 번의 HTTPS 생성 요청에서만 사용합니다. 키가 들어간 화면을 공유 컴퓨터에서 열었다면 사용 후 탭을 닫으세요.
+웹 사용자는 OpenAI·Google Gemini·Anthropic Claude 중 하나를 선택하고 **해당 회사의 API 콘솔에서 발급한 본인 비밀 API 키**를 입력합니다. ChatGPT·Gemini·Claude의 일반 구독 로그인은 공개 웹 버전에서 지원하지 않습니다. 각 사용자의 API 이용 요금과 모델 권한이 적용됩니다. API 키는 HTTPS로 Render 서버를 거쳐 선택한 AI 회사에 전송됩니다. 브라우저 저장소나 서버 파일에는 저장하지 않고 생성 요청이 끝나면 입력칸을 비웁니다. 서버 운영자와 호스팅 사업자가 처리 경로에 있으므로, 본인이 신뢰하는 배포 주소에서만 키를 입력하세요.
 
 Render 무료 웹 서버는 유휴 시 절전 상태가 되어 첫 접속이 지연될 수 있습니다. 운영용으로 꾸준한 접속이 필요하면 Render 요금제를 검토하세요. 실제 글 생성은 각 API의 요금·검색 기능·권한에 따라 달라지며, 키가 없을 때는 샘플 보기만 가능합니다.
 
