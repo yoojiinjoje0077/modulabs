@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e2927">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>블로그 콘텐츠 에이전트 · 모두의연구소</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">m<span>·</span></span><span>모두의연구소 <b>블로그 콘텐츠 에이전트</b></span></div>
+    <div class="status" id="status"><span class="status-dot"></span><span>연결 상태 확인 중</span></div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="side-kicker">CONTENT STUDIO</div>
+      <h1>찾아오는 글부터<br><em>도움이 되는 글까지.</em></h1>
+      <p>홍보 대상과 독자의 질문을 입력하면 주제별 기획표를 만들고, 첫 번째 주제를 실제 블로그 원고로 이어서 작성합니다.</p>
+      <div class="workflow">
+        <div><span>01</span><strong>목적 입력</strong><small>누구에게 무엇을 알릴지</small></div>
+        <div><span>02</span><strong>기획 후 원고 작성</strong><small>두 단계를 자동으로 연결</small></div>
+        <div><span>03</span><strong>검토·다운로드</strong><small>HTML · JSON · Markdown</small></div>
+      </div>
+      <div class="side-note"><span class="sparkle">✦</span><div><strong>근거가 없으면 미확인</strong><p>검색량이나 예상 방문자 수를 만들어내지 않습니다. 실측 자료가 있으면 아래에 붙여 넣어 주세요.</p></div></div>
+    </aside>
+
+    <section class="workspace" aria-label="블로그 콘텐츠 생성">
+      <div class="section-head"><div><div class="overline">NEW PROJECT</div><h2>콘텐츠 제작 요청</h2><p>생성 버튼을 누르면 기획표를 만들고 첫 번째 주제의 원고까지 자동으로 작성합니다.</p></div><span class="version">웹 버전 · 개인 API 키</span></div>
+
+      <section class="group auth-group" aria-label="AI 서비스 연결">
+        <h3>사용할 AI 연결</h3>
+        <p class="form-note">OpenAI, Gemini, Claude 중 하나를 고르고 해당 서비스에서 발급한 본인의 비밀 API 키를 입력하세요. 키는 이 화면에 저장되지 않으며 생성 요청에만 사용됩니다. 사용 요금은 각 서비스 계정에 청구될 수 있습니다.</p>
+        <div class="field-grid">
+          <label>AI 서비스 <select id="provider"><option value="openai">OpenAI (ChatGPT 제공사)</option><option value="gemini">Google Gemini</option><option value="claude">Anthropic Claude</option></select></label>
+          <label>모델 <select id="model-select"></select></label>
+        </div>
+        <label>비밀 API 키 <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="선택한 서비스의 API 키를 입력하세요"></label>
+        <p class="form-note" id="auth-note">공개 웹앱에서는 ChatGPT·Gemini·Claude 구독 로그인 대신 각 서비스의 API 키가 필요합니다. HTTPS 주소에서만 키를 입력하세요.</p>
+      </section>
+
+      <form id="agent-form">
+        <input type="hidden" name="mode" value="full">
+
+        <fieldset class="group"><legend><span class="step">1</span> 누구에게 쓰나요?</legend>
+          <div class="field-grid">
+            <label>홍보 대상 <span class="required">필수</span><input name="target" required maxlength="1000" value="모두의연구소 온라인 클래스" placeholder="예: 모두의연구소 온라인 클래스"></label>
+            <label>홍보 목적 <span class="required">필수</span><input name="purpose" required maxlength="1000" value="AI 부트캠프 준비생이 필요한 정보를 얻고 적합한 온라인 과정을 살펴보게 하기" placeholder="예: 온라인 과정의 학습 내용을 알리기"></label>
+          </div>
+          <div class="field-grid">
+            <label>주요 독자<input name="audience" maxlength="1000" value="AI 부트캠프 준비생, 비전공자, 취업·이직 준비자" placeholder="예: AI 부트캠프 준비생"></label>
+            <label>홍보할 공식 과정 URL <span class="hint">여러 개 입력 가능</span><textarea name="course_url" rows="3" maxlength="5000" placeholder="한 줄에 공식 URL 하나씩 입력하세요.">https://class.modulabs.co.kr/classes/137</textarea></label>
+          </div>
+          <p class="form-note">과정이 여러 개라면 한 줄에 주소 하나씩 적어주세요. 글 주제와 관련 있는 과정만 소개합니다.</p>
+          <div class="field-grid"><label>만들 주제 수 <span class="hint">1~10개 · 첫 번째 주제로 원고 자동 작성</span><input name="topic_count" type="number" min="1" max="10" value="10"></label></div>
+        </fieldset>
+
+        <fieldset class="group"><legend><span class="step">2</span> 어떤 목소리로 쓸까요?</legend>
+          <div class="tone-grid" role="radiogroup" aria-label="톤앤매너">
+            <label class="tone-card"><input type="radio" name="tone" value="A" checked><span class="tone-body"><span class="tone-top"><b>A</b><span>차분하고 친근한 톤</span></span><strong>직접 찾아본 정보형</strong><small>궁금증부터 설명 · 비교표 · 실습 순서 · 가벼운 이모지</small><i>“어디부터 준비해야 할지 헷갈리죠. 4주로 나눠봤어요. 📌”</i></span></label>
+            <label class="tone-card"><input type="radio" name="tone" value="B"><span class="tone-body"><span class="tone-top"><b>B</b><span>친구처럼 생생한 톤</span></span><strong>모두연 현장 이야기형</strong><small>상황과 반응 · ㅠㅠㅠ/!!! · 이모지 · 표와 체크리스트</small><i>“파이썬에 수학까지? 이걸 다 해야 한다고?! ㅠㅠㅠ”</i></span></label>
+          </div>
+          <p class="form-note">두 톤 모두 표·리스트로 핵심을 정리합니다. B는 더 편하게 말하지만 확인하지 않은 경험이나 대화는 만들지 않습니다.</p>
+        </fieldset>
+
+        <details class="group extra"><summary><span class="step">3</span> 근거 자료와 추가 조건 <span class="optional">선택</span></summary>
+          <div class="details-body">
+            <label>검색량·기존 실적 등 실제 자료<textarea name="evidence" rows="5" maxlength="12000" placeholder="네이버 검색광고 키워드 조회값, Google Ads CSV 내용, Search Console 실적 등을 붙여 넣어 주세요. 조회일·기간·지역도 함께 적어주세요."></textarea></label>
+            <label class="upload">CSV 또는 텍스트 파일 불러오기 <input id="evidence-file" type="file" accept=".csv,.tsv,.txt,text/plain,text/csv"><small>파일 내용이 위 칸에 추가됩니다. 최대 12,000자.</small></label>
+            <label>추가 조건<textarea name="notes" rows="3" maxlength="1000" placeholder="예: 수학 사전학습을 강조하고, 과정 소개는 본문 끝에만 넣기"></textarea></label>
+          </div>
+        </details>
+
+        <div class="action-row"><button id="generate" class="primary" type="submit"><span>✦</span> 기획표와 원고 한 번에 만들기</button><span class="action-caption">선택한 서비스의 API로 기획표와 원고를 작성하며, 톤·구성 보완이 필요하면 추가 요청이 발생합니다.</span></div>
+        <p class="form-note demo-link-wrap"><a id="demo" href="#">API 키 없이 샘플 결과 보기</a></p>
+      </form>
+
+      <section class="result-section" id="result-section" hidden>
+        <div class="result-head"><div><div class="overline">RESULT</div><h2 id="result-title">결과 미리보기</h2><p id="result-subtitle"></p></div><span id="result-badge" class="result-badge"></span></div>
+        <div class="result-tabs"><button type="button" data-tab="preview" class="active">미리보기</button><button type="button" data-tab="json">구조화 데이터</button></div>
+        <div id="preview-panel" class="result-panel"><iframe id="preview" title="생성한 글 미리보기" sandbox="allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+        <div id="json-panel" class="result-panel hidden"><pre id="json-output"></pre></div>
+        <div class="download-row"><button type="button" id="download-html">HTML 다운로드</button><button type="button" id="download-json">JSON 다운로드</button><button type="button" id="download-md">Markdown 다운로드</button></div>
+        <p class="form-note">실제 게시 전에는 공식 출처·수치·과정 조건을 확인하고, 이미지 안내에 따라 이미지를 넣어주세요.</p>
+      </section>
+    </section>
+  </main>
+  <footer>모두의연구소 블로그 콘텐츠 에이전트 · 로컬 설치형 · 2026</footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
+
