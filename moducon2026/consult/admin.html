@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>상담 현황 · 모두콘 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root{--bg:#f5f7fb;--card:#fff;--line:#e2e7f0;--line2:#d9e0ec;--text:#1b2232;--sub:#6d7586;--mute:#9aa1af;--pri:#2f55d4;--pri-d:#2442ad;--tint:#eef2fd;
+      --ok:#1f7a4a;--ok-bg:#e6f5ec;--warn:#a15c00;--warn-bg:#fff2dc;--bad:#b4233a;--bad-bg:#fde8eb;font-family:Pretendard,sans-serif;color:var(--text);background:var(--bg);font-size:15px}
+    *{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer}
+    .wrap{max-width:1280px;margin:0 auto;padding:22px 24px 60px}
+    header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+    .logo{width:110px}.title{font-size:1.35rem;font-weight:900;letter-spacing:-.04em;margin:0}
+    .live{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--sub);font-size:.86rem;font-weight:650}
+    .dot{width:9px;height:9px;border-radius:50%;background:#2bb673;box-shadow:0 0 0 0 rgba(43,182,115,.5);animation:pulse 2s infinite}
+    .dot.err{background:var(--bad);animation:none}
+    @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(43,182,115,0)}100%{box-shadow:0 0 0 0 rgba(43,182,115,0)}}
+    .ghost{background:#fff;border:1px solid var(--line2);border-radius:10px;padding:7px 12px;font-weight:700;font-size:.84rem}
+    .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:18px}
+    .kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+    .kpi small{display:block;color:var(--sub);font-weight:700;font-size:.8rem;margin-bottom:6px}
+    .kpi b{font-size:1.75rem;font-weight:900;letter-spacing:-.03em}.kpi span{color:var(--mute);font-weight:700;margin-left:3px}
+    .kpi.main{background:var(--pri);border-color:var(--pri);color:#fff}.kpi.main small,.kpi.main span{color:#dfe6fc}
+    .now{display:flex;gap:12px;margin-bottom:18px}
+    .now > div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px}
+    .now .lab{font-size:.78rem;font-weight:850;color:var(--pri-d);letter-spacing:.04em;white-space:nowrap}
+    .now .val{font-weight:800;font-size:1.05rem}.now .val em{font-style:normal;color:var(--sub);font-weight:650;font-size:.9rem;margin-left:6px}
+    .grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:18px;align-items:start}
+    section.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+    .phead{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+    .phead h2{margin:0;font-size:1rem;font-weight:850}.phead span{color:var(--sub);font-size:.82rem;font-weight:650}
+    .slot{display:grid;grid-template-columns:64px 92px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 18px;border-bottom:1px solid var(--line)}
+    .slot:last-child{border-bottom:0}.slot.is-now{background:var(--tint);box-shadow:inset 4px 0 0 var(--pri)}
+    .slot.lunch{grid-template-columns:1fr;padding:8px 18px;background:#f0f2f6;color:var(--mute);font-size:.8rem;font-weight:700;text-align:center}
+    .time{font-weight:900;font-size:1.05rem;letter-spacing:-.02em;padding-top:2px}
+    .chip{display:inline-block;border-radius:20px;padding:4px 9px;font-size:.75rem;font-weight:800;white-space:nowrap;margin-top:2px}
+    .c-open{background:#f0f2f6;color:var(--sub)}.c-booked{background:var(--tint);color:var(--pri-d)}.c-done{background:var(--ok-bg);color:var(--ok)}
+    .c-noshow{background:var(--warn-bg);color:var(--warn)}.c-closed{background:#f0f2f6;color:var(--mute)}.c-cancel{background:var(--bad-bg);color:var(--bad)}.c-called{background:var(--ok-bg);color:var(--ok)}
+    .who b{font-size:.98rem}.who .ph{color:var(--sub);font-weight:650;margin-left:8px;font-size:.88rem}
+    .meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.tag{background:#f3f5f9;border-radius:7px;padding:3px 7px;font-size:.76rem;color:#465062;font-weight:650}
+    .tag.topic{background:var(--tint);color:var(--pri-d)}.tag.mk{background:var(--ok-bg);color:var(--ok)}
+    .msg{margin-top:6px;font-size:.84rem;color:#465062;line-height:1.5;background:#f8f9fc;border-radius:8px;padding:6px 9px;word-break:keep-all}
+    .empty{color:var(--mute);font-size:.88rem;padding-top:4px}
+    .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+    .acts button{border:1px solid var(--line2);background:#fff;border-radius:9px;padding:6px 10px;font-size:.8rem;font-weight:750;white-space:nowrap}
+    .acts .b-done{background:var(--pri);border-color:var(--pri);color:#fff}.acts .b-cancel{color:var(--bad)}
+    .acts button:disabled{opacity:.5;cursor:wait}
+    .row{padding:12px 18px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}
+    .row:last-child{border-bottom:0}.row .acts{align-self:start}.row .when{color:var(--mute);font-size:.76rem;font-weight:650;margin-top:4px}
+    .row.faded{opacity:.55}
+    .flash{animation:flash 2.4s ease-out}@keyframes flash{0%{background:#fff3c4}100%{background:transparent}}
+    .login{max-width:380px;margin:12vh auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px}
+    .login h1{font-size:1.3rem;margin:14px 0 6px;letter-spacing:-.04em}.login p{color:var(--sub);font-size:.88rem;margin:0 0 16px;line-height:1.5}
+    .login input{width:100%;border:1.5px solid var(--line2);border-radius:12px;padding:12px 13px;font-size:1rem}
+    .login input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(47,85,212,.15)}
+    .login button{width:100%;margin-top:10px;border:0;border-radius:12px;background:var(--text);color:#fff;font-weight:800;padding:13px}
+    .err{color:var(--bad);font-size:.84rem;font-weight:700;min-height:1.2em;margin-top:8px}
+    .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--text);color:#fff;border-radius:12px;padding:11px 16px;font-weight:700;font-size:.88rem;opacity:0;transition:opacity .2s;pointer-events:none}
+    .toast.show{opacity:1}
+    [hidden]{display:none!important}
+    @media(max-width:1000px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.now{flex-direction:column}}
+    @media(max-width:640px){.wrap{padding:16px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.slot{grid-template-columns:56px minmax(0,1fr)}.slot .st{grid-column:2}.slot .acts{grid-column:1/-1;justify-content:flex-start}}
+  </style>
+</head>
+<body>
+
+<div class="login" id="login" hidden>
+  <img class="logo" src="./modulabs-logo.svg" alt="모두의연구소">
+  <h1>상담 현황 · 관리자</h1>
+  <p>신청자 개인정보가 보이는 화면이에요. 관리자 키를 입력해 주세요.</p>
+  <form id="loginForm"><input id="keyInput" type="password" autocomplete="current-password" placeholder="관리자 키"><button type="submit">열기</button></form>
+  <div class="err" id="loginErr"></div>
+</div>
+
+<div class="wrap" id="app" hidden>
+  <header>
+    <img class="logo" src="./modulabs-logo.svg" alt="모두의연구소">
+    <h1 class="title">모두콘 상담 현황</h1>
+    <div class="live"><i class="dot" id="dot"></i><span id="updated">불러오는 중…</span>
+      <button class="ghost" id="refresh" type="button">새로고침</button>
+      <button class="ghost" id="sheetBtn" type="button">시트 열기</button>
+      <button class="ghost" id="logout" type="button">잠그기</button></div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi main"><small>현장 예약</small><b id="k-booked">–</b><span>/ 15</span></div>
+    <div class="kpi"><small>남은 자리</small><b id="k-remain">–</b></div>
+    <div class="kpi"><small>상담 완료</small><b id="k-done">–</b></div>
+    <div class="kpi"><small>노쇼</small><b id="k-noshow">–</b></div>
+    <div class="kpi"><small>전화 상담 신청</small><b id="k-phone">–</b></div>
+    <div class="kpi"><small>마케팅 수신 동의</small><b id="k-mk">–</b><span id="k-total"></span></div>
+  </div>
+
+  <div class="now">
+    <div><span class="lab">지금 상담</span><span class="val" id="nowSlot">–</span></div>
+    <div><span class="lab">다음 상담</span><span class="val" id="nextSlot">–</span></div>
+  </div>
+
+  <div class="grid">
+    <section class="panel">
+      <div class="phead"><h2>현장 1:1 상담 · 12월 12일</h2><span>20분 · 시간대당 1명</span></div>
+      <div id="slots"></div>
+    </section>
+    <div style="display:grid;gap:18px">
+      <section class="panel">
+        <div class="phead"><h2>행사 후 전화 상담</h2><span id="phoneCount"></span></div>
+        <div id="phones"></div>
+      </section>
+      <section class="panel" id="cancelPanel" hidden>
+        <div class="phead"><h2>취소된 현장 예약</h2><span id="cancelCount"></span></div>
+        <div id="cancels"></div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbzm3IDzNxWOREmxRNdUvPS4Q0m17F9NVUa8E-LnZEF8vv_9Si2Ob6BRfTCMfY_wLJ30Iw/exec';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1ZtRUUu0o-c-8fxM5Y_ZsKcpSycYZZ3pajPIyPIh8PmI/edit';
+const EVENT_DATE = '2026-12-12';
+const REFRESH_MS = 15000;
+const ONSITE = '현장 1:1 상담';
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = { get(){ try { return localStorage.getItem('moducon_admin_key') || ''; } catch(e){ return ''; } },
+                set(v){ try { v ? localStorage.setItem('moducon_admin_key', v) : localStorage.removeItem('moducon_admin_key'); } catch(e){} } };
+let key = store.get(), timer = null, seen = null, newCount = 0, busy = false;
+
+async function call(body, retry = 1) {
+  try {
+    const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(Object.assign({ key }, body)) });
+    return await res.json();
+  } catch (e) {
+    if (retry > 0) { await new Promise(r => setTimeout(r, 1200)); return call(body, retry - 1); }
+    throw e;
+  }
+}
+
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2600); }
+
+function showLogin(msg) {
+  clearInterval(timer); $('#app').hidden = true; $('#login').hidden = false;
+  $('#loginErr').textContent = msg || ''; $('#keyInput').focus();
+}
+
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  key = $('#keyInput').value.trim(); if (!key) return;
+  $('#loginErr').textContent = '확인 중…';
+  const ok = await load(true);
+  if (ok) { store.set(key); $('#keyInput').value = ''; }
+});
+$('#logout').addEventListener('click', () => { key = ''; store.set(''); seen = null; showLogin(); });
+$('#refresh').addEventListener('click', () => load());
+$('#sheetBtn').addEventListener('click', () => window.open(SHEET_URL, '_blank', 'noopener'));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { newCount = 0; document.title = '상담 현황 · 모두콘 2026'; } });
+
+async function load(fromLogin) {
+  if (busy) return; busy = true;
+  let data;
+  try { data = await call({ action: 'admin_list' }); }
+  catch (e) { data = { ok: false, error: 'network' }; }
+  busy = false;
+  if (!data.ok) {
+    if (data.error === 'unauthorized') { store.set(''); showLogin(fromLogin ? '관리자 키가 맞지 않아요.' : '다시 로그인해 주세요.'); return false; }
+    $('#dot').classList.add('err'); $('#updated').textContent = '연결 끊김 · 자동 재시도 중';
+    if (fromLogin) $('#loginErr').textContent = '연결에 실패했어요. 잠시 후 다시 시도해 주세요.';
+    return false;
+  }
+  $('#login').hidden = true; $('#app').hidden = false; $('#dot').classList.remove('err');
+  $('#updated').textContent = '최근 업데이트 ' + data.now.slice(11, 19) + ' · 15초마다 자동';
+  render(data);
+  if (!timer) timer = setInterval(load, REFRESH_MS);
+  return true;
+}
+
+function details(r) {
+  const t = [];
+  if (r['상담주제']) r['상담주제'].split(', ').forEach(x => t.push(`<span class="tag topic">${esc(x)}</span>`));
+  ['직무','AI활용수준','관심분야'].forEach(k => r[k] && t.push(`<span class="tag">${esc(r[k])}</span>`));
+  if (r['내일배움카드']) t.push(`<span class="tag">내배카 ${esc(r['내일배움카드'])}</span>`);
+  const co = [r['회사명'], r['부서·직무'], r['교육대상인원'], r['희망교육시기']].filter(Boolean).join(' · ');
+  if (co) t.push(`<span class="tag">🏢 ${esc(co)}</span>`);
+  if (r['마케팅수신동의'] === 'Y') t.push('<span class="tag mk">마케팅 동의</span>');
+  return `<div class="meta">${t.join('')}</div>` + (r['문의내용'] ? `<div class="msg">${esc(r['문의내용'])}</div>` : '');
+}
+function who(r) { return `<div class="who"><b>${esc(r['이름'])}</b><span class="ph">${esc(r['휴대폰'])}</span>${r['이메일'] ? `<span class="ph">${esc(r['이메일'])}</span>` : ''}</div>`; }
+function btn(id, status, label, cls) { return `<button type="button" class="${cls||''}" data-id="${esc(id)}" data-status="${status}">${label}</button>`; }
+const chipOf = st => ({ '접수':['c-booked','예약'], '상담 완료':['c-done','상담 완료'], '노쇼':['c-noshow','노쇼'], '연락 완료':['c-called','연락 완료'], '취소':['c-cancel','취소'] }[st] || ['c-booked', st]);
+
+function render(d) {
+  const rows = d.rows || [];
+  const onsite = rows.filter(r => r['상담방식'] === ONSITE);
+  const active = onsite.filter(r => r['상태'] !== '취소');
+  const phones = rows.filter(r => r['상담방식'] !== ONSITE && r['상태'] !== '취소').reverse();
+  const cancels = onsite.filter(r => r['상태'] === '취소').reverse();
+  const bySlot = {}; active.forEach(r => bySlot[String(r['상담시간']).slice(-5)] = r);
+
+  // 새 신청 표시
+  const ids = new Set(rows.map(r => r['신청ID']));
+  const fresh = seen ? [...ids].filter(i => !seen.has(i)) : [];
+  if (fresh.length) { toast(`새 신청 ${fresh.length}건`); if (document.hidden) { newCount += fresh.length; document.title = `(${newCount}) 새 신청 · 상담 현황`; } }
+  seen = ids;
+
+  $('#k-booked').textContent = active.length;
+  $('#k-remain').textContent = d.remaining;
+  $('#k-done').textContent = active.filter(r => r['상태'] === '상담 완료').length;
+  $('#k-noshow').textContent = active.filter(r => r['상태'] === '노쇼').length;
+  $('#k-phone').textContent = phones.length;
+  const live = rows.filter(r => r['상태'] !== '취소');
+  $('#k-mk').textContent = live.filter(r => r['마케팅수신동의'] === 'Y').length;
+  $('#k-total').textContent = '/ ' + live.length;
+
+  // 지금·다음 상담
+  const nowStr = d.now.slice(0, 16), today = d.now.slice(0, 10) === EVENT_DATE, hm = d.now.slice(11, 16);
+  const end = t => { const [h, m] = t.split(':').map(Number); const x = h * 60 + m + 20; return String(Math.floor(x / 60)).padStart(2, '0') + ':' + String(x % 60).padStart(2, '0'); };
+  const times = d.slots.map(s => s.time);
+  const nowT = today ? times.find(t => t <= hm && hm < end(t)) : null;
+  const nextT = times.find(t => (today ? t > hm : EVENT_DATE + ' ' + t > nowStr) && bySlot[t] && bySlot[t]['상태'] === '접수');
+  const label = t => t ? (bySlot[t] ? `${t} ${esc(bySlot[t]['이름'])}<em>${esc(bySlot[t]['상담주제'])}</em>` : `${t}<em>예약 없음</em>`) : '<em style="margin:0">–</em>';
+  $('#nowSlot').innerHTML = today ? label(nowT) : '<em style="margin:0">행사 당일에 표시</em>';
+  $('#nextSlot').innerHTML = nextT ? label(nextT) : '<em style="margin:0">대기 중인 예약 없음</em>';
+
+  // 현장 시간표
+  let html = '';
+  d.slots.forEach((s, i) => {
+    if (i > 0 && s.time >= '15:00' && d.slots[i - 1].time < '13:00') html += '<div class="slot lunch">13:00 ~ 15:00 · 현장 상담 없음</div>';
+    const r = bySlot[s.time];
+    let chip, body, acts = '';
+    if (r) {
+      const [c, l] = chipOf(r['상태']); chip = `<span class="chip ${c}">${l}</span>`;
+      body = who(r) + details(r);
+      acts = r['상태'] === '접수'
+        ? btn(r['신청ID'], '상담 완료', '상담 완료', 'b-done') + btn(r['신청ID'], '노쇼', '노쇼') + btn(r['신청ID'], '취소', '취소·자리 열기', 'b-cancel')
+        : btn(r['신청ID'], '접수', '되돌리기');
+    } else {
+      chip = s.status === 'closed' ? '<span class="chip c-closed">시간 지남</span>' : '<span class="chip c-open">빈 자리</span>';
+      body = '<div class="empty">예약 없음</div>';
+    }
+    html += `<div class="slot${s.time === nowT ? ' is-now' : ''}${r && fresh.includes(r['신청ID']) ? ' flash' : ''}"><div class="time">${s.time}</div><div class="st">${chip}</div><div>${body}</div><div class="acts">${acts}</div></div>`;
+  });
+  $('#slots').innerHTML = html;
+
+  // 전화 상담
+  $('#phoneCount').textContent = `${phones.length}명 · 연락 완료 ${phones.filter(r => r['상태'] === '연락 완료').length}`;
+  $('#phones').innerHTML = phones.length ? phones.map(r => {
+    const [c, l] = r['상태'] === '접수' ? ['c-booked', '연락 대기'] : chipOf(r['상태']);
+    return `<div class="row${r['상태'] === '연락 완료' ? ' faded' : ''}${fresh.includes(r['신청ID']) ? ' flash' : ''}"><div>${who(r)}<div class="meta"><span class="chip ${c}">${l}</span><span class="tag">📞 ${esc(r['전화상담희망시간'])}</span></div>${details(r)}<div class="when">${esc(r['신청일시'])}</div></div>
+      <div class="acts">${r['상태'] === '연락 완료' ? btn(r['신청ID'], '접수', '되돌리기') : btn(r['신청ID'], '연락 완료', '연락 완료', 'b-done')}</div></div>`;
+  }).join('') : '<div class="row"><div class="empty">아직 신청 없음</div></div>';
+
+  // 취소 목록
+  $('#cancelPanel').hidden = !cancels.length;
+  $('#cancelCount').textContent = cancels.length + '건';
+  $('#cancels').innerHTML = cancels.map(r => `<div class="row faded"><div>${who(r)}<div class="meta"><span class="tag">${esc(r['상담시간'])}</span></div></div><div class="acts"></div></div>`).join('');
+}
+
+document.addEventListener('click', async e => {
+  const b = e.target.closest('button[data-status]'); if (!b) return;
+  const st = b.dataset.status;
+  if (st === '취소' && !confirm('이 예약을 취소하고 시간대를 다시 열까요?')) return;
+  b.closest('.acts').querySelectorAll('button').forEach(x => x.disabled = true);
+  let res;
+  try { res = await call({ action: 'admin_status', id: b.dataset.id, status: st }); } catch (x) { res = { ok: false }; }
+  if (res.ok) { render(res); toast(st === '접수' ? '되돌렸어요' : `‘${st}’로 변경`); }
+  else { toast('변경하지 못했어요. 다시 시도해 주세요.'); load(); }
+});
+
+if (key) { $('#app').hidden = false; load(); } else showLogin();
+</script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="모두콘 2026 클래스팀 부스 상담 신청 · 기업 교육, 추천 과정, 국비지원 문의">
+  <meta name="ga4-measurement-id" content="G-5VD787JWYW">
+  <title>상담 신청하기 · 모두콘 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root{font-family:Pretendard,sans-serif;color:#1b2232;background:#f5f7fb;font-size:16px}
+    *{box-sizing:border-box}body{margin:0;min-width:320px}a{color:inherit}button,input,textarea,select{font:inherit;color:inherit}
+    main{max-width:540px;margin:0 auto;padding:0 20px 70px}
+    .topline{height:8px;background:#2f55d4;margin:0 -20px 34px}
+    .brand{display:flex;justify-content:space-between;align-items:center;gap:18px}.logo{display:block;width:122px;height:auto}
+    .back{font-size:.84rem;font-weight:750;color:#6d7586;text-decoration:none}
+    .hero{padding:32px 0 20px}.eyebrow{color:#2442ad;font-weight:850;font-size:.86rem;letter-spacing:.08em;margin:0 0 12px}
+    h1{font-size:clamp(1.9rem,7.6vw,2.6rem);line-height:1.2;letter-spacing:-.06em;margin:0;font-weight:900;word-break:keep-all}
+    .hero p.lead{color:#4f5869;line-height:1.65;margin:14px 0 0;word-break:keep-all}
+    .quick{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #e2e7f0;border-radius:16px;padding:13px 15px;margin:0 0 14px;font-size:.88rem;line-height:1.5;color:#465062;word-break:keep-all}
+    .quick b{color:#1b2232}
+    .seats{background:#2f55d4;color:#fff;border-radius:22px;padding:20px 22px;position:relative;overflow:hidden}
+    .seats:after{content:"";position:absolute;width:130px;height:130px;border:22px solid rgba(255,255,255,.18);border-radius:50%;right:-38px;bottom:-66px}
+    .seats small{display:block;font-weight:850;letter-spacing:.06em;font-size:.8rem;margin-bottom:8px}
+    .seats strong{display:block;font-size:1.3rem;letter-spacing:-.04em;line-height:1.35}
+    .seats .count{font-size:2rem;font-weight:900;letter-spacing:-.04em}
+    .seats p{margin:8px 0 0;font-size:.87rem;color:#e3e9fb;line-height:1.5;max-width:300px;word-break:keep-all}
+    .bar{height:7px;background:rgba(255,255,255,.28);border-radius:9px;margin-top:13px;overflow:hidden;max-width:320px}.bar i{display:block;height:100%;background:#fff;border-radius:9px;transition:width .4s}
+    .progress{display:flex;gap:6px;margin:26px 0 8px}.progress span{flex:1;height:5px;border-radius:5px;background:#e2e7f0}.progress span.on{background:#2f55d4}
+    .step-label{font-size:.8rem;color:#7f8798;font-weight:700;margin:0 0 16px}
+    .panel{background:#fff;border:1px solid #e2e7f0;border-radius:22px;padding:22px 20px;box-shadow:0 3px 12px rgba(23,35,70,.04)}
+    h2{font-size:1.18rem;letter-spacing:-.04em;margin:0 0 4px;font-weight:850;word-break:keep-all}
+    .hint{color:#6d7586;font-size:.84rem;margin:0 0 16px;line-height:1.5;word-break:keep-all}
+    fieldset{border:0;margin:0 0 22px;padding:0}fieldset:last-of-type{margin-bottom:6px}
+    legend,.label{display:block;font-weight:800;font-size:.95rem;margin-bottom:10px;letter-spacing:-.02em;padding:0}
+    .req{color:#2442ad;margin-left:3px}.opt{color:#9aa1af;font-weight:650;font-size:.8rem;margin-left:4px}
+    .choices{display:grid;gap:9px}.choices.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .choice{position:relative}.choice input{position:absolute;opacity:0;pointer-events:none}
+    .choice>span{display:block;border:1.5px solid #d9e0ec;border-radius:14px;padding:13px 14px;cursor:pointer;background:#fff;font-weight:700;font-size:.93rem;line-height:1.4;transition:border-color .15s,background .15s;word-break:keep-all}
+    .choice span em{display:block;font-style:normal;font-weight:550;color:#6d7586;font-size:.8rem;margin-top:3px}
+    .choice input:checked+span{border-color:#2f55d4;background:#eef2fd}
+    .choice input:focus-visible+span{outline:3px solid #2f55d4;outline-offset:2px}
+    .choice input:disabled+span{background:#f0f2f6;color:#aab1bd;cursor:not-allowed;border-color:#e6eaf1}
+    .choice input:disabled+span em{color:#aab1bd}
+    .badge{display:inline-block;background:#2f55d4;color:#fff;border-radius:20px;font-size:.7rem;font-weight:800;padding:2px 7px;margin-left:6px;vertical-align:1px}
+    .slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.slots .choice>span{text-align:center;padding:11px 4px;font-size:.92rem}
+    .slots .choice span em{font-size:.72rem;margin-top:1px}
+    .late{background:#fff6e5;color:#7a4b00;border-radius:12px;padding:10px 12px;font-size:.84rem;font-weight:650;line-height:1.5;margin:0 0 14px;word-break:keep-all}.late b{font-weight:850}
+    .slot-group{font-size:.8rem;color:#7f8798;font-weight:750;margin:4px 0 8px}.slot-group+.slots{margin-bottom:12px}
+    input[type=text],input[type=tel],input[type=email],textarea,select{width:100%;border:1.5px solid #d9e0ec;border-radius:13px;padding:13px 14px;background:#fff;font-size:1rem}
+    textarea{min-height:92px;resize:vertical;line-height:1.5}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:#2f55d4;box-shadow:0 0 0 3px rgba(47,85,212,.15)}
+    .field{margin-bottom:16px}
+    .topic-block{border-top:1px dashed #dfe5ef;padding-top:20px;margin-top:4px}
+    .topic-title{font-size:.8rem;font-weight:850;color:#2442ad;letter-spacing:.04em;margin:0 0 14px}
+    .consent{background:#f1f4fb;border-radius:14px;padding:14px;margin-bottom:10px}
+    .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-weight:750;font-size:.92rem;line-height:1.45}
+    .check input{width:20px;height:20px;margin:1px 0 0;accent-color:#2f55d4;flex:0 0 20px}
+    details{margin-top:8px;font-size:.8rem;color:#5f6879;line-height:1.6}details summary{cursor:pointer;font-weight:700;color:#7f8798}
+    details table{width:100%;border-collapse:collapse;margin-top:8px}details th,details td{border:1px solid #dfe5ef;padding:6px 8px;text-align:left;vertical-align:top}details th{background:#fff;width:28%;font-weight:750}
+    .actions{display:flex;gap:8px;margin-top:20px}
+    .btn{flex:1;min-height:54px;border:0;border-radius:14px;background:#1b2232;color:#fff;font-weight:800;font-size:1rem;cursor:pointer}
+    .btn:disabled{background:#c3cad6;cursor:not-allowed}.btn.ghost{flex:0 0 92px;background:#fff;color:#1b2232;border:1px solid #cfd7e4}
+    .btn:focus-visible{outline:3px solid #2f55d4;outline-offset:3px}
+    .error{color:#c8283c;font-size:.85rem;font-weight:700;margin:10px 0 0;min-height:1.2em}
+    .done{text-align:center;padding:30px 20px}
+    .done .mark{width:64px;height:64px;border-radius:50%;background:#e9eefc;color:#2f55d4;display:grid;place-items:center;margin:0 auto 16px}
+    .done .mark svg{width:32px;height:32px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .ticket{background:#f1f4fb;border-radius:16px;padding:16px;margin:18px 0;text-align:left;font-size:.92rem;line-height:1.7}
+    .ticket b{display:inline-block;width:72px;color:#7f8798;font-weight:700}
+    .done p{color:#4f5869;line-height:1.6;word-break:keep-all;margin:0}
+    .done .btn{display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:18px}
+    .demo{background:#fff6d9;border:1px solid #f1dd9b;color:#6b5512;border-radius:12px;padding:9px 12px;font-size:.8rem;margin:0 0 14px}
+    .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+    [hidden]{display:none!important}
+    .site-footer{margin-top:38px;padding:24px 3px 0;border-top:1px solid #dfe5ef;color:#6d7586;font-size:.83rem;line-height:1.65;word-break:keep-all}.site-footer p{margin:0 0 10px}.footer-links{display:flex;flex-wrap:wrap;gap:8px 15px;margin-bottom:12px}.footer-links a{font-size:.88rem;font-weight:700;text-underline-offset:3px}.copyright{color:#8a92a2;font-size:.8rem}
+    @media(max-width:380px){main{padding-left:16px;padding-right:16px}.topline{margin-left:-16px;margin-right:-16px}.panel{padding:20px 16px}.slots{gap:6px}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="topline" aria-hidden="true"></div>
+  <header class="brand">
+    <img class="logo" src="./modulabs-logo.svg" alt="모두의연구소">
+    <a class="back" id="backLink" href="https://reco.modulabs.co.kr/moducon2026/" data-track="back_to_linkhub">← 부스 안내</a>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">MODUCON 2026</p>
+    <h1>상담 신청하기</h1>
+    <p class="lead">기업 교육, 나에게 맞는 과정, 국비지원까지 담당자와 1:1로 이야기해 보세요.</p>
+  </section>
+
+  <div class="demo" id="demoNote" hidden>미리보기 모드 · 시트와 연결되지 않아 신청 내용이 저장되지 않음</div>
+
+  <div class="quick">
+    <span aria-hidden="true">💬</span>
+    <span><b>짧은 질문은 신청 없이 부스에서 바로.</b> 깊이 있는 상담이 필요할 때 아래에서 시간을 예약해 주세요.</span>
+  </div>
+
+  <div class="seats" id="seats">
+    <small>현장 1:1 상담 · 선착순 15명</small>
+    <strong>남은 자리 <span class="count" id="remain">–</span> / 15</strong>
+    <p id="seatsMsg">12월 12일 당일, 20분 상담 · 신청자 전원 모두의연구소 굿즈 증정</p>
+    <div class="bar" aria-hidden="true"><i id="barFill" style="width:0"></i></div>
+  </div>
+
+  <div class="progress" aria-hidden="true"><span class="on"></span><span></span><span></span></div>
+  <p class="step-label" id="stepLabel">1 / 3 · 상담 방식</p>
+
+  <form id="form" novalidate>
+    <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <!-- STEP 1 -->
+    <section class="panel" data-step="1">
+      <h2>어떻게 상담받으시겠어요?</h2>
+      <p class="hint">현장 상담이 마감되면 행사 후 전화 상담으로 이어서 도와드려요.</p>
+      <fieldset>
+        <legend>상담 방식<span class="req">*</span></legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="method" value="onsite"><span>현장 1:1 상담<span class="badge">굿즈</span><em id="onsiteDesc">12월 12일 부스에서 20분 · 선착순 15명</em></span></label>
+          <label class="choice"><input type="radio" name="method" value="phone"><span>행사 후 전화 상담<em>12월 14일부터 순차 연락</em></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="slotField" hidden>
+        <legend>상담 시간<span class="req">*</span></legend>
+        <p class="late">⏰ 예약 시간에서 5분이 지나도 오지 않으면 예약이 취소되고 다음 분께 순서가 넘어가요.</p>
+        <p class="slot-group">오전 · 10:00 ~ 13:00</p>
+        <div class="slots" id="slotsAm"></div>
+        <p class="slot-group">오후 · 15:00 ~ 17:00</p>
+        <div class="slots" id="slotsPm"></div>
+      </fieldset>
+
+      <fieldset id="callField" hidden>
+        <legend>연락받기 편한 시간<span class="req">*</span></legend>
+        <div class="choices two">
+          <label class="choice"><input type="radio" name="callTime" value="평일 오전"><span>평일 오전</span></label>
+          <label class="choice"><input type="radio" name="callTime" value="평일 오후"><span>평일 오후</span></label>
+          <label class="choice"><input type="radio" name="callTime" value="평일 18시 이후"><span>평일 18시 이후</span></label>
+          <label class="choice"><input type="radio" name="callTime" value="언제든 괜찮음"><span>언제든 괜찮음</span></label>
+        </div>
+      </fieldset>
+      <p class="error" data-error="1" role="alert"></p>
+      <div class="actions"><button class="btn" type="button" data-next>다음</button></div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="panel" data-step="2" hidden>
+      <h2>어떤 이야기를 나누고 싶으세요?</h2>
+      <p class="hint">미리 알려주시면 맞춤 자료를 준비해 둘게요.</p>
+      <fieldset>
+        <legend>상담 주제<span class="req">*</span><span class="opt">여러 개 선택 가능</span></legend>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="topics" value="추천 과정"><span>나에게 맞는 과정 추천<em>직무·수준에 맞는 AI 과정</em></span></label>
+          <label class="choice"><input type="checkbox" name="topics" value="국비지원"><span>국비지원 · 내일배움카드<em>지원 과정, 자부담, 카드 발급</em></span></label>
+          <label class="choice"><input type="checkbox" name="topics" value="기업 교육"><span>기업 교육 도입<em>우리 회사·팀 맞춤 AI 교육</em></span></label>
+        </div>
+      </fieldset>
+
+      <div class="topic-block" data-topic="추천 과정" hidden>
+        <p class="topic-title">과정 추천을 위해</p>
+        <fieldset>
+          <legend>지금 하는 일<span class="req">*</span></legend>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="job" value="사무·기획"><span>사무·기획</span></label>
+            <label class="choice"><input type="radio" name="job" value="마케팅·영업"><span>마케팅·영업</span></label>
+            <label class="choice"><input type="radio" name="job" value="경영지원·HR"><span>경영지원·HR</span></label>
+            <label class="choice"><input type="radio" name="job" value="개발·데이터"><span>개발·데이터</span></label>
+            <label class="choice"><input type="radio" name="job" value="학생·취업준비"><span>학생·취업준비</span></label>
+            <label class="choice"><input type="radio" name="job" value="기타"><span>기타</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>AI 활용 정도<span class="req">*</span></legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="aiLevel" value="거의 안 써 봄"><span>거의 안 써 봤어요</span></label>
+            <label class="choice"><input type="radio" name="aiLevel" value="가끔 질문"><span>ChatGPT 등에 가끔 질문해요</span></label>
+            <label class="choice"><input type="radio" name="aiLevel" value="업무에 자주 활용"><span>업무에 자주 활용해요</span></label>
+            <label class="choice"><input type="radio" name="aiLevel" value="자동화·개발까지"><span>자동화나 개발까지 해 봤어요</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>관심 분야<span class="opt">여러 개 선택 가능</span></legend>
+          <div class="choices two">
+            <label class="choice"><input type="checkbox" name="interests" value="업무 자동화·프롬프트"><span>업무 자동화·프롬프트</span></label>
+            <label class="choice"><input type="checkbox" name="interests" value="AI 코딩"><span>AI 코딩</span></label>
+            <label class="choice"><input type="checkbox" name="interests" value="딥러닝 원리"><span>딥러닝 원리</span></label>
+            <label class="choice"><input type="checkbox" name="interests" value="콘텐츠 제작"><span>콘텐츠 제작</span></label>
+            <label class="choice"><input type="checkbox" name="interests" value="데이터 분석"><span>데이터 분석</span></label>
+            <label class="choice"><input type="checkbox" name="interests" value="AI 에이전트"><span>AI 에이전트</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="topic-block" data-topic="국비지원" hidden>
+        <p class="topic-title">국비지원 상담을 위해</p>
+        <fieldset>
+          <legend>내일배움카드<span class="req">*</span></legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="card" value="보유"><span>가지고 있어요</span></label>
+            <label class="choice"><input type="radio" name="card" value="미보유·발급 관심"><span>없어요 · 발급 방법이 궁금해요</span></label>
+            <label class="choice"><input type="radio" name="card" value="잘 모름"><span>잘 모르겠어요</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="topic-block" data-topic="기업 교육" hidden>
+        <p class="topic-title">기업 교육 상담을 위해</p>
+        <div class="field"><label class="label" for="company">회사명<span class="req">*</span></label><input type="text" id="company" name="company" autocomplete="organization" maxlength="80"></div>
+        <div class="field"><label class="label" for="department">부서·직무<span class="opt">선택</span></label><input type="text" id="department" name="department" maxlength="80" placeholder="예: 인사팀 교육 담당"></div>
+        <fieldset>
+          <legend>교육 대상 인원<span class="req">*</span></legend>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="headcount" value="10명 이하"><span>10명 이하</span></label>
+            <label class="choice"><input type="radio" name="headcount" value="11~30명"><span>11~30명</span></label>
+            <label class="choice"><input type="radio" name="headcount" value="31~100명"><span>31~100명</span></label>
+            <label class="choice"><input type="radio" name="headcount" value="100명 초과"><span>100명 초과</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>희망 교육 시기<span class="opt">선택</span></legend>
+          <div class="choices two">
+            <label class="choice"><input type="radio" name="timing" value="2027년 1분기"><span>2027년 1분기</span></label>
+            <label class="choice"><input type="radio" name="timing" value="2027년 2분기"><span>2027년 2분기</span></label>
+            <label class="choice"><input type="radio" name="timing" value="2027년 하반기"><span>2027년 하반기</span></label>
+            <label class="choice"><input type="radio" name="timing" value="미정"><span>아직 미정</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="field" style="margin-top:6px"><label class="label" for="message">궁금한 점<span class="opt">선택</span></label><textarea id="message" name="message" maxlength="500" placeholder="상담 때 꼭 묻고 싶은 내용을 적어 주세요."></textarea></div>
+      <p class="error" data-error="2" role="alert"></p>
+      <div class="actions"><button class="btn ghost" type="button" data-prev>이전</button><button class="btn" type="button" data-next>다음</button></div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="panel" data-step="3" hidden>
+      <h2>연락처를 알려주세요</h2>
+      <p class="hint" id="contactHint">예약 확인과 상담 안내에만 사용해요.</p>
+      <div class="field"><label class="label" for="name">이름<span class="req">*</span></label><input type="text" id="name" name="name" autocomplete="name" maxlength="30"></div>
+      <div class="field"><label class="label" for="phone">휴대폰 번호<span class="req">*</span></label><input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="numeric" maxlength="13" placeholder="010-0000-0000"></div>
+      <div class="field"><label class="label" for="email">이메일<span class="opt">선택 · 상담 자료를 받아 보실 수 있어요</span></label><input type="email" id="email" name="email" autocomplete="email" maxlength="100"></div>
+
+      <div class="consent">
+        <label class="check"><input type="checkbox" name="privacy" id="privacy"><span>[필수] 개인정보 수집·이용 동의</span></label>
+        <details><summary>내용 보기</summary>
+          <table>
+            <tr><th>수집 항목</th><td>이름, 휴대폰 번호, 이메일(선택), 상담 신청 내용(직무·회사명 등)</td></tr>
+            <tr><th>이용 목적</th><td>상담 예약 확인, 상담 진행 및 결과 안내</td></tr>
+            <tr><th>보유 기간</th><td>상담 종료 후 6개월 (이후 지체 없이 파기)</td></tr>
+          </table>
+          동의를 거부할 수 있으며, 거부 시 상담 신청이 제한됩니다.
+        </details>
+      </div>
+      <div class="consent">
+        <label class="check"><input type="checkbox" name="marketing" id="marketing"><span>[선택] 교육 과정·할인 소식 수신 동의</span></label>
+        <details><summary>내용 보기</summary>
+          <table>
+            <tr><th>수집 항목</th><td>이름, 휴대폰 번호, 이메일</td></tr>
+            <tr><th>이용 목적</th><td>모두의연구소 교육 과정, 할인·이벤트 안내 (문자·이메일)</td></tr>
+            <tr><th>보유 기간</th><td>동의 철회 시까지</td></tr>
+          </table>
+          동의하지 않아도 상담 신청이 가능합니다.
+        </details>
+      </div>
+      <p class="error" data-error="3" role="alert"></p>
+      <div class="actions"><button class="btn ghost" type="button" data-prev>이전</button><button class="btn" type="submit" id="submitBtn">신청 완료</button></div>
+    </section>
+  </form>
+
+  <!-- DONE -->
+  <section class="panel done" id="done" hidden>
+    <div class="mark"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2 id="doneTitle">신청 완료</h2>
+    <div class="ticket" id="ticket"></div>
+    <p id="doneMsg"></p>
+    <a class="btn" id="doneBack" href="https://reco.modulabs.co.kr/moducon2026/" data-track="done_to_linkhub">부스 안내로 돌아가기</a>
+  </section>
+
+  <footer class="site-footer">
+    <p>(주)모두의연구소 · 대표 김승일<br>사업자등록번호 517-88-00184 · 통신판매업신고 2017-서울강남-04920<br>개인정보보호책임자 장혜정<br>서울특별시 강남구 강남대로 324 역삼디오슈페리움 2층 · 070-7743-5882</p>
+    <div class="footer-links"><a data-track="privacy_policy" href="https://modulabs.co.kr/policy/privacy-policy" target="_blank" rel="noopener noreferrer">개인정보처리방침</a><a data-track="terms_of_use" href="https://modulabs.co.kr/policy/terms-of-use" target="_blank" rel="noopener noreferrer">이용약관</a></div>
+    <p class="copyright">© 2026 MODULABS. All rights reserved.</p>
+  </footer>
+</main>
+
+<script>
+/* ── 설정 ─────────────────────────────────────────────
+   API_URL: Apps Script 웹 앱 배포 URL. 비워 두면 미리보기 모드(저장 안 됨). */
+const API_URL = 'https://script.google.com/macros/s/AKfycbzm3IDzNxWOREmxRNdUvPS4Q0m17F9NVUa8E-LnZEF8vv_9Si2Ob6BRfTCMfY_wLJ30Iw/exec';
+const EVENT_DATE = '2026-12-12';
+const SLOTS = ['10:00','10:20','10:40','11:00','11:20','11:40','12:00','12:20','12:40','15:00','15:20','15:40','16:00','16:20','16:40'];
+/* ─────────────────────────────────────────────────── */
+
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const form = $('#form');
+const DEMO = !API_URL;
+let step = 1, slotState = null, startedAt = Date.now();
+
+/* GA4 */
+const measurementId = document.querySelector('meta[name="ga4-measurement-id"]').content.trim();
+window.dataLayer = window.dataLayer || [];
+window.gtag = function(){ dataLayer.push(arguments); };
+if (/^G-[A-Z0-9]+$/.test(measurementId)) {
+  gtag('js', new Date());
+  gtag('config', measurementId);
+  const s = document.createElement('script'); s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+  document.head.appendChild(s);
+}
+const track = (name, params = {}) => gtag('event', name, Object.assign({ page_section: 'consult' }, params));
+track('consult_page_view');
+
+/* 들어온 UTM 보존 (없으면 직접 유입) */
+const qs = new URLSearchParams(location.search);
+const utm = {};
+['utm_source','utm_medium','utm_campaign','utm_content'].forEach(k => utm[k] = qs.get(k) || '');
+if (!utm.utm_source) utm.utm_source = '(direct)';
+
+/* 나가는 링크 UTM · 클릭 추적 */
+$$('a[data-track]').forEach(a => {
+  const url = new URL(a.href);
+  url.searchParams.set('utm_source', 'moducon_consult');
+  url.searchParams.set('utm_medium', 'consult_page');
+  url.searchParams.set('utm_campaign', 'moducon2026');
+  url.searchParams.set('utm_content', 'class_team_' + a.dataset.track);
+  a.href = url.toString();
+  a.addEventListener('click', () => track('consult_click_' + a.dataset.track, { link_url: a.href }));
+});
+
+if (DEMO) $('#demoNote').hidden = false;
+
+/* ── 남은 자리 ── */
+function demoSlots() {
+  const booked = JSON.parse(sessionStorageGet('demoBooked') || '["10:00","10:20","11:00"]');
+  const slots = SLOTS.map(t => ({ time: t, status: booked.includes(t) ? 'booked' : 'open' }));
+  return { ok: true, total: 15, remaining: slots.filter(s => s.status === 'open').length, slots };
+}
+function sessionStorageGet(k){ try { return sessionStorage.getItem(k); } catch(e){ return null; } }
+function sessionStorageSet(k,v){ try { sessionStorage.setItem(k,v); } catch(e){} }
+
+async function loadSlots() {
+  try {
+    slotState = DEMO ? demoSlots() : await (await fetch(API_URL + '?action=slots', { cache: 'no-store' })).json();
+    if (!slotState.ok) throw new Error();
+  } catch (e) {
+    slotState = null;
+  }
+  renderSlots();
+}
+
+function renderSlots() {
+  const remain = slotState ? slotState.remaining : null;
+  $('#remain').textContent = remain === null ? '–' : remain;
+  $('#barFill').style.width = remain === null ? '0' : ((15 - remain) / 15 * 100) + '%';
+  const onsite = $('input[name=method][value=onsite]');
+  if (remain === 0) {
+    $('#seatsMsg').textContent = '현장 상담이 모두 마감됐어요. 행사 후 전화 상담으로 신청해 주세요.';
+    onsite.disabled = true; onsite.checked = false;
+    $('#onsiteDesc').textContent = '선착순 15명 마감';
+    syncMethod();
+  } else if (remain === null) {
+    $('#seatsMsg').textContent = '남은 자리를 불러오지 못했어요. 잠시 후 새로고침해 주세요.';
+  }
+  const selected = form.time ? form.time.value : '';
+  ['slotsAm','slotsPm'].forEach(id => $('#' + id).innerHTML = '');
+  SLOTS.forEach(t => {
+    const st = slotState ? (slotState.slots.find(s => s.time === t) || {}).status : 'open';
+    const label = document.createElement('label');
+    label.className = 'choice';
+    label.innerHTML = `<input type="radio" name="time" value="${t}" ${st !== 'open' ? 'disabled' : ''}><span>${t}${st === 'booked' ? '<em>마감</em>' : st === 'closed' ? '<em>종료</em>' : ''}</span>`;
+    if (t === selected && st === 'open') label.querySelector('input').checked = true;
+    $(t < '13:00' ? '#slotsAm' : '#slotsPm').appendChild(label);
+  });
+}
+
+/* ── 단계 이동 ── */
+function syncMethod() {
+  const m = form.method.value;
+  $('#slotField').hidden = m !== 'onsite';
+  $('#callField').hidden = m !== 'phone';
+  $('#contactHint').textContent = m === 'onsite' ? '예약 확인과 상담 안내에만 사용해요.' : '12월 14일부터 이 번호로 연락드려요.';
+}
+form.addEventListener('change', e => {
+  if (e.target.name === 'method') { syncMethod(); track('consult_method_select', { method: e.target.value }); }
+  if (e.target.name === 'time') track('consult_slot_select', { slot_time: e.target.value });
+  if (e.target.name === 'topics') {
+    const topics = $$('input[name=topics]:checked').map(i => i.value);
+    $$('.topic-block').forEach(b => b.hidden = !topics.includes(b.dataset.topic));
+  }
+  $$('.error').forEach(el => el.textContent = '');
+});
+$('#phone').addEventListener('input', e => {
+  const d = e.target.value.replace(/\D/g, '').slice(0, 11);
+  e.target.value = d.length < 4 ? d : d.length < 8 ? d.slice(0,3) + '-' + d.slice(3) : d.slice(0,3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(-4);
+});
+
+const val = n => (form.elements[n] && form.elements[n].value || '').trim();
+const checked = n => $$(`input[name=${n}]:checked`).map(i => i.value);
+
+function validate(s) {
+  if (s === 1) {
+    if (!val('method')) return '상담 방식을 선택해 주세요.';
+    if (val('method') === 'onsite' && !val('time')) return '상담 시간을 선택해 주세요.';
+    if (val('method') === 'phone' && !val('callTime')) return '연락받기 편한 시간을 선택해 주세요.';
+  }
+  if (s === 2) {
+    const t = checked('topics');
+    if (!t.length) return '상담 주제를 하나 이상 선택해 주세요.';
+    if (t.includes('추천 과정') && (!val('job') || !val('aiLevel'))) return '지금 하는 일과 AI 활용 정도를 선택해 주세요.';
+    if (t.includes('국비지원') && !val('card')) return '내일배움카드 보유 여부를 선택해 주세요.';
+    if (t.includes('기업 교육') && (!val('company') || !val('headcount'))) return '회사명과 교육 대상 인원을 알려 주세요.';
+  }
+  if (s === 3) {
+    if (!val('name')) return '이름을 입력해 주세요.';
+    if (!/^01\d{8,9}$/.test(val('phone').replace(/\D/g, ''))) return '휴대폰 번호를 확인해 주세요.';
+    if (val('email') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('email'))) return '이메일 형식을 확인해 주세요.';
+    if (!$('#privacy').checked) return '개인정보 수집·이용에 동의해 주세요.';
+  }
+  return '';
+}
+
+function go(n) {
+  step = n;
+  $$('[data-step]').forEach(p => p.hidden = Number(p.dataset.step) !== n);
+  $$('.progress span').forEach((b, i) => b.classList.toggle('on', i < n));
+  $('#stepLabel').textContent = `${n} / 3 · ${['상담 방식','상담 내용','연락처'][n - 1]}`;
+  track('consult_step_view', { step: n });
+  $('.progress').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+$$('[data-next]').forEach(b => b.addEventListener('click', () => {
+  const err = validate(step);
+  $(`[data-error="${step}"]`).textContent = err;
+  if (!err) go(step + 1);
+}));
+$$('[data-prev]').forEach(b => b.addEventListener('click', () => go(step - 1)));
+
+/* ── 제출 ── */
+const MESSAGES = {
+  slot_taken: '방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요.',
+  full: '현장 상담이 모두 마감됐어요. 행사 후 전화 상담으로 신청해 주세요.',
+  duplicate: '이 번호로 이미 현장 상담이 예약돼 있어요. 변경은 부스 스태프에게 말씀해 주세요.',
+  busy: '신청이 몰려 처리가 늦어지고 있어요. 잠시 후 다시 눌러 주세요.',
+  invalid: '입력 내용을 다시 확인해 주세요.',
+  network: '연결이 불안정해요. 잠시 후 다시 시도해 주세요.',
+};
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = validate(3);
+  $('[data-error="3"]').textContent = err;
+  if (err) return;
+  const btn = $('#submitBtn');
+  btn.disabled = true; btn.textContent = '신청 중…';
+
+  const data = Object.assign({
+    method: val('method'), time: val('method') === 'onsite' ? val('time') : '', callTime: val('method') === 'phone' ? val('callTime') : '',
+    topics: checked('topics'), job: val('job'), aiLevel: val('aiLevel'), interests: checked('interests'), card: val('card'),
+    company: val('company'), department: val('department'), headcount: val('headcount'), timing: val('timing'), message: val('message'),
+    name: val('name'), phone: val('phone'), email: val('email'),
+    privacy: $('#privacy').checked, marketing: $('#marketing').checked, website: val('website'),
+  }, utm);
+  // 기업 교육을 고르지 않았으면 회사 정보는 보내지 않음
+  if (!data.topics.includes('기업 교육')) Object.assign(data, { company: '', department: '', headcount: '', timing: '' });
+  if (!data.topics.includes('추천 과정')) Object.assign(data, { job: '', aiLevel: '', interests: [] });
+  if (!data.topics.includes('국비지원')) data.card = '';
+
+  let res;
+  try {
+    if (DEMO) {
+      await new Promise(r => setTimeout(r, 600));
+      const s = demoSlots();
+      if (data.method === 'onsite' && (s.slots.find(x => x.time === data.time) || {}).status !== 'open') res = Object.assign({ ok: false, error: 'slot_taken' }, s);
+      else {
+        if (data.method === 'onsite') sessionStorageSet('demoBooked', JSON.stringify(s.slots.filter(x => x.status === 'booked').map(x => x.time).concat(data.time)));
+        res = { ok: true, id: 'demo', method: data.method, time: data.time };
+      }
+    } else {
+      res = await (await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) })).json();
+    }
+  } catch (x) {
+    res = { ok: false, error: 'network' };
+  }
+  btn.disabled = false; btn.textContent = '신청 완료';
+
+  if (!res.ok) {
+    track('consult_submit_error', { reason: res.error, method: data.method });
+    if (res.slots) { slotState = res; renderSlots(); }
+    if (res.error === 'slot_taken' || res.error === 'full') {
+      go(1);
+      $('[data-error="1"]').textContent = MESSAGES[res.error];
+    } else {
+      $('[data-error="3"]').textContent = MESSAGES[res.error] || MESSAGES.network;
+    }
+    return;
+  }
+
+  track('consult_submit', {
+    method: data.method, slot_time: data.time || '', topics: data.topics.join('|'),
+    marketing_opt_in: data.marketing ? 'Y' : 'N', duration_sec: Math.round((Date.now() - startedAt) / 1000),
+  });
+  showDone(data);
+});
+
+function showDone(d) {
+  form.hidden = true;
+  $('.progress').hidden = true; $('#stepLabel').hidden = true;
+  const onsite = d.method === 'onsite';
+  $('#doneTitle').textContent = onsite ? '현장 상담 예약 완료' : '전화 상담 신청 완료';
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+  $('#ticket').innerHTML = (onsite
+    ? `<div><b>일시</b>12월 12일(토) ${esc(d.time)} · 20분</div><div><b>장소</b>모두콘 클래스팀 부스</div>`
+    : `<div><b>연락</b>12월 14일부터 순차 연락</div><div><b>희망 시간</b>${esc(d.callTime)}</div>`)
+    + `<div><b>주제</b>${esc(d.topics.join(', '))}</div><div><b>이름</b>${esc(d.name)}</div>`;
+  $('#doneMsg').innerHTML = onsite
+    ? '예약 시간에 부스로 와서 이름을 말씀해 주세요.<br>상담 후 모두의연구소 굿즈를 드려요.<span class="late" style="display:block;margin-top:14px;text-align:left">⏰ 예약 시간에서 <b>5분</b>이 지나도 오지 않으면 예약이 취소돼요. 늦을 것 같으면 부스 스태프에게 미리 알려 주세요.</span>'
+    : '신청해 주셔서 감사합니다.<br>담당자가 남겨 주신 번호로 연락드릴게요.';
+  $('#done').hidden = false;
+  $('#done').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!DEMO) setTimeout(loadSlots, 500);
+}
+
+loadSlots();
+</script>
+</body>
+</html>

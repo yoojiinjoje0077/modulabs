@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="robots" content="noindex">
+  <meta name="ga4-measurement-id" content="G-5VD787JWYW">
+  <title>나에게 맞는 AI 과정 · 모두콘 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root{--bg:#f5f7fb;--line:#e2e7f0;--line2:#d9e0ec;--text:#1b2232;--sub:#4f5869;--mute:#7f8798;--pri:#2f55d4;--pri-d:#2442ad;--tint:#eef2fd;
+      font-family:Pretendard,sans-serif;color:var(--text);background:var(--bg);font-size:16px}
+    *{box-sizing:border-box}body{margin:0;min-width:320px}a{color:inherit}
+    main{max-width:540px;margin:0 auto;padding:0 20px 60px}
+    .topline{height:8px;background:var(--pri);margin:0 -20px 26px}
+    .brand{display:flex;justify-content:space-between;align-items:center}.logo{width:112px;display:block}.date{font-size:.8rem;font-weight:750;color:var(--mute);letter-spacing:.05em}
+    .eyebrow{color:var(--pri-d);font-weight:850;font-size:.84rem;letter-spacing:.06em;margin:28px 0 10px}
+    h1{font-size:clamp(1.8rem,7.2vw,2.4rem);line-height:1.24;letter-spacing:-.06em;margin:0;font-weight:900;word-break:keep-all}
+    .lead{color:var(--sub);line-height:1.6;margin:12px 0 0;word-break:keep-all;font-size:.95rem}
+    .sent{display:inline-flex;gap:6px;align-items:center;background:#e6f5ec;color:#1f7a4a;border-radius:20px;padding:6px 11px;font-size:.8rem;font-weight:800;margin-top:14px}
+    .agent{background:var(--pri);color:#fff;border-radius:22px;padding:22px;position:relative;overflow:hidden;margin:24px 0 18px}
+    .agent:after{content:"";position:absolute;width:140px;height:140px;border:24px solid rgba(255,255,255,.16);border-radius:50%;right:-40px;top:-60px}
+    .agent small{display:block;font-weight:850;font-size:.78rem;letter-spacing:.06em;color:#dfe6fc;margin-bottom:8px}
+    .agent strong{display:block;font-size:1.3rem;letter-spacing:-.04em;line-height:1.35}
+    .agent p{margin:8px 0 16px;color:#e3e9fb;font-size:.88rem;line-height:1.55;max-width:330px;word-break:keep-all}
+    .agent a,.agent span.btn{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:14px;background:#fff;color:var(--pri-d);font-weight:850;text-decoration:none}
+    .agent span.btn{background:rgba(255,255,255,.2);color:#fff;font-weight:750;font-size:.9rem}
+    .course{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 3px 12px rgba(23,35,70,.04)}
+    .course img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--tint)}
+    .cbody{padding:20px}
+    .badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+    .badge{border-radius:20px;padding:4px 9px;font-size:.74rem;font-weight:800;background:var(--tint);color:var(--pri-d)}
+    .badge.g{background:#e6f5ec;color:#1f7a4a}.badge.y{background:#fff2dc;color:#a15c00}.badge.n{background:#f0f2f6;color:#5f6879}
+    .course h2{font-size:1.22rem;line-height:1.38;letter-spacing:-.04em;margin:0;font-weight:900;word-break:keep-all}
+    .size{color:var(--mute);font-size:.82rem;font-weight:700;margin-top:6px}
+    .summary{color:var(--sub);line-height:1.6;font-size:.92rem;margin:12px 0 14px;word-break:keep-all}
+    .points{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:7px}
+    .points li{display:flex;gap:9px;align-items:flex-start;background:#f8f9fc;border-radius:11px;padding:10px 12px;font-size:.88rem;font-weight:650;line-height:1.45;word-break:keep-all}
+    .points li:before{content:"✓";color:var(--pri);font-weight:900}
+    .points.pk li:before{content:"▸"}
+    .cta{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:14px;background:var(--text);color:#fff;font-weight:850;text-decoration:none;text-align:center;padding:10px 14px;line-height:1.4;word-break:keep-all}
+    .info{border-radius:16px;padding:15px 16px;margin-top:14px;font-size:.88rem;line-height:1.55;word-break:keep-all}
+    .info b{display:block;font-size:.93rem;margin-bottom:3px}
+    .info.y{background:#fff6e5;color:#6b4300}.info.g{background:#e6f5ec;color:#185f3a}.info.b{background:var(--tint);color:#22357a}
+    .info a{display:inline-flex;margin-top:9px;font-weight:850;text-underline-offset:3px}
+    h3{font-size:1rem;margin:30px 0 12px;letter-spacing:-.03em}
+    .links{display:grid;gap:10px}
+    .link{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px 16px;text-decoration:none}
+    .link .ic{flex:0 0 40px;height:40px;border-radius:12px;background:var(--tint);display:grid;place-items:center;font-size:1.2rem}
+    .link b{display:block;font-size:.98rem;letter-spacing:-.03em}.link span.s{display:block;color:var(--mute);font-size:.8rem;margin-top:2px}
+    .link .ar{margin-left:auto;color:#b7bfcd;font-weight:900}
+    .empty{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 20px;text-align:center;margin-top:24px;color:var(--sub);line-height:1.6}
+    .foot{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:.78rem;line-height:1.65}.foot a{font-weight:700}
+    @media(max-width:380px){main{padding-left:16px;padding-right:16px}.topline{margin-left:-16px;margin-right:-16px}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="topline" aria-hidden="true"></div>
+  <header class="brand"><img class="logo" src="../modulabs-logo.svg" alt="모두의연구소"><span class="date">MODUCON 2026</span></header>
+  <div id="view"></div>
+  <footer class="foot">(주)모두의연구소 · 대표 김승일 · 사업자등록번호 517-88-00184<br>서울특별시 강남구 강남대로 324 역삼디오슈페리움 2층 · 070-7743-5882<br>
+    <a href="https://modulabs.co.kr/policy/privacy-policy" target="_blank" rel="noopener noreferrer">개인정보처리방침</a> · © 2026 MODULABS. All rights reserved.</footer>
+</main>
+<script src="../courses.js"></script>
+<script>
+/* ── 설정 ─────────────────────────────────────────────
+   AGENT_URL: 콘텐츠 제작 AI 에이전트 파일의 구글 드라이브 공유 링크 (링크가 있는 사람 누구나 보기)
+   비워 두면 '준비 중'으로 표시 */
+const AGENT_URL = '';
+const LINKHUB_URL = 'https://reco.modulabs.co.kr/moducon2026/';
+const CARD_GUIDE_URL = 'https://reco.modulabs.co.kr/ai-guide';
+const CONSULT_URL = '../../consult/';
+/* ─────────────────────────────────────────────────── */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const q = new URLSearchParams(location.search);
+const id = q.get('c'), card = q.get('k'), open = q.get('o') === '1', smsSent = q.get('s') === '1', fromSurvey = q.get('from') === 'survey';
+const c = window.MODU_COURSES[id];
+
+/* GA4 */
+const mid = document.querySelector('meta[name="ga4-measurement-id"]').content.trim();
+window.dataLayer = window.dataLayer || []; window.gtag = function(){ dataLayer.push(arguments); };
+if (/^G-[A-Z0-9]+$/.test(mid)) {
+  gtag('js', new Date()); gtag('config', mid);
+  const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + mid; document.head.appendChild(s);
+}
+const track = (n, p = {}) => gtag('event', n, Object.assign({ page_section: 'survey_result', course_id: id || '' }, p));
+track('result_page_view', { entry: fromSurvey ? 'survey' : 'sms' });
+
+// 문자로 다시 연 경우 utm_source 를 구분 (문자 링크에 포함)
+const utmContent = name => 'class_team_result_' + name;
+function withUtm(url, name) {
+  const u = new URL(url, location.href);
+  if (u.origin === location.origin) return u.toString();
+  u.searchParams.set('utm_source', 'moducon_survey');
+  u.searchParams.set('utm_medium', fromSurvey ? 'result_page' : 'sms');
+  u.searchParams.set('utm_campaign', 'moducon2026');
+  u.searchParams.set('utm_content', utmContent(name));
+  return u.toString();
+}
+
+function render() {
+  if (!c) {
+    $('#view').innerHTML = `<div class="empty">추천 결과를 찾지 못했어요.<br>부스 안내 페이지에서 설문을 다시 해 주세요.<br><br><a class="cta" href="${esc(withUtm(LINKHUB_URL, 'linkhub'))}" data-track="linkhub">부스 안내로 가기</a></div>`;
+    return bind();
+  }
+  const isPkg = c.type === 'package', isNew = c.type === 'new', isKdc = c.type === 'kdc';
+  const badges = [];
+  if (isKdc && card === '1') badges.push('<span class="badge g">국비지원 · 내일배움카드로 수강</span>');
+  if (isNew && card === '1') badges.push('<span class="badge y">내년 국비지원 오픈 예정</span>');
+  if (isPkg) badges.push('<span class="badge">패키지 · 프로젝트 포함</span>');
+  if (!badges.length) badges.push('<span class="badge n">온라인 강의</span>');
+
+  const notes = [];
+  if (isNew && card === '1') notes.push(open
+    ? `<div class="info g"><b>국비지원 오픈 알림 신청 완료</b>이 과정이 국비지원으로 열리면 남겨 주신 번호로 연락드릴게요. 지금 바로 일반 결제로 수강할 수도 있어요.</div>`
+    : `<div class="info y"><b>내년 국비지원으로 열릴 예정이에요</b>지금은 일반 결제로 수강할 수 있어요.</div>`);
+  if (card === '0' || card === '2') notes.push(`<div class="info b"><b>${card === '2' ? '내일배움카드, 발급 대상인지 확인해 보세요' : '내일배움카드가 있으면 국비지원 과정도 들을 수 있어요'}</b>카드 지원 혜택과 발급 방법을 한 번에 정리했어요.<br><a href="${esc(withUtm(CARD_GUIDE_URL, 'card_guide'))}" target="_blank" rel="noopener noreferrer" data-track="card_guide">내일배움카드 발급 방법 보기 →</a></div>`);
+
+  $('#view').innerHTML = `
+    <p class="eyebrow">설문 결과</p>
+    <h1>나에게 맞는 과정을<br>찾았어요</h1>
+    <p class="lead">설문에 참여해 주셔서 감사합니다. 약속드린 AI 에이전트와 추천 과정을 확인해 보세요.</p>
+    ${fromSurvey && smsSent ? '<span class="sent">✓ 이 페이지 주소를 문자로도 보냈어요</span>' : ''}
+
+    <section class="agent">
+      <small>설문 참여 선물</small>
+      <strong>콘텐츠 제작 AI 에이전트</strong>
+      <p>구글 드라이브에서 파일을 내려받아 바로 사용해 보세요.</p>
+      ${AGENT_URL ? `<a href="${esc(AGENT_URL)}" target="_blank" rel="noopener noreferrer" data-track="agent_download">⬇ 에이전트 내려받기</a>` : '<span class="btn">다운로드 링크 준비 중 · 부스 스태프에게 문의해 주세요</span>'}
+    </section>
+
+    <article class="course">
+      <img src="${esc(c.thumb)}" alt="">
+      <div class="cbody">
+        <div class="badges">${badges.join('')}</div>
+        ${isPkg ? `<p class="size" style="margin:0 0 4px;color:var(--pri-d)">${esc(c.label)}</p>` : ''}
+        <h2>${esc(c.name)}</h2>
+        <p class="size">${esc(c.size)}</p>
+        <p class="summary">${esc(c.summary)}</p>
+        <p class="size" style="margin:0 0 8px;color:var(--text)">${isPkg ? '이런 과정이 들어 있어요' : '이런 걸 직접 만들어요'}</p>
+        <ul class="points${isPkg ? ' pk' : ''}">${c.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+        <a class="cta" href="${esc(withUtm(c.url, 'course_' + id))}" target="_blank" rel="noopener noreferrer" data-track="course_detail">과정 자세히 보기</a>
+        ${notes.join('')}
+      </div>
+    </article>
+
+    <h3>모두콘 부스에서 더 알아보기</h3>
+    <div class="links">
+      <a class="link" href="${esc(CONSULT_URL)}" data-track="consult"><span class="ic">💬</span><span><b>상담 신청하기</b><span class="s">기업 교육 · 추천 과정 · 국비지원 문의</span></span><span class="ar">›</span></a>
+      <a class="link" href="${esc(withUtm(LINKHUB_URL, 'linkhub'))}" data-track="linkhub"><span class="ic">🏠</span><span><b>부스 안내 전체 보기</b><span class="s">미니 체험 · 현장 혜택 · 특별 할인전</span></span><span class="ar">›</span></a>
+    </div>`;
+  bind();
+}
+function bind() {
+  document.querySelectorAll('a[data-track]').forEach(a => a.addEventListener('click', () => track('result_click_' + a.dataset.track, { link_url: a.href })));
+}
+render();
+</script>
+</body>
+</html>

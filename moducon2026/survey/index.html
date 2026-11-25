@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="1분 설문하고 콘텐츠 제작 AI 에이전트와 나에게 맞는 AI 과정을 받아 보세요.">
+  <meta name="ga4-measurement-id" content="G-5VD787JWYW">
+  <title>AI 에이전트 받고 나에게 맞는 과정 찾기 · 모두콘 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root{--bg:#f5f7fb;--card:#fff;--line:#e2e7f0;--line2:#d9e0ec;--text:#1b2232;--sub:#4f5869;--mute:#7f8798;--pri:#2f55d4;--pri-d:#2442ad;--tint:#eef2fd;--tint2:#e9eefc;
+      font-family:Pretendard,sans-serif;color:var(--text);background:var(--bg);font-size:16px}
+    *{box-sizing:border-box}body{margin:0;min-width:320px}button,input{font:inherit;color:inherit}
+    main{max-width:540px;margin:0 auto;padding:0 20px 60px;min-height:100vh;display:flex;flex-direction:column}
+    .topline{height:8px;background:var(--pri);margin:0 -20px 26px}
+    .brand{display:flex;justify-content:space-between;align-items:center}.logo{width:112px;display:block}
+    .back-link{font-size:.84rem;font-weight:750;color:var(--mute);text-decoration:none}
+    .bar{display:flex;align-items:center;gap:10px;margin:24px 0 6px;min-height:34px}
+    .prev{border:0;background:none;padding:6px 8px 6px 0;font-weight:800;color:var(--mute);cursor:pointer;font-size:.9rem}
+    .prev[hidden]{display:block!important;visibility:hidden}
+    .track{flex:1;height:6px;background:var(--line);border-radius:6px;overflow:hidden}.track i{display:block;height:100%;background:var(--pri);border-radius:6px;transition:width .35s}
+    .count{font-size:.78rem;color:var(--mute);font-weight:700;min-width:44px;text-align:right}
+    .screen{animation:in .28s ease}@keyframes in{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+    .eyebrow{color:var(--pri-d);font-weight:850;font-size:.84rem;letter-spacing:.06em;margin:18px 0 10px}
+    h1{font-size:clamp(1.85rem,7.4vw,2.5rem);line-height:1.22;letter-spacing:-.06em;margin:0;font-weight:900;word-break:keep-all}
+    h2{font-size:clamp(1.4rem,5.8vw,1.75rem);line-height:1.32;letter-spacing:-.05em;margin:10px 0 6px;font-weight:900;word-break:keep-all}
+    .lead{color:var(--sub);line-height:1.6;margin:10px 0 20px;word-break:keep-all;font-size:.95rem}
+    .gift{background:var(--pri);color:#fff;border-radius:22px;padding:20px 22px;position:relative;overflow:hidden;margin:22px 0 14px}
+    .gift:after{content:"";position:absolute;width:130px;height:130px;border:22px solid rgba(255,255,255,.18);border-radius:50%;right:-38px;bottom:-66px}
+    .gift small{display:block;font-weight:850;font-size:.78rem;letter-spacing:.06em;margin-bottom:8px;color:#dfe6fc}
+    .gift strong{display:block;font-size:1.25rem;letter-spacing:-.04em;line-height:1.4}
+    .steps{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:8px}
+    .steps li{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:700;font-size:.92rem}
+    .steps b{flex:0 0 26px;height:26px;border-radius:50%;background:var(--tint);color:var(--pri-d);display:grid;place-items:center;font-size:.8rem}
+    .opts{display:grid;gap:10px;margin-top:16px}
+    .opt{width:100%;text-align:left;border:1.5px solid var(--line2);border-radius:16px;background:#fff;padding:15px 16px;cursor:pointer;display:flex;gap:12px;align-items:center;transition:border-color .15s,background .15s,transform .1s}
+    .opt:hover{border-color:#9fb2ee}.opt:active{transform:scale(.99)}
+    .opt.on{border-color:var(--pri);background:var(--tint)}
+    .opt:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+    .opt .em{flex:0 0 40px;height:40px;border-radius:12px;background:var(--tint);display:grid;place-items:center;font-size:1.25rem}
+    .opt .tx{flex:1;min-width:0}.opt .tt{display:block;font-weight:800;font-size:1rem;letter-spacing:-.02em;line-height:1.35;word-break:keep-all}
+    .opt .ds{display:block;color:var(--mute);font-size:.82rem;margin-top:3px;line-height:1.45;word-break:keep-all}
+    .opt .ar{color:#b7bfcd;font-weight:900}
+    .note{background:#fff6e5;color:#7a4b00;border-radius:12px;padding:10px 12px;font-size:.84rem;font-weight:650;line-height:1.5;margin:14px 0 0;word-break:keep-all}
+    .field{margin-bottom:14px}.label{display:block;font-weight:800;font-size:.93rem;margin-bottom:8px}.req{color:var(--pri);margin-left:3px}
+    input[type=text],input[type=tel]{width:100%;border:1.5px solid var(--line2);border-radius:13px;padding:13px 14px;background:#fff;font-size:1rem}
+    input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(47,85,212,.15)}
+    .consent{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:8px}
+    .consent.hl{border-color:#9fb2ee;background:var(--tint)}
+    .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-weight:750;font-size:.9rem;line-height:1.45}
+    .check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--pri);flex:0 0 20px}
+    .check em{display:block;font-style:normal;font-weight:550;color:var(--mute);font-size:.8rem;margin-top:2px}
+    details{margin-top:6px;font-size:.78rem;color:#5f6879;line-height:1.6}details summary{cursor:pointer;font-weight:700;color:var(--mute)}
+    details table{width:100%;border-collapse:collapse;margin-top:6px}details th,details td{border:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top}details th{width:26%;background:#f8f9fc}
+    .btn{width:100%;min-height:56px;border:0;border-radius:15px;background:var(--text);color:#fff;font-weight:800;font-size:1.02rem;cursor:pointer;margin-top:14px}
+    .btn.pri{background:var(--pri)}.btn:disabled{background:#c3cad6;cursor:wait}
+    .btn:focus-visible{outline:3px solid var(--pri);outline-offset:3px}
+    .error{color:#c8283c;font-size:.86rem;font-weight:700;margin:10px 0 0;min-height:1.2em}
+    .pick{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin:14px 0 18px}
+    .pick img{width:72px;height:72px;border-radius:12px;object-fit:cover;flex:0 0 72px;background:var(--tint)}
+    .pick small{display:block;color:var(--pri-d);font-weight:800;font-size:.75rem;margin-bottom:3px}.pick b{font-size:.92rem;line-height:1.4;word-break:keep-all}
+    .demo{background:#fff6d9;border:1px solid #f1dd9b;color:#6b5512;border-radius:12px;padding:9px 12px;font-size:.8rem;margin:16px 0 0}
+    .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+    .foot{margin-top:auto;padding-top:34px;color:var(--mute);font-size:.76rem;line-height:1.6}
+    .foot a{color:inherit;font-weight:700}
+    @media(max-width:380px){main{padding-left:16px;padding-right:16px}.topline{margin-left:-16px;margin-right:-16px}.opt{padding:13px 14px}.opt .em{flex-basis:36px;height:36px}}
+    @media(prefers-reduced-motion:reduce){.screen{animation:none}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="topline" aria-hidden="true"></div>
+  <header class="brand">
+    <img class="logo" src="./modulabs-logo.svg" alt="모두의연구소">
+    <a class="back-link" href="https://reco.modulabs.co.kr/moducon2026/" data-track="back_to_linkhub">← 부스 안내</a>
+  </header>
+  <div class="bar" id="bar" hidden>
+    <button class="prev" id="prev" type="button" aria-label="이전 질문">← 이전</button>
+    <div class="track" aria-hidden="true"><i id="fill" style="width:0"></i></div>
+    <span class="count" id="count"></span>
+  </div>
+  <div id="view" aria-live="polite"></div>
+  <div class="demo" id="demoNote" hidden>미리보기 모드 · 시트와 연결되지 않아 응답이 저장되지 않고 문자도 발송되지 않음</div>
+  <p class="foot">(주)모두의연구소 · <a href="https://modulabs.co.kr/policy/privacy-policy" target="_blank" rel="noopener noreferrer">개인정보처리방침</a> · © 2026 MODULABS</p>
+</main>
+
+<script src="./courses.js"></script>
+<script>
+/* ── 설정 ─────────────────────────────────────────── */
+const API_URL = 'https://script.google.com/macros/s/AKfycbzm3IDzNxWOREmxRNdUvPS4Q0m17F9NVUa8E-LnZEF8vv_9Si2Ob6BRfTCMfY_wLJ30Iw/exec';
+const RESULT_PATH = './my/';
+/* ─────────────────────────────────────────────────── */
+
+const C = window.MODU_COURSES;
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DEMO = !API_URL;
+const startedAt = Date.now();
+
+/* GA4 */
+const mid = document.querySelector('meta[name="ga4-measurement-id"]').content.trim();
+window.dataLayer = window.dataLayer || []; window.gtag = function(){ dataLayer.push(arguments); };
+if (/^G-[A-Z0-9]+$/.test(mid)) {
+  gtag('js', new Date()); gtag('config', mid);
+  const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + mid; document.head.appendChild(s);
+}
+const track = (n, p = {}) => gtag('event', n, Object.assign({ page_section: 'agent_survey' }, p));
+track('survey_page_view');
+
+/* 들어온 UTM 보존 */
+const qs = new URLSearchParams(location.search);
+const utm = {}; ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(k => utm[k] = qs.get(k) || '');
+if (!utm.utm_source) utm.utm_source = '(direct)';
+document.querySelectorAll('a[data-track]').forEach(a => a.addEventListener('click', () => track('survey_click_' + a.dataset.track)));
+
+/* ── 질문 정의 ──
+   각 선택지: v(저장 값), t(제목), d(설명), e(아이콘), go(다음 화면) 또는 course(추천 과정 ID) */
+const S = {
+  card: { key: 'card', eyebrow: 'Q. 내일배움카드', title: '내일배움카드가 있으신가요?', lead: '국비지원으로 들을 수 있는 과정을 먼저 찾아 드릴게요.', opts: [
+    { v: '있음', e: '💳', t: '있어요', go: 'goalA' },
+    { v: '없음', e: '🙅', t: '없어요', go: 'style' },
+    { v: '잘 모름', e: '🤔', t: '잘 모르겠어요', d: '발급 방법도 결과에서 알려 드려요', go: 'style' } ] },
+
+  goalA: { key: 'goal', eyebrow: 'Q. 배우고 싶은 것', title: 'AI로 무엇을 배우고 싶으세요?', lead: '국비지원 과정 중에서 골라 드릴게요.', opts: [
+    { v: '업무 자동화 실무', e: '⚡', t: '업무 자동화처럼 바로 쓰는 실무', d: '회의록·보고서·엑셀 취합을 AI에게 맡기기', course: '57' },
+    { v: 'AI 직무 전체', e: '🧑‍💻', t: '파이썬부터 서비스 개발까지 AI 직무 전체', d: '데이터 분석·예측 모델·딥러닝 서비스까지', course: '137' },
+    { v: 'AI 원리', e: '🧠', t: 'AI가 작동하는 원리', d: '수식이 막막해도 손으로 계산하며 이해하기', course: '136' },
+    { v: '입문·기초', e: '🌱', t: 'AI가 처음이라 입문·기초부터', d: '생활 속 활용이나 이미지·영상 만들기부터', go: 'introTopic' },
+    { v: '콘텐츠 제작', e: '🎬', t: '콘텐츠 제작', d: '이미지·영상, 유튜브, 카드뉴스·블로그', go: 'contentTopic' } ] },
+
+  introTopic: { key: 'topic', eyebrow: 'Q. 입문 주제', title: '어떤 주제로 시작하고 싶으세요?', lead: '내년 국비지원으로 열리는 신규 입문 과정이에요.', note: '지금은 일반 결제로 수강할 수 있고, 국비지원으로 열리면 연락드릴 수 있어요.', opts: [
+    { v: '생활 속 챗GPT', e: '💬', t: '생활 속 챗GPT 활용', d: '사진 질문, 가게 홍보물, 나만의 GPT', course: '312' },
+    { v: 'AI 이미지·영상', e: '🎨', t: 'AI 이미지·영상 만들기', d: '광고·숏폼·상세페이지 완성', course: '314' } ] },
+
+  contentTopic: { key: 'topic', eyebrow: 'Q. 콘텐츠 주제', title: '어떤 콘텐츠를 만들고 싶으세요?', lead: '내년 국비지원으로 열리는 신규 과정이에요.', note: '지금은 일반 결제로 수강할 수 있고, 국비지원으로 열리면 연락드릴 수 있어요.', opts: [
+    { v: '이미지·영상', e: '🎨', t: '이미지·영상·상세페이지', d: '캐릭터·영상 생성부터 숏폼 편집까지', course: '314' },
+    { v: '유튜브', e: '▶️', t: '유튜브 채널', d: '기획·대본·썸네일·채널 운영', course: '315' },
+    { v: '카드뉴스·블로그', e: '🗂️', t: '카드뉴스·블로그 자동화', d: 'Claude Code로 콘텐츠 자동 생산', course: '317' } ] },
+
+  style: { key: 'style', eyebrow: 'Q. 학습 방식', title: '어떻게 배우고 싶으세요?', lead: '원하는 방식에 맞춰 골라 드릴게요.', opts: [
+    { v: '패키지', e: '📦', t: '한 번에 실무 활용까지', d: '여러 과정을 묶은 패키지로 끝까지', go: 'pkgTopic' },
+    { v: '단과', e: '🧩', t: '한 과정씩 차근차근', d: '관심 주제 하나부터 가볍게', go: 'field' } ] },
+
+  pkgTopic: { key: 'topic', eyebrow: 'Q. 패키지 주제', title: '어떤 분야를 끝내고 싶으세요?', lead: '프로젝트까지 포함된 패키지예요.', opts: [
+    { v: '업무 실무', e: '⚡', t: 'AI로 끝내는 실무', d: '문서 작성부터 업무 자동화까지', course: '307' },
+    { v: '콘텐츠', e: '🎬', t: 'AI 콘텐츠 만들기', d: '이미지·영상부터 제작 자동화까지', course: '309' },
+    { v: '서비스 개발', e: '🚀', t: '바이브코딩 실전 서비스 개발', d: '비개발자의 웹서비스 제작과 배포', course: '310' },
+    { v: '데이터 분석', e: '📊', t: '데이터 분석 첫걸음', d: '파이썬 기초부터 예측 모델까지', course: '308' },
+    { v: 'AI 개발', e: '🧠', t: 'AI 개발 첫걸음', d: '코딩부터 딥러닝 원리까지', course: '311' } ] },
+
+  field: { key: 'topic', eyebrow: 'Q. 관심 분야', title: '어떤 분야가 궁금하세요?', lead: '분야를 고르면 과정을 보여 드릴게요.', opts: [
+    { v: '업무 자동화', e: '⚡', t: '업무 자동화', d: 'Claude·ChatGPT·Gemini로 일 줄이기', go: 'workPick' },
+    { v: '콘텐츠 제작', e: '🎬', t: '콘텐츠 제작', d: '이미지·영상, 유튜브, 카드뉴스·블로그', go: 'contentPick' },
+    { v: 'AI 입문', e: '🌱', t: 'AI 입문', d: '생활 속에서 챗GPT 시작하기', course: '312' },
+    { v: 'AI 개발', e: '🧑‍💻', t: 'AI 개발', d: '코딩·딥러닝 첫걸음', go: 'devPick' } ] },
+
+  workPick: { key: 'pick', eyebrow: 'Q. 과정 선택', title: '가장 끌리는 과정을 골라 주세요', opts: [
+    { v: '57', e: '🎯', t: '상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링', d: '업무 요청 설계·GPTs·엑셀 보고서 자동화', course: '57' },
+    { v: '318', e: '🟠', t: 'Claude 업무 활용 끝판왕', d: '문서·파일 통합, 발표자료, 업무 루틴', course: '318' },
+    { v: '319', e: '🟢', t: '챗GPT·Codex 실전', d: '보고서 자동화부터 API 연동 웹서비스', course: '319' },
+    { v: '313', e: '🔷', t: 'Gemini 실전 활용법', d: '리서치·시트 자동화·대시보드', course: '313' } ] },
+
+  contentPick: { key: 'pick', eyebrow: 'Q. 과정 선택', title: '가장 끌리는 과정을 골라 주세요', opts: [
+    { v: '314', e: '🎨', t: '왕초보도 만드는 AI 이미지·영상', d: '상세페이지부터 숏폼까지', course: '314' },
+    { v: '315', e: '▶️', t: 'AI로 성과 내는 유튜버의 비밀', d: '기획부터 채널 운영까지', course: '315' },
+    { v: '317', e: '🗂️', t: 'Claude Code로 만드는 콘텐츠 자동화 공장', d: '카드뉴스·블로그까지', course: '317' } ] },
+
+  devPick: { key: 'pick', eyebrow: 'Q. 과정 선택', title: '가장 끌리는 과정을 골라 주세요', opts: [
+    { v: '137', e: '🧑‍💻', t: 'AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음', d: '파이썬부터 딥러닝 서비스까지', course: '137' },
+    { v: '136', e: '🧠', t: 'AI by Hand: 내 손으로 이해하는 딥러닝 기초수학', d: '손으로 계산하며 이해하는 AI 원리', course: '136' } ] },
+
+  job: { key: 'job', eyebrow: 'Q. 마지막 질문', title: '지금 어떤 일을 하고 계세요?', lead: '과정 안내를 더 잘 맞춰 드리기 위한 질문이에요.', opts: [
+    { v: '사무·기획', e: '🗂️', t: '사무·기획·경영지원', go: 'contact' },
+    { v: '마케팅·콘텐츠', e: '📣', t: '마케팅·영업·콘텐츠', go: 'contact' },
+    { v: '개발·데이터', e: '💻', t: '개발·데이터', go: 'contact' },
+    { v: '학생·취업 준비', e: '🎓', t: '학생·취업 준비', go: 'contact' },
+    { v: '창업·자영업', e: '🏪', t: '창업·자영업·프리랜서', go: 'contact' },
+    { v: '기타', e: '✨', t: '기타', go: 'contact' } ] },
+};
+
+/* ── 상태 ── */
+const A = {};          // 답변
+let hist = [];         // 지나온 화면
+let cur = 'intro';
+
+function remaining(id) {   // 남은 질문 수 추정 (진행 막대용)
+  return ({ intro: 4, card: 4, goalA: 3, style: 4, pkgTopic: 2, field: 3, introTopic: 2, contentTopic: 2, workPick: 2, contentPick: 2, devPick: 2, job: 1, contact: 0 })[id] ?? 1;
+}
+function progress() {
+  const bar = $('#bar');
+  bar.hidden = cur === 'intro';
+  const done = hist.filter(h => h !== 'intro').length;
+  const total = done + remaining(cur) + 1;
+  $('#fill').style.width = Math.round((done + (cur === 'contact' ? 0.6 : 0)) / total * 100) + '%';
+  $('#count').textContent = cur === 'contact' ? '마지막' : `${done + 1} / ${total}`;
+}
+
+function go(id, push = true) {
+  if (push && cur) hist.push(cur);
+  cur = id;
+  render();
+  track('survey_step_view', { step: id, step_index: hist.length });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#prev').addEventListener('click', () => {
+  if (!hist.length) return;
+  const back = hist.pop(); cur = back;
+  // 되돌아간 화면 이후 답은 지움
+  const keys = ['card','goal','style','topic','pick','course','job'];
+  const k = S[back] && S[back].key; if (k) keys.slice(keys.indexOf(k)).forEach(x => delete A[x]);
+  render(); track('survey_back', { step: back });
+});
+
+function render() {
+  progress();
+  const v = $('#view');
+  if (cur === 'intro') {
+    v.innerHTML = `<section class="screen">
+      <p class="eyebrow">MODUCON 2026</p>
+      <h1>1분 설문하고<br>AI 에이전트 받기</h1>
+      <p class="lead">몇 가지만 고르면 나에게 맞는 AI 과정을 찾아 드리고, 콘텐츠 제작 AI 에이전트를 바로 받을 수 있어요.</p>
+      <div class="gift"><small>설문 참여 선물</small><strong>콘텐츠 제작 AI 에이전트<br>+ 나에게 맞는 과정 안내</strong></div>
+      <ol class="steps"><li><b>1</b>4~5개 질문에 탭으로 답하기</li><li><b>2</b>이름·휴대폰 번호 남기기</li><li><b>3</b>에이전트와 추천 과정을 문자로 받기</li></ol>
+      <button class="btn pri" id="startBtn" type="button">시작하기</button></section>`;
+    $('#startBtn').onclick = () => { track('survey_start'); go('card'); };
+    return;
+  }
+  if (cur === 'contact') return renderContact();
+  const s = S[cur];
+  v.innerHTML = `<section class="screen">
+    <p class="eyebrow">${esc(s.eyebrow)}</p><h2>${esc(s.title)}</h2>${s.lead ? `<p class="lead">${esc(s.lead)}</p>` : ''}
+    ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
+    <div class="opts">${s.opts.map((o, i) => `<button class="opt${A[s.key] === o.v ? ' on' : ''}" type="button" data-i="${i}">
+      <span class="em" aria-hidden="true">${o.e}</span><span class="tx"><span class="tt">${esc(o.t)}</span>${o.d ? `<span class="ds">${esc(o.d)}</span>` : ''}</span><span class="ar" aria-hidden="true">›</span></button>`).join('')}</div></section>`;
+  v.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+    const o = s.opts[+b.dataset.i];
+    b.classList.add('on');
+    A[s.key] = o.v;
+    if (o.course) A.course = o.course;
+    track('survey_answer', { step: cur, answer: o.v });
+    setTimeout(() => go(o.course ? 'job' : o.go), 160);
+  }));
+}
+
+function renderContact() {
+  const c = C[A.course];
+  const openAlert = A.card === '있음' && c.type === 'new';
+  $('#view').innerHTML = `<section class="screen">
+    <p class="eyebrow">거의 다 됐어요</p><h2>결과를 받을 휴대폰 번호를 알려 주세요</h2>
+    <p class="lead">추천 과정 안내와 AI 에이전트 다운로드 링크를 문자로 보내 드려요.</p>
+    <div class="pick"><img src="${esc(c.thumb)}" alt=""><div><small>나에게 맞는 과정</small><b>${esc(c.label || c.name)}</b></div></div>
+    <form id="cform" novalidate>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="field"><label class="label" for="name">이름<span class="req">*</span></label><input type="text" id="name" autocomplete="name" maxlength="30"></div>
+      <div class="field"><label class="label" for="phone">휴대폰 번호<span class="req">*</span></label><input type="tel" id="phone" autocomplete="tel" inputmode="numeric" maxlength="13" placeholder="010-0000-0000"></div>
+      ${openAlert ? `<div class="consent hl"><label class="check"><input type="checkbox" id="openAlert"><span>국비지원으로 열리면 연락받기<em>선택한 과정이 자동으로 기록돼요</em></span></label></div>` : ''}
+      <div class="consent"><label class="check"><input type="checkbox" id="privacy"><span>[필수] 개인정보 수집·이용 동의</span></label>
+        <details><summary>내용 보기</summary><table>
+          <tr><th>수집 항목</th><td>이름, 휴대폰 번호, 설문 응답</td></tr>
+          <tr><th>이용 목적</th><td>설문 결과·AI 에이전트 안내 문자 발송${openAlert ? ', 국비지원 오픈 안내' : ''}</td></tr>
+          <tr><th>보유 기간</th><td>수집일로부터 1년 (이후 지체 없이 파기)</td></tr></table>
+          동의를 거부할 수 있으며, 거부 시 결과 문자를 받을 수 없어요.</details></div>
+      <div class="consent"><label class="check"><input type="checkbox" id="marketing"><span>[선택] 교육 과정·할인 소식 수신 동의<em>모두콘 특별 할인 등 소식을 문자로 받아요</em></span></label>
+        <details><summary>내용 보기</summary><table>
+          <tr><th>수집 항목</th><td>이름, 휴대폰 번호</td></tr><tr><th>이용 목적</th><td>교육 과정, 할인·이벤트 안내 (문자)</td></tr><tr><th>보유 기간</th><td>동의 철회 시까지</td></tr></table></details></div>
+      <p class="error" id="err" role="alert"></p>
+      <button class="btn pri" id="submitBtn" type="submit">결과 받기</button>
+    </form></section>`;
+  const phone = $('#phone');
+  phone.addEventListener('input', () => {
+    const d = phone.value.replace(/\D/g, '').slice(0, 11);
+    phone.value = d.length < 4 ? d : d.length < 8 ? d.slice(0,3) + '-' + d.slice(3) : d.slice(0,3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(-4);
+  });
+  $('#cform').addEventListener('submit', submit);
+}
+
+async function submit(e) {
+  e.preventDefault();
+  const name = $('#name').value.trim(), phone = $('#phone').value.trim();
+  const err = !name ? '이름을 입력해 주세요.' : !/^01\d{8,9}$/.test(phone.replace(/\D/g, '')) ? '휴대폰 번호를 확인해 주세요.' : !$('#privacy').checked ? '개인정보 수집·이용에 동의해 주세요.' : '';
+  $('#err').textContent = err; if (err) return;
+  const btn = $('#submitBtn'); btn.disabled = true; btn.textContent = '결과 만드는 중…';
+  const c = C[A.course];
+  const data = Object.assign({
+    action: 'survey', card: A.card, style: A.style || '프리캠', goal: A.goal || '', topic: A.topic || A.pick || '',
+    courseId: A.course, courseName: c.name, courseType: c.type, job: A.job || '',
+    name, phone, privacy: true, marketing: $('#marketing').checked, openAlert: !!($('#openAlert') && $('#openAlert').checked),
+    website: document.querySelector('input[name=website]').value,
+  }, utm);
+  let res;
+  try {
+    if (DEMO) { await new Promise(r => setTimeout(r, 600)); res = { ok: true, sms: 'demo' }; }
+    else res = await (await fetch(API_URL, { method: 'POST', body: JSON.stringify(data) })).json();
+  } catch (x) { res = { ok: false, error: 'network' }; }
+  if (!res.ok) {
+    btn.disabled = false; btn.textContent = '결과 받기';
+    $('#err').textContent = res.error === 'invalid' ? '입력 내용을 다시 확인해 주세요.' : '연결이 불안정해요. 잠시 후 다시 눌러 주세요.';
+    track('survey_submit_error', { reason: res.error || 'unknown' });
+    return;
+  }
+  track('survey_submit', { course_id: A.course, course_type: c.type, card: A.card, style: data.style, job: data.job,
+    open_alert: data.openAlert ? 'Y' : 'N', marketing_opt_in: data.marketing ? 'Y' : 'N', sms: res.sms || '', duration_sec: Math.round((Date.now() - startedAt) / 1000) });
+  const q = new URLSearchParams({ c: A.course, k: A.card === '있음' ? '1' : A.card === '없음' ? '0' : '2', o: data.openAlert ? '1' : '0', s: res.sms === 'sent' ? '1' : '0', from: 'survey' });
+  location.href = RESULT_PATH + '?' + q.toString();
+}
+
+if (DEMO) $('#demoNote').hidden = false;
+render();
+</script>
+</body>
+</html>
