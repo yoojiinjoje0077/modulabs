@@ -1,23 +1,24 @@
 /* 모두콘 2026 설문·결과 페이지 공용 과정 데이터
    근거: class.modulabs.co.kr 과정 상세페이지 (2026-11-25 확인)
+   b2c: 프리캠의 [일반](일반 결제) 페이지 번호
    type: kdc(프리캠 국비지원) · new(신규 단과, 내년 국비지원 오픈 예정) · package(패키지) */
 window.MODU_COURSES = {
   '136': {
-    type: 'kdc', name: 'AI by Hand: 내 손으로 이해하는 딥러닝 기초수학',
+    type: 'kdc', b2c: '218', name: 'AI by Hand: 내 손으로 이해하는 딥러닝 기초수학',
     thumb: 'https://resources-public-prd.modulabs.co.kr/class/images/03a74e64-0e3c-4849-b66b-41e3ba3cdc5b.png',
     size: '15강 · 14시간 25분',
     summary: '벡터·행렬·신경망 계산을 손으로 먼저 풀고 파이썬 코드로 연결해, AI가 왜 그렇게 판단하는지 설명할 수 있게 되는 과정',
     points: ['벡터·행렬·뉴런 계산을 손과 그림으로 이해', '같은 원리로 손글씨 숫자 분류 모델 직접 실행', '수식이 막막한 입문자·기획자도 따라가는 구성'],
   },
   '137': {
-    type: 'kdc', name: 'AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음',
+    type: 'kdc', b2c: '216', name: 'AI와 함께 코딩하자! 인공지능/데이터 커리어 첫걸음',
     thumb: 'https://resources-public-prd.modulabs.co.kr/class/images/bb5991b8-2c6d-4d66-959a-d1d01f7b73a4.png',
     size: '10강 · 15시간 21분',
     summary: '문법 암기 대신 AI 코딩 비서와 대화하며 파이썬 기초부터 데이터 분석·예측 모델·딥러닝 서비스까지 완성하는 AI 직무 첫걸음',
     points: ['따릉이 데이터로 만드는 나의 첫 분석 대시보드', '호텔 예약 취소 예측 등 머신러닝 프로젝트', '표정 인식 등 딥러닝 서비스까지 직접 완성'],
   },
   '57': {
-    type: 'kdc', name: '상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링',
+    type: 'kdc', b2c: '117', name: '상위 1% 일잘러를 위한 고급 프롬프트 엔지니어링',
     thumb: 'https://resources-public-prd.modulabs.co.kr/class/images/5ba43697-529d-40c1-9405-44216931b9ed.png',
     size: '7강 · 7시간 29분',
     summary: 'AI에게 맡길 일을 설계하고 결과를 검증하는 기준을 세워, 회의록·주간 보고·엑셀 취합 같은 반복 업무를 자동화하는 실무 과정',
@@ -109,5 +110,7 @@ window.MODU_COURSES = {
   },
 };
 Object.keys(window.MODU_COURSES).forEach(function (id) {
-  window.MODU_COURSES[id].url = 'https://class.modulabs.co.kr/classes/' + id;
+  const c = window.MODU_COURSES[id];
+  c.url = 'https://class.modulabs.co.kr/classes/' + id;
+  if (c.b2c) c.b2cUrl = 'https://class.modulabs.co.kr/classes/' + c.b2c;   // [일반] 일반 결제 페이지
 });

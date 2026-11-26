@@ -143,7 +143,7 @@ function render() {
         <p class="summary">${esc(c.summary)}</p>
         <p class="size" style="margin:0 0 8px;color:var(--text)">${isPkg ? '이런 과정이 들어 있어요' : '이런 걸 직접 만들어요'}</p>
         <ul class="points${isPkg ? ' pk' : ''}">${c.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
-        <a class="cta" href="${esc(withUtm(c.url, 'course_' + id))}" target="_blank" rel="noopener noreferrer" data-track="course_detail">과정 자세히 보기</a>
+        <a class="cta" href="${esc(withUtm(card !== '1' && c.b2cUrl ? c.b2cUrl : c.url, 'course_' + id))}" target="_blank" rel="noopener noreferrer" data-track="course_detail">과정 자세히 보기</a>
         ${notes.join('')}
       </div>
     </article>

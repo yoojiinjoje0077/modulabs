@@ -78,10 +78,10 @@
       <span class="icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 10h8M8 14h5M12 2v2M12 20v2"/></svg></span>
       <span class="copy"><span class="title">AI 에이전트 받고 나에게 맞는 과정 찾기</span><span class="sub">1분 설문하고 콘텐츠 제작 AI 에이전트 받기</span></span>
     </a>
-    <button class="card pending" type="button" data-track="b2c_discount" data-status="pending" aria-label="모두콘 기간 한정 특별 할인전, 링크 준비 중">
+    <a class="card" data-track="b2c_discount" data-status="ready" data-open-at="2026-11-27T00:00:00+09:00" data-locked-sub="11월 27일 오픈" data-open-label="11/27 오픈" data-locked-msg="특별 할인전은 11월 27일에 열려요" href="./sale/?utm_source=moducon_linkhub&amp;utm_medium=linkhub_all&amp;utm_campaign=moducon2026&amp;utm_content=class_team_b2c_discount" aria-label="모두콘 기간 한정 특별 할인전">
       <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 8V5a2 2 0 0 1 2-2h3l13 13-5 5L3 8Z"/><circle cx="7" cy="7" r="1"/></svg></span>
-      <span class="copy"><span class="title">모두콘 기간 한정 특별 할인전</span><span class="sub">할인 대상 과정·혜택 곧 공개</span></span>
-    </button>
+      <span class="copy"><span class="title">모두콘 기간 한정 특별 할인전</span><span class="sub">패키지 30% · 단과 40% · 12월 18일까지</span></span>
+    </a>
     <a class="card" data-track="expression_booth" data-status="ready" data-open-at="2026-12-12T00:00:00+09:00" data-locked-sub="12월 12일 모두콘 부스에서 공개" href="https://class-workspace.pages.modulabs.xyz/expression-booth/" target="_blank" rel="noopener noreferrer" aria-label="내 표정 분석 체험, AI와 함께 코딩하자 과정, 새 창">
       <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 9h.01M16 9h.01M8 15c1.1 1.4 2.4 2 4 2s2.9-.6 4-2"/></svg></span>
       <span class="copy"><span class="title">내 표정 분석 체험</span><span class="sub">AI와 함께 코딩하자 · 체험하기</span></span>
@@ -141,8 +141,8 @@
     item.setAttribute('role', 'button'); item.setAttribute('tabindex', '0');
     item.classList.add('locked'); item.dataset.status = 'locked';
     const sub = item.querySelector('.sub'); if (sub) sub.textContent = item.dataset.lockedSub;
-    item.setAttribute('aria-label', item.querySelector('.title').textContent + ', 12월 12일 공개');
-    const tag = document.createElement('span'); tag.className = 'open-tag'; tag.textContent = '12/12 공개'; item.appendChild(tag);
+    item.setAttribute('aria-label', item.querySelector('.title').textContent + ', ' + (item.dataset.lockedSub || '12월 12일 공개'));
+    const tag = document.createElement('span'); tag.className = 'open-tag'; tag.textContent = item.dataset.openLabel || '12/12 공개'; item.appendChild(tag);
   });
   document.querySelectorAll('a[data-track][href^="http"]').forEach((item) => {
     const url = new URL(item.href);
@@ -162,7 +162,7 @@
         link_url: item.href || ''
       });
       const msg = item.dataset.status === 'pending' ? '링크 준비 중 · 자세한 내용은 부스 스태프에게 문의'
-        : item.dataset.status === 'locked' ? '12월 12일 모두콘 클래스팀 부스에서 공개돼요' : '';
+        : item.dataset.status === 'locked' ? (item.dataset.lockedMsg || '12월 12일 모두콘 클래스팀 부스에서 공개돼요') : '';
       if (msg) {
         const notice = document.getElementById('notice');
         notice.textContent = msg;
