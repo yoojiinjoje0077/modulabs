@@ -150,7 +150,7 @@
     let t = '';
     const m = (p.get('utm_medium') || '').toLowerCase();
     if (p.get('utm_campaign') === 'moducon2026' && p.get('utm_source') !== 'moducon_linkhub' && m.includes('_')) t = m.split('_').slice(1).join('_').replace(/[^a-z0-9_]/g, '');
-    try { if (t) localStorage.setItem('moducon_target', JSON.stringify({ t: t, at: Date.now() })); else { const v = JSON.parse(localStorage.getItem('moducon_target') || 'null'); if (v && Date.now() - v.at < 864e5) t = v.t; } } catch (e) {}
+    try { const v = JSON.parse(localStorage.getItem('moducon_target') || 'null'); const kept = v && Date.now() - v.at < 864e5 ? v.t : ''; if (kept) t = kept; else if (t) localStorage.setItem('moducon_target', JSON.stringify({ t: t, at: Date.now() })); } catch (e) {}   // 처음 들어온 대상을 24시간 유지 (덮어쓰지 않음)
     return t || 'moducon';
   })();
   document.querySelectorAll('a[data-track][href^="http"]').forEach((item) => {

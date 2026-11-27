@@ -197,7 +197,7 @@ nav a{display:inline-flex;align-items:center;min-height:44px;font-size:16px}
   let saved = '';
   try { const v = JSON.parse(localStorage.getItem('moducon_target') || 'null'); if (v && Date.now() - v.at < 864e5) saved = v.t; } catch (e) {}
   const fromModucon = params.get('utm_campaign') === 'moducon2026' || !!saved;
-  const target = ((params.get('utm_campaign') === 'moducon2026' ? (params.get('utm_medium') || '').split('_').slice(1).join('_') : '') || saved || 'moducon').replace(/[^a-z0-9_]/gi, '').toLowerCase() || 'moducon';
+  const target = (saved || (params.get('utm_campaign') === 'moducon2026' ? (params.get('utm_medium') || '').split('_').slice(1).join('_') : '') || 'moducon').replace(/[^a-z0-9_]/gi, '').toLowerCase() || 'moducon';
   document.querySelectorAll('a[href]').forEach((link) => {
     if (fromModucon && /^https?:/.test(link.href)) {
       const url = new URL(link.href);
