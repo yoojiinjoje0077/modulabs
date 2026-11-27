@@ -90,13 +90,22 @@ if (/^G-[A-Z0-9]+$/.test(mid)) {
 const track = (n, p = {}) => gtag('event', n, Object.assign({ page_section: 'survey_result', course_id: id || '' }, p));
 track('result_page_view', { entry: fromSurvey ? 'survey' : 'sms' });
 
-// 문자로 다시 연 경우 utm_source 를 구분 (문자 링크에 포함)
-const utmContent = name => 'class_team_result_' + name;
+// 모두의연구소 UTM 표준 (source=플랫폼 · medium=방식_대상 · campaign · content=소속_소재)
+// 대상: 들어온 CRM 그룹(g1~g9 등)을 이어 받고, 없으면 설문 직후 = moducon · 문자로 다시 연 경우 = survey
+const utmTarget = (() => {
+  const p = new URLSearchParams(location.search);
+  let t = '';
+  const m = (p.get('utm_medium') || '').toLowerCase();
+  if (p.get('utm_campaign') === 'moducon2026' && p.get('utm_source') !== 'moducon_linkhub' && m.includes('_')) t = m.split('_').slice(1).join('_').replace(/[^a-z0-9_]/g, '');
+  try { if (t) sessionStorage.setItem('moducon_target', t); else t = sessionStorage.getItem('moducon_target') || ''; } catch (e) {}
+  return t || (fromSurvey ? 'moducon' : 'survey');
+})();
+const utmContent = name => 'class_surveyresult_' + name.replace(/^course_/, 'course');
 function withUtm(url, name) {
   const u = new URL(url, location.href);
   if (u.origin === location.origin) return u.toString();
-  u.searchParams.set('utm_source', 'moducon_survey');
-  u.searchParams.set('utm_medium', fromSurvey ? 'result_page' : 'sms');
+  u.searchParams.set('utm_source', 'reco');
+  u.searchParams.set('utm_medium', 'web_' + utmTarget);
   u.searchParams.set('utm_campaign', 'moducon2026');
   u.searchParams.set('utm_content', utmContent(name));
   return u.toString();

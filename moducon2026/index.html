@@ -144,12 +144,28 @@
     item.setAttribute('aria-label', item.querySelector('.title').textContent + ', ' + (item.dataset.lockedSub || '12월 12일 공개'));
     const tag = document.createElement('span'); tag.className = 'open-tag'; tag.textContent = item.dataset.openLabel || '12/12 공개'; item.appendChild(tag);
   });
+  // 들어온 대상(CRM 그룹 g1~g9 등)을 기억해 나가는 링크 medium 에 이어 붙임. 허브 내부 링크(moducon_linkhub)로 들어온 값은 무시
+  const utmTarget = (() => {
+    const p = new URLSearchParams(location.search);
+    let t = '';
+    const m = (p.get('utm_medium') || '').toLowerCase();
+    if (p.get('utm_campaign') === 'moducon2026' && p.get('utm_source') !== 'moducon_linkhub' && m.includes('_')) t = m.split('_').slice(1).join('_').replace(/[^a-z0-9_]/g, '');
+    try { if (t) sessionStorage.setItem('moducon_target', t); else t = sessionStorage.getItem('moducon_target') || ''; } catch (e) {}
+    return t || 'moducon';
+  })();
   document.querySelectorAll('a[data-track][href^="http"]').forEach((item) => {
     const url = new URL(item.href);
-    url.searchParams.set('utm_source', 'moducon_linkhub');
-    url.searchParams.set('utm_medium', 'linkhub_all');
-    url.searchParams.set('utm_campaign', 'moducon2026');
-    url.searchParams.set('utm_content', 'class_team_' + item.dataset.track);
+    if (url.origin === location.origin) {   // 같은 사이트 안 링크: 기존 값 유지 (1단계 A 보류)
+      url.searchParams.set('utm_source', 'moducon_linkhub');
+      url.searchParams.set('utm_medium', 'linkhub_all');
+      url.searchParams.set('utm_campaign', 'moducon2026');
+      url.searchParams.set('utm_content', 'class_team_' + item.dataset.track);
+    } else {   // 밖으로 나가는 링크: 모두의연구소 UTM 표준 (source=플랫폼 · medium=방식_대상 · content=소속_소재)
+      url.searchParams.set('utm_source', 'reco');
+      url.searchParams.set('utm_medium', 'web_' + utmTarget);
+      url.searchParams.set('utm_campaign', 'moducon2026');
+      url.searchParams.set('utm_content', 'class_linkhub_' + item.dataset.track);
+    }
     item.href = url.toString();
   });
   let noticeTimer;

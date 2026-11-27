@@ -145,16 +145,23 @@ if (/^G-[A-Z0-9]+$/.test(mid)) {
 const track = (n, p = {}) => gtag('event', n, Object.assign({ page_section: 'moducon_sale' }, p));
 track('sale_page_view');
 
-/* 들어온 UTM 을 과정 링크까지 이어 붙임 (없으면 할인전 페이지 기본값) */
-const q = new URLSearchParams(location.search);
-const utm = k => q.get(k);
+/* 모두의연구소 UTM 표준 (source=플랫폼 · medium=방식_대상 · campaign · content=소속_소재)
+   대상: 들어온 CRM 그룹(g1~g9 등)을 이어 받고, 없으면 moducon. 허브 내부 링크(moducon_linkhub)로 들어온 값은 무시 */
+const utmTarget = (() => {
+  const p = new URLSearchParams(location.search);
+  let t = '';
+  const m = (p.get('utm_medium') || '').toLowerCase();
+  if (p.get('utm_campaign') === 'moducon2026' && p.get('utm_source') !== 'moducon_linkhub' && m.includes('_')) t = m.split('_').slice(1).join('_').replace(/[^a-z0-9_]/g, '');
+  try { if (t) sessionStorage.setItem('moducon_target', t); else t = sessionStorage.getItem('moducon_target') || ''; } catch (e) {}
+  return t || 'moducon';
+})();
 function courseUrl(id) {
   const it = ITEMS.find(x => x.id === id);
   const u = new URL(it && it.link ? 'https://class.modulabs.co.kr/classes/' + it.link : C[id].url);
-  u.searchParams.set('utm_source', utm('utm_source') || 'moducon_sale');
-  u.searchParams.set('utm_medium', utm('utm_medium') || 'sale_page');
+  u.searchParams.set('utm_source', 'reco');
+  u.searchParams.set('utm_medium', 'web_' + utmTarget);
   u.searchParams.set('utm_campaign', 'moducon2026');
-  u.searchParams.set('utm_content', 'class_team_sale_' + id);
+  u.searchParams.set('utm_content', 'class_sale_course' + id);
   return u.toString();
 }
 
