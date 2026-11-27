@@ -194,8 +194,10 @@ nav a{display:inline-flex;align-items:center;min-height:44px;font-size:16px}
   // 모두의연구소 UTM 표준: source=플랫폼 · medium=방식_대상 · campaign · content=소속_소재
   // 모두콘(campaign=moducon2026)으로 들어오면 나가는 링크를 source=reco · medium=web_{들어온 대상(g1~g9 등)} 으로 바꿔 그룹별 유입을 이어서 본다
   const params = new URLSearchParams(location.search);
-  const fromModucon = params.get('utm_campaign') === 'moducon2026';
-  const target = ((params.get('utm_medium') || '').split('_').slice(1).join('_') || 'moducon').replace(/[^a-z0-9_]/gi, '').toLowerCase() || 'moducon';
+  let saved = '';
+  try { const v = JSON.parse(localStorage.getItem('moducon_target') || 'null'); if (v && Date.now() - v.at < 864e5) saved = v.t; } catch (e) {}
+  const fromModucon = params.get('utm_campaign') === 'moducon2026' || !!saved;
+  const target = ((params.get('utm_campaign') === 'moducon2026' ? (params.get('utm_medium') || '').split('_').slice(1).join('_') : '') || saved || 'moducon').replace(/[^a-z0-9_]/gi, '').toLowerCase() || 'moducon';
   document.querySelectorAll('a[href]').forEach((link) => {
     if (fromModucon && /^https?:/.test(link.href)) {
       const url = new URL(link.href);
